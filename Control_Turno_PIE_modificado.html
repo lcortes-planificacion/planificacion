@@ -1765,7 +1765,7 @@ function getFiltered(data){
 
 function renderEqList(data,containerId,isEn){
   // Mobile: compact cards
-  if(window.innerWidth<=768){const cont=document.getElementById(containerId);if(cont){updateStats(data);renderMobileCards(data,containerId,isEn);}return;}
+  if(window.innerWidth<=768){const cont=document.getElementById(containerId);if(cont){updateStats(data);const dataNoFin=data.filter(e=>eg(e.tareas)!=="Finalizado");renderMobileCards(dataNoFin,containerId,isEn);}return;}
   const filtered=getFiltered(data);
   document.getElementById("cLabel").textContent=`${filtered.length} de ${data.filter(e=>inPeriod(e)).length} equipos`;
   const c=document.getElementById(containerId);c.innerHTML="";
