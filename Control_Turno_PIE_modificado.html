@@ -455,7 +455,6 @@ button,input,select,textarea{font-family:inherit}
   #ejecutivoView [style*="grid-template-columns:repeat(4"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:repeat(3"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr"] {grid-template-columns:1fr 1fr 1fr!important;gap:6px!important}
-  #ejecutivoView [style*="grid-template-columns:1fr 1fr 1fr"] {grid-template-columns:1fr 1fr!important;gap:6px!important}
   #ejecutivoView [style*="padding:20px"] {padding:10px!important}
   #ejecutivoView [style*="font-size:32px"],[style*="font-size:28px"] {font-size:20px!important}
   #ejecutivoView button[onclick*="exportResumenSemanal"],
@@ -506,8 +505,12 @@ button,input,select,textarea{font-family:inherit}
   /* ── EJECUTIVO: Carga por Mecánico + Equipos Prioritarios ── */
   .ejeMecGrid {grid-template-columns:1fr!important;gap:10px!important}
 
-  /* ── CARGA PLANTA: ocultar excluidos en móvil ── */
+  /* ── CARGA PLANTA: ocultar panel lateral completo en móvil ── */
   .cargaExcluidosPanel {display:none!important}
+  .cargaMobileGrid > div:last-child {display:none!important}
+
+  /* ── EJECUTIVO: filas de 3 columnas → 1 columna en móvil ── */
+  .ejeRow3 {grid-template-columns:1fr!important;gap:10px!important}
 }
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important;cursor:text}
 </style>
@@ -5892,7 +5895,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- TERCERA FILA: HH + Cumplimiento PIE + Clientes -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px">
+    <div class="ejeRow3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px">
 
       <!-- Ritmo Operacional del Taller -->
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px">
@@ -6124,7 +6127,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- QUINTA FILA: Proyección + Indicadores financieros -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+    <div class="ejeRow3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
 
       <!-- Proyección próximos 30 días -->
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px">
