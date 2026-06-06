@@ -550,7 +550,8 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
       <button class="navBtnAction" style="background:rgba(167,139,250,.2);border:1px solid #a78bfa;color:#fff;font-size:11px;font-weight:700;border-radius:8px" onclick="openSync()">📲 Sincronizar</button>
       <button class="navBtnAction" style="background:rgba(16,185,129,.25);border:1px solid #6ee7b7;color:#6ee7b7;font-size:11px;font-weight:700;border-radius:8px" onclick="jbinSave()">☁️ Guardar nube</button>
       <button class="navBtnAction" style="background:rgba(59,130,246,.25);border:1px solid #93c5fd;color:#93c5fd;font-size:11px;font-weight:700;border-radius:8px" onclick="jbinLoad(false)">☁️ Cargar nube</button>
-      <button class="navBtnAction" style="background:rgba(251,191,36,.25);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="forzarSyncLocalNube()">🔁 Subir local→nube</button>
+      <button class="navBtnAction" style="background:rgba(251,191,36,.25);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="forzarSyncLocalNube()" title="Exportar datos a JSON">💾 Exportar datos</button>
+      <button class="navBtnAction" style="background:rgba(168,85,247,.25);border:1px solid #c084fc;color:#c084fc;font-size:11px;font-weight:700;border-radius:8px" onclick="importarDatosJSON()" title="Importar JSON y subir a nube">📂 Importar→nube</button>
       <button class="navBtnAction adminOnly" style="background:rgba(251,191,36,.15);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="openJBinConfig()">⚙️ Config. nube</button>
       <button class="navBtnAction adminOnly" style="background:rgba(96,165,250,.2);border:1px solid #60a5fa;color:#fff;font-size:11px;font-weight:700;border-radius:8px" onclick="openAdmin()">⚙️ Administrar</button>
     </div>
@@ -882,7 +883,8 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
 <div class="mobileFab" id="mobileFab">
   <button class="mobileFabBtn" style="background:#10b981;color:#fff" onclick="jbinSave()" title="Guardar nube">☁️</button>
   <button class="mobileFabBtn" style="background:#0ea5e9;color:#fff" onclick="jbinLoad(false)" title="Cargar nube">📥</button>
-  <button class="mobileFabBtn" style="background:#f59e0b;color:#fff" onclick="forzarSyncLocalNube()" title="Subir local a nube">🔁</button>
+  <button class="mobileFabBtn" style="background:#f59e0b;color:#fff" onclick="forzarSyncLocalNube()" title="Exportar datos">💾</button>
+  <button class="mobileFabBtn" style="background:#a855f7;color:#fff" onclick="importarDatosJSON()" title="Importar a nube">📂</button>
   <button class="mobileFabBtn" style="background:#1d4ed8;color:#fff" onclick="setView('alertas')" title="Alertas">🔔</button>
 </div>
 
@@ -4141,9 +4143,8 @@ async function jbinLoad(silent){
   }catch(e){if(!silent)showJBinMsg("❌ Sin conexión — usando datos locales","#f59e0b");}
 }
 
-async function forzarSyncLocalNube(){
-  const GAS_URL="https://script.google.com/macros/s/AKfycbyH7a5T86Iw2oYHddiwnzkFI6KQUXAysRtaU14rOtHmXBDLViWt431VUJq-9-W5ZfTB-Q/exec";
-  showJBinMsg("⏳ Subiendo datos locales a la nube...", "#f59e0b");
+function forzarSyncLocalNube(){
+  // Exportar datos como JSON descargable
   try {
     let _tiempos=[];try{_tiempos=JSON.parse(localStorage.getItem("tiempos_v1")||"[]");}catch{}
     let _notas=[];try{_notas=JSON.parse(localStorage.getItem("notas_v1")||"[]");}catch{}
@@ -4159,35 +4160,60 @@ async function forzarSyncLocalNube(){
     const payload={
       ensamble,desarme,RESPONSABLES,REPUESTOS_DATA,
       HISTORIAL_CAMBIOS:HISTORIAL_CAMBIOS.slice(-200),
-      ts:new Date().toISOString(),autor:session?.nombre||"sync-forzado",
+      ts:new Date().toISOString(),autor:session?.nombre||"export",
       CLIENTES,tiempos:_tiempos,notas:_notas,tareas:_tareas,excluidos:_excluidos,
       plantaConfig:_plantaConfig,notasPerm:_notasPerm,subtitle:_subtitle,
       mecanicos:_mecanicos,planifR:_planifR,PIE_N,PIE_D,
       resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe
     };
-    // Usar no-cors para saltarse restricciones de file://
-    await fetch(GAS_URL, {
-      method:"POST",
-      mode:"no-cors",
-      body:JSON.stringify(payload)
-    });
-    showJBinMsg("✅ Datos enviados a la nube — abre GitHub Pages para verificar", "#10b981");
+    const blob=new Blob([JSON.stringify(payload)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    const fecha=new Date().toISOString().slice(0,10);
+    a.download="datos_pie_"+fecha+".json";
+    a.click();
+    URL.revokeObjectURL(url);
+    showJBinMsg("✅ Datos exportados — ahora ábrelos en GitHub Pages con 📂 Importar", "#10b981");
   } catch(e) {
-    // Intentar con XMLHttpRequest como alternativa
-    try {
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", GAS_URL, true);
-      xhr.onload = () => showJBinMsg("✅ Datos enviados vía XHR — verifica en GitHub Pages", "#10b981");
-      xhr.onerror = () => showJBinMsg("❌ No se pudo conectar. Abre el archivo desde GitHub Pages.", "#ef4444");
-      xhr.send(JSON.stringify({
-        ensamble,desarme,RESPONSABLES,
-        ts:new Date().toISOString(),autor:"sync-forzado",
-        CLIENTES,PIE_N,PIE_D
-      }));
-    } catch(e2) {
-      showJBinMsg("❌ Bloqueado por el navegador. Abre desde GitHub Pages.", "#ef4444");
-    }
+    showJBinMsg("❌ Error al exportar: "+e.message, "#ef4444");
   }
+}
+
+async function importarDatosJSON(){
+  const input=document.createElement("input");
+  input.type="file";
+  input.accept=".json";
+  input.onchange=async(e)=>{
+    const file=e.target.files[0];
+    if(!file){return;}
+    showJBinMsg("⏳ Leyendo archivo...", "#6b7280");
+    try {
+      const text=await file.text();
+      const payload=JSON.parse(text);
+      if(!payload.ensamble||!payload.desarme){
+        showJBinMsg("❌ Archivo inválido — no contiene datos PIE", "#ef4444");
+        return;
+      }
+      showJBinMsg("⏳ Subiendo a la nube...", "#6b7280");
+      const GAS_URL="https://script.google.com/macros/s/AKfycbyH7a5T86Iw2oYHddiwnzkFI6KQUXAysRtaU14rOtHmXBDLViWt431VUJq-9-W5ZfTB-Q/exec";
+      const res=await fetch(GAS_URL,{method:"POST",body:JSON.stringify(payload)});
+      if(res.ok){
+        const hora=new Date().toLocaleTimeString("es-CL");
+        showJBinMsg("✅ Datos importados y guardados en nube — "+hora, "#10b981");
+        // Cargar los datos en la app
+        if(payload.ensamble&&Array.isArray(payload.ensamble)) ensamble=payload.ensamble;
+        if(payload.desarme&&Array.isArray(payload.desarme)) desarme=payload.desarme;
+        renderCurrent();
+        updateStats();
+      } else {
+        showJBinMsg("❌ Error al guardar en nube: "+res.status, "#ef4444");
+      }
+    } catch(e) {
+      showJBinMsg("❌ Error: "+e.message, "#ef4444");
+    }
+  };
+  input.click();
 }
 
 function showJBinMsg(msg,color){
