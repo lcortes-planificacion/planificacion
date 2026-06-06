@@ -4106,8 +4106,14 @@ async function jbinLoad(silent){
         if(rec.PIE_N&&Array.isArray(rec.PIE_N)){PIE_N=rec.PIE_N;try{sv(SK.pn,PIE_N);}catch{}}
         if(rec.PIE_D&&Array.isArray(rec.PIE_D)){PIE_D=rec.PIE_D;try{sv(SK.pd,PIE_D);}catch{}}
         if(rec.resPersonalEn)try{localStorage.setItem("resPersonal_en",JSON.stringify(rec.resPersonalEn));}catch{}
-        // Restaurar TODO el localStorage
-        if(rec._allLS){try{Object.keys(rec._allLS).forEach(k=>{try{localStorage.setItem(k,rec._allLS[k]);}catch{}});}catch{}}
+        // Restaurar TODO el localStorage (excepto sesion)
+        if(rec._allLS){try{
+          const skipKeys=['pie_session','pie_sess','session','pie_user','pie_pass','pie_login'];
+          Object.keys(rec._allLS).forEach(k=>{
+            if(!skipKeys.some(s=>k.toLowerCase().includes(s)))
+              try{localStorage.setItem(k,rec._allLS[k]);}catch{}
+          });
+        }catch{}}
         if(rec.resPersonalDe)try{localStorage.setItem("resPersonal_de",JSON.stringify(rec.resPersonalDe));}catch{}
         expandedE=null;expandedD=null;
         // Save locally too
