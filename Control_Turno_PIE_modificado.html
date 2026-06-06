@@ -448,6 +448,54 @@ button,input,select,textarea{font-family:inherit}
   .modal,.modalBox{width:96vw!important;max-width:96vw!important;margin:10px auto!important;padding:16px!important}
   .colHideM{display:none!important}
   body{font-size:13px}
+
+  /* ── EJECUTIVO MÓVIL ── */
+  #ejecutivoView > div {padding:10px!important;border-radius:0!important}
+  #ejecutivoView [style*="display:flex"][style*="justify-content:space-between"] {flex-direction:column!important;gap:8px!important}
+  #ejecutivoView [style*="font-size:20px"][style*="font-weight:900"] {font-size:15px!important}
+  #ejecutivoView [style*="grid-template-columns"][style*="repeat"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
+  #ejecutivoView [style*="grid-template-columns:repeat(4"] {grid-template-columns:1fr 1fr!important}
+  #ejecutivoView [style*="grid-template-columns:repeat(3"] {grid-template-columns:1fr 1fr!important}
+  #ejecutivoView [style*="padding:20px"] {padding:10px!important}
+  #ejecutivoView [style*="font-size:32px"] {font-size:22px!important}
+  #ejecutivoView [style*="font-size:28px"] {font-size:20px!important}
+  #ejecutivoView [style*="font-size:24px"] {font-size:18px!important}
+  #ejecutivoView button[onclick*="exportResumenSemanal"],
+  #ejecutivoView button[onclick*="setView('dash')"] {display:none!important}
+  #ejecutivoView canvas {max-width:100%!important;height:180px!important}
+  #ejecutivoView [style*="min-height:100vh"] {min-height:auto!important}
+
+  /* ── RESUMEN ENSAMBLE/DESARME MÓVIL ── */
+  #resenView, #resdeView {overflow-x:hidden}
+  #resenView table, #resdeView table {min-width:400px;font-size:11px}
+  #resenView [style*="grid-template-columns:repeat"] {grid-template-columns:1fr 1fr!important;gap:6px!important}
+  #resdeView [style*="grid-template-columns:repeat"] {grid-template-columns:1fr 1fr!important;gap:6px!important}
+  #resenView [style*="font-size:32px"], #resdeView [style*="font-size:32px"] {font-size:20px!important}
+  #resenView [style*="font-size:28px"], #resdeView [style*="font-size:28px"] {font-size:18px!important}
+  #resenView [style*="padding:20px"], #resdeView [style*="padding:20px"] {padding:10px!important}
+  #resenView [style*="display:flex"][style*="justify-content:space-between"],
+  #resdeView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:6px!important}
+
+  /* ── CARGA PLANTA MÓVIL ── */
+  #cargaView [style*="grid-template-columns:repeat"] {grid-template-columns:1fr!important}
+  #cargaView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:6px!important}
+  #cargaView [style*="font-size:32px"] {font-size:20px!important}
+  #cargaView table {min-width:400px;font-size:11px}
+  #cargaView [style*="padding:20px"] {padding:10px!important}
+
+  /* ── MAPA PLANTA MÓVIL ── */
+  #plantaView [style*="padding:14px"] {padding:8px!important}
+  #plantaView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:6px!important}
+  #plantaRoot {min-height:auto!important}
+  .planta-drop-zone {min-height:50px!important}
+  .planta-ran-card {font-size:10px!important;padding:5px!important}
+  #plantaView button {font-size:10px!important;padding:5px 8px!important}
+  #plantaView [style*="grid-template-columns"] {grid-template-columns:1fr!important;gap:8px!important}
+  #plantaView h2 {font-size:14px!important}
+  #plantaView [style*="min-width:155px"] {min-width:100px!important}
+
+  /* ── FAB MÓVIL ocultar botones no necesarios ── */
+  .mobileFab > button:not(:nth-child(1)):not(:nth-child(2)) {width:44px!important;height:44px!important;font-size:16px!important}
 }
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important;cursor:text}
 </style>
@@ -560,15 +608,13 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
 
 <!-- MOBILE QUICK PANEL -->
 <div id="mobilePanel" style="background:#1e3a8a;padding:8px 10px;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch">
-  <button onclick="setView('dash')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">🏠</span><span>Inicio</span></button>
-  <button onclick="setView('list')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">⚙️</span><span>Ensamble</span></button>
-  <button onclick="setView('des')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">🔧</span><span>Desarme</span></button>
-  <button onclick="setView('alertas')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">🔔</span><span>Alertas</span></button>
-  <button onclick="setView('ejecutivo')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">📊</span><span>Ejecut.</span></button>
+  <button onclick="setView('resen')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">📊</span><span>Res. En.</span></button>
+  <button onclick="setView('resde')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">📋</span><span>Res. De.</span></button>
   <button onclick="setView('carga')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">👥</span><span>Carga</span></button>
-  <button onclick="setView('repuestos')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">🔩</span><span>Repues.</span></button>
-  <button onclick="setView('rococ')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">💰</span><span>OC</span></button>
+  <button onclick="setView('ejecutivo')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">📈</span><span>Ejecutivo</span></button>
+  <button onclick="setView('planta')" style="flex:0 0 auto;padding:8px 12px;border-radius:10px;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:56px"><span style="font-size:20px">🗺️</span><span>Mapa</span></button>
 </div>
+
 
 <!-- PERIOD BAR -->
 <div id="periodBar">
