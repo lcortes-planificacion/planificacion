@@ -502,6 +502,12 @@ button,input,select,textarea{font-family:inherit}
 
   /* ── FAB MÓVIL ocultar botones no necesarios ── */
   .mobileFab > button:not(:nth-child(1)):not(:nth-child(2)) {width:44px!important;height:44px!important;font-size:16px!important}
+
+  /* ── EJECUTIVO: Carga por Mecánico + Equipos Prioritarios ── */
+  .ejeMecGrid {grid-template-columns:1fr!important;gap:10px!important}
+
+  /* ── CARGA PLANTA: ocultar excluidos en móvil ── */
+  .cargaExcluidosPanel {display:none!important}
 }
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important;cursor:text}
 </style>
@@ -3777,7 +3783,7 @@ function renderCarga(){
           </div>
         </div>
 
-        <div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+        <div class="cargaExcluidosPanel" style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
           <h3 style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px">⛔ Excluidos de carga</h3>
           ${excluidos.length?excluidos.map(r=>`
             <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 8px;background:#fef2f2;border-radius:6px;margin-bottom:4px;font-size:11px">
@@ -6049,7 +6055,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- CUARTA FILA: Carga mecánicos + Proyección + RANs críticas -->
-    <div style="display:grid;grid-template-columns:1fr 1.8fr;gap:14px;margin-bottom:18px">
+    <div class="ejeMecGrid" style="display:grid;grid-template-columns:1fr 1.8fr;gap:14px;margin-bottom:18px">
 
       <!-- Carga por mecánico -->
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px">
