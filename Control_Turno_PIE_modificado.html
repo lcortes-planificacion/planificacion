@@ -421,19 +421,33 @@ button,input,select,textarea{font-family:inherit}
   .navHeader{padding:8px 10px 6px}
   .navTitle{font-size:14px!important}
   .navSub,.navSubtitle{font-size:10px!important}
-  .statsRow{gap:6px;flex-wrap:wrap}
-  .sStat{min-width:60px;padding:4px 6px!important}
-  .sVal{font-size:16px!important}
-  .sLbl{font-size:8px!important}
+  .statsRow{gap:4px;flex-wrap:wrap;justify-content:flex-start}
+  .sStat{min-width:55px;max-width:72px;padding:4px 5px!important;flex:1 1 55px}
+  .sVal{font-size:15px!important}
+  .sLbl{font-size:7px!important}
   #periodBar{padding:6px 8px;flex-wrap:wrap;gap:4px}
-  #periodBar button{font-size:10px;padding:4px 8px}
+  #periodBar button{font-size:10px;padding:4px 8px;min-height:32px}
+  .periodInputs{flex-wrap:wrap;gap:4px;width:100%}
+  .periodInputs input{flex:1;min-width:120px;font-size:13px;padding:5px 8px}
   #mainContent{padding:6px!important}
-  .chartsGrid{grid-template-columns:1fr}
-  .chartFull{grid-column:1}
-  #toolbar{flex-wrap:wrap;gap:4px}
-  #toolbar .sInput{width:100%}
-  .turnoGrid{grid-template-columns:1fr}
+  .chartsGrid{grid-template-columns:1fr!important}
+  .chartFull{grid-column:1!important}
+  #toolbar{flex-wrap:wrap;gap:6px}
+  #toolbar .sInput{width:100%;font-size:14px;padding:8px 10px;min-height:40px}
+  #toolbar select{flex:1;font-size:13px;padding:8px 6px;min-height:40px}
+  .turnoGrid{grid-template-columns:1fr!important}
   .sortBar{display:none}
+  .mobileCard{padding:14px!important;margin-bottom:10px!important}
+  .tableWrap,.eqTable{overflow-x:auto;-webkit-overflow-scrolling:touch;display:block;width:100%}
+  table{min-width:580px}
+  .lBox{padding:24px 16px!important;margin:12px!important}
+  .kpiGrid,.kpiRow{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .kpiBlock{padding:12px 10px!important}
+  .kpiVal{font-size:22px!important}
+  .kpiLbl{font-size:10px!important}
+  .modal,.modalBox{width:96vw!important;max-width:96vw!important;margin:10px auto!important;padding:16px!important}
+  .colHideM{display:none!important}
+  body{font-size:13px}
 }
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important;cursor:text}
 </style>
@@ -536,6 +550,7 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
       <button class="navBtnAction" style="background:rgba(167,139,250,.2);border:1px solid #a78bfa;color:#fff;font-size:11px;font-weight:700;border-radius:8px" onclick="openSync()">📲 Sincronizar</button>
       <button class="navBtnAction" style="background:rgba(16,185,129,.25);border:1px solid #6ee7b7;color:#6ee7b7;font-size:11px;font-weight:700;border-radius:8px" onclick="jbinSave()">☁️ Guardar nube</button>
       <button class="navBtnAction" style="background:rgba(59,130,246,.25);border:1px solid #93c5fd;color:#93c5fd;font-size:11px;font-weight:700;border-radius:8px" onclick="jbinLoad(false)">☁️ Cargar nube</button>
+      <button class="navBtnAction" style="background:rgba(251,191,36,.25);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="forzarSyncLocalNube()">🔁 Subir local→nube</button>
       <button class="navBtnAction adminOnly" style="background:rgba(251,191,36,.15);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="openJBinConfig()">⚙️ Config. nube</button>
       <button class="navBtnAction adminOnly" style="background:rgba(96,165,250,.2);border:1px solid #60a5fa;color:#fff;font-size:11px;font-weight:700;border-radius:8px" onclick="openAdmin()">⚙️ Administrar</button>
     </div>
@@ -867,6 +882,7 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
 <div class="mobileFab" id="mobileFab">
   <button class="mobileFabBtn" style="background:#10b981;color:#fff" onclick="jbinSave()" title="Guardar nube">☁️</button>
   <button class="mobileFabBtn" style="background:#0ea5e9;color:#fff" onclick="jbinLoad(false)" title="Cargar nube">📥</button>
+  <button class="mobileFabBtn" style="background:#f59e0b;color:#fff" onclick="forzarSyncLocalNube()" title="Subir local a nube">🔁</button>
   <button class="mobileFabBtn" style="background:#1d4ed8;color:#fff" onclick="setView('alertas')" title="Alertas">🔔</button>
 </div>
 
@@ -4123,6 +4139,55 @@ async function jbinLoad(silent){
       if(!silent)showJBinMsg("❌ Error al cargar: "+res.status,"#ef4444");
     }
   }catch(e){if(!silent)showJBinMsg("❌ Sin conexión — usando datos locales","#f59e0b");}
+}
+
+async function forzarSyncLocalNube(){
+  const GAS_URL="https://script.google.com/macros/s/AKfycbyH7a5T86Iw2oYHddiwnzkFI6KQUXAysRtaU14rOtHmXBDLViWt431VUJq-9-W5ZfTB-Q/exec";
+  showJBinMsg("⏳ Subiendo datos locales a la nube...", "#f59e0b");
+  try {
+    let _tiempos=[];try{_tiempos=JSON.parse(localStorage.getItem("tiempos_v1")||"[]");}catch{}
+    let _notas=[];try{_notas=JSON.parse(localStorage.getItem("notas_v1")||"[]");}catch{}
+    let _tareas=[];try{_tareas=JSON.parse(localStorage.getItem("tareas_v1")||"[]");}catch{}
+    let _excluidos=[];try{_excluidos=JSON.parse(localStorage.getItem("excluidos_v1")||"[]");}catch{}
+    let _plantaConfig=null;try{_plantaConfig=JSON.parse(localStorage.getItem("plantaConfig_v2")||"null");}catch{}
+    let _notasPerm="";try{_notasPerm=localStorage.getItem("pie_notas_v1")||"";}catch{}
+    let _subtitle=subtitle||lss("pie_subtitle_v1","");
+    let _mecanicos=MECANICOS||[];
+    let _planifR=[];try{_planifR=JSON.parse(localStorage.getItem("planif_r_v2")||"[]");}catch{}
+    let _resPersonalEn=[];try{_resPersonalEn=JSON.parse(localStorage.getItem("resPersonal_en")||"[]");}catch{}
+    let _resPersonalDe=[];try{_resPersonalDe=JSON.parse(localStorage.getItem("resPersonal_de")||"[]");}catch{}
+    const payload={
+      ensamble,desarme,RESPONSABLES,REPUESTOS_DATA,
+      HISTORIAL_CAMBIOS:HISTORIAL_CAMBIOS.slice(-200),
+      ts:new Date().toISOString(),autor:session?.nombre||"sync-forzado",
+      CLIENTES,tiempos:_tiempos,notas:_notas,tareas:_tareas,excluidos:_excluidos,
+      plantaConfig:_plantaConfig,notasPerm:_notasPerm,subtitle:_subtitle,
+      mecanicos:_mecanicos,planifR:_planifR,PIE_N,PIE_D,
+      resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe
+    };
+    // Usar no-cors para saltarse restricciones de file://
+    await fetch(GAS_URL, {
+      method:"POST",
+      mode:"no-cors",
+      body:JSON.stringify(payload)
+    });
+    showJBinMsg("✅ Datos enviados a la nube — abre GitHub Pages para verificar", "#10b981");
+  } catch(e) {
+    // Intentar con XMLHttpRequest como alternativa
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", GAS_URL, true);
+      xhr.onload = () => showJBinMsg("✅ Datos enviados vía XHR — verifica en GitHub Pages", "#10b981");
+      xhr.onerror = () => showJBinMsg("❌ No se pudo conectar. Abre el archivo desde GitHub Pages.", "#ef4444");
+      xhr.send(JSON.stringify({
+        ensamble,desarme,RESPONSABLES,
+        ts:new Date().toISOString(),autor:"sync-forzado",
+        CLIENTES,PIE_N,PIE_D
+      }));
+    } catch(e2) {
+      showJBinMsg("❌ Bloqueado por el navegador. Abre desde GitHub Pages.", "#ef4444");
+    }
+  }
 }
 
 function showJBinMsg(msg,color){
