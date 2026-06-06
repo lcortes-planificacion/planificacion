@@ -4114,6 +4114,16 @@ async function jbinLoad(silent){
             if(!skipKeys.some(s=>k.toLowerCase().includes(s)))
               try{localStorage.setItem(k,rec._allLS[k]);}catch{}
           });
+          // Reinicializar TEMPARIOS desde localStorage
+          try{
+            var _ts=JSON.parse(localStorage.getItem('temparios_v2')||'null');
+            if(_ts&&_ts.base&&_ts.pequeno&&_ts.mediano&&_ts.grande) TEMPARIOS=_ts;
+          }catch{}
+          // Reinicializar titulo tempario
+          try{
+            var _tt=localStorage.getItem('pie_tempTitulo');
+            if(_tt) document.querySelectorAll('.tempario-titulo,.pie-temp-titulo').forEach(el=>el.textContent=_tt);
+          }catch{}
         }catch{}}
         if(rec.resPersonalDe)try{localStorage.setItem("resPersonal_de",JSON.stringify(rec.resPersonalDe));}catch{}
         expandedE=null;expandedD=null;
