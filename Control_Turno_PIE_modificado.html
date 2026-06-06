@@ -4015,19 +4015,16 @@ async function jbinSave(){
     resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe
   };
   try{
-    const res=await fetch(SUPA_URL+"/rest/v1/pie_data?id=eq.main",{
-      method:"PATCH",
-      headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
-      body:JSON.stringify({data:JSON.stringify(payload),updated_at:new Date().toISOString()})
-    });
-    if(res.ok||res.status===204){
+    const res=await fetch(SUPA_URL+"/rest/v1/pie_data",{method:"POST",headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:"main",data:JSON.stringify(payload),updated_at:new Date().toISOString()})});
+    const txt=await res.text();
+    if(res.ok){
       const hora=new Date().toLocaleTimeString("es-CL");
       showJBinMsg(`✅ Guardado en nube — ${hora} por ${session?.nombre||""}`, "#10b981");
       try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch{}
       isDirty=false;pendingChanges=0;
       document.getElementById("saveBar").classList.add("hidden");
     } else {
-      showJBinMsg("❌ Error al guardar: "+res.status,"#ef4444");
+      showJBinMsg("❌ Error al guardar","#ef4444");
     }
   }catch(e){
     showJBinMsg("❌ Sin conexión — guardado localmente","#f59e0b");
@@ -4044,10 +4041,10 @@ async function jbinLoad(silent){
     const res=await fetch(SUPA_URL+"/rest/v1/pie_data?id=eq.main&select=data",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});
     if(res.ok){
       const rows=await res.json();
-      const rec=rows.length>0?JSON.parse(rows[0].data):null;
+      const rec=rows.length>0?JSON.parse(rows[0].data||"{}"):null;
       if(rec&&rec.ensamble&&Array.isArray(rec.ensamble)){
         // Check if cloud data is newer than local
-        // Siempre cargar datos de la nube sin verificar timestamp
+
         // Validate and merge data
         // Filter + map tareas removing cross-area tasks and dupes
         const filterTareas=(tareas,isEn)=>{
@@ -4199,7 +4196,7 @@ async function importarDatosJSON(){
         return;
       }
       showJBinMsg("⏳ Subiendo a la nube...", "#6b7280");
-      const GAS_URL="https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec";
+      const GAS_URL="PLACEHOLDER_GAS";
       const res=await fetch(GAS_URL,{method:"POST",body:JSON.stringify(payload)});
       if(res.ok){
         const hora=new Date().toLocaleTimeString("es-CL");
@@ -7683,6 +7680,42 @@ function _pZonaBox(z){
 }
 
 // ── RENDER PRINCIPAL ──────────────────────────────────────────
+
+function plantaGuardarMes(){
+  var mes=new Date().toLocaleString('es-CL',{month:'long',year:'numeric'});
+  var nombre=prompt('Nombre para guardar este mes:',mes);
+  if(!nombre)return;
+  try{
+    var hist=JSON.parse(localStorage.getItem('pie_mapas_historial')||'[]');
+    var snap={nombre:nombre,fecha:new Date().toISOString(),plantaConfig:localStorage.getItem('plantaConfig_v2')||'{}',enLP:ensamble.map(function(e){return {ran:e.ran,lp:e.lineaPlanta||''};}),deLP:desarme.map(function(e){return {ran:e.ran,lp:e.lineaPlanta||''};})};
+    hist.unshift(snap);if(hist.length>24)hist.length=24;
+    localStorage.setItem('pie_mapas_historial',JSON.stringify(hist));
+    showJBinMsg('Mapa guardado: '+nombre,'#10b981');
+  }catch(err){showJBinMsg('Error: '+err.message,'#ef4444');}
+}
+function plantaAbrirMes(){
+  try{
+    var hist=JSON.parse(localStorage.getItem('pie_mapas_historial')||'[]');
+    if(!hist.length){showJBinMsg('Sin meses guardados','#f59e0b');return;}
+    var ops=hist.map(function(h,i){return (i+1)+'. '+h.nombre;}).join(' | ');
+    var sel=prompt('Numero del mes ('+ops+'):');
+    if(!sel)return;
+    var ix=parseInt(sel)-1;
+    if(isNaN(ix)||ix<0||ix>=hist.length){showJBinMsg('Invalido','#ef4444');return;}
+    var snap=hist[ix];
+    if(snap.plantaConfig)localStorage.setItem('plantaConfig_v2',snap.plantaConfig);
+    if(snap.enLP)snap.enLP.forEach(function(s){var e=ensamble.find(function(x){return x.ran===s.ran;});if(e)e.lineaPlanta=s.lp;});
+    if(snap.deLP)snap.deLP.forEach(function(s){var e=desarme.find(function(x){return x.ran===s.ran;});if(e)e.lineaPlanta=s.lp;});
+    renderPlanta();showJBinMsg('Mes cargado: '+snap.nombre,'#10b981');
+  }catch(err){showJBinMsg('Error: '+err.message,'#ef4444');}
+}
+function plantaNuevoMes(){
+  if(!confirm('Iniciar nuevo mes? Se limpiaran las asignaciones de linea del mapa.'))return;
+  ensamble.forEach(function(e){e.lineaPlanta='';});
+  desarme.forEach(function(e){e.lineaPlanta='';});
+  try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch{}
+  renderPlanta();showJBinMsg('Nuevo mes iniciado','#10b981');
+}
 function renderPlanta(){
   const el=document.getElementById("plantaView");
   if(!el)return;
@@ -7725,6 +7758,9 @@ function renderPlanta(){
         <span style="background:#fef08a;border:1px solid #ca8a04;border-radius:4px;padding:2px 7px;font-size:9px;color:#713f12;font-weight:700;">40–74%</span>
         <span style="background:#fed7aa;border:1px solid #ea580c;border-radius:4px;padding:2px 7px;font-size:9px;color:#7c2d12;font-weight:700;">&lt;40%</span>
         <span style="background:#fecaca;border:1px solid #dc2626;border-radius:4px;padding:2px 7px;font-size:9px;color:#7f1d1d;font-weight:700;">Bloqueado</span>
+        <button onclick="plantaGuardarMes()" style="padding:6px 12px;border-radius:6px;border:none;background:#0891b2;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">💾 Guardar Mes</button>
+        <button onclick="plantaAbrirMes()" style="padding:6px 12px;border-radius:6px;border:none;background:#0f766e;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">📂 Abrir Mes</button>
+        <button onclick="plantaNuevoMes()" style="padding:6px 12px;border-radius:6px;border:none;background:#b45309;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">🗓️ Nuevo Mes</button>
         <button onclick="plantaOpenEditor()" style="padding:6px 12px;border-radius:6px;border:none;background:#7c3aed;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">✏️ Editar Mapa</button>
         <button onclick="plantaOpenAssign()" style="padding:6px 12px;border-radius:6px;border:none;background:#1d4ed8;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">⚙️ Asignar Líneas</button>
         <button onclick="plantaExport('excel')" style="padding:6px 12px;border-radius:6px;border:none;background:#16a34a;color:#fff;font-size:11px;font-weight:700;cursor:pointer;">📊 Excel</button>
