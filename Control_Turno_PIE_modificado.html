@@ -4114,7 +4114,7 @@ async function jbinLoad(silent){
         try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch{}
         const hora=rec.ts?new Date(rec.ts).toLocaleString("es-CL"):"desconocida";
         const autor=rec.autor||"";
-        if(!silent){showJBinMsg(`✅ Datos cargados — ${hora}${autor?" por "+autor:""}`, "#10b981");setTimeout(()=>location.reload(),1500);}
+        if(!silent)showJBinMsg(`✅ Datos cargados — ${hora}${autor?" por "+autor:""}`, "#10b981");
         // Clean duplicates from cloud data before using
         ensamble.forEach(function(eq){
           var seen={};
