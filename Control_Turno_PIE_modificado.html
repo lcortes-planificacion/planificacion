@@ -4061,7 +4061,7 @@ async function jbinLoad(silent){
             var dk2=numKey2||t.nombre;
             if(!ok||seen[dk2])return false;
             seen[dk2]=true; return true;
-          }).map(t=>({
+          }).map(t=>Object.assign({},t,{
             nombre:t.nombre||"",estado:t.estado||"No Iniciado",
             responsable:t.responsable||"",turno:t.turno||"",
             observacion:t.observacion||"",fecha:t.fecha||"",
@@ -4069,7 +4069,8 @@ async function jbinLoad(silent){
             fechaInicioTarea:t.fechaInicioTarea||"",
             fechaTerminoTarea:t.fechaTerminoTarea||"",
             fechaReal:t.fechaReal||"",
-            horaInicio:t.horaInicio||"",horaTermino:t.horaTermino||"",diasTarea:t.diasTarea||""
+            horaInicio:t.horaInicio||"",horaTermino:t.horaTermino||"",diasTarea:t.diasTarea||"",
+            hhPlan:t.hhPlan||"",hhReal:t.hhReal||""
           }));
         };
         ensamble=rec.ensamble.map(e=>({
