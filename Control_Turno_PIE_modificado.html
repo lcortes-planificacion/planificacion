@@ -4067,8 +4067,23 @@ async function jbinLoad(silent){
             horaInicio:t.horaInicio||"",horaTermino:t.horaTermino||"",diasTarea:t.diasTarea||""
           }));
         };
-        ensamble=rec.ensamble.map(e=>Object.assign({tareas:[]},e));
-        desarme=(rec.desarme||[]).map(e=>Object.assign({tareas:[]},e));
+        ensamble=rec.ensamble.map(e=>({
+          ran:e.ran||"",equipo:e.equipo||"",cliente:e.cliente||"",
+          fechaInicio:e.fechaInicio||"",fechaTermino:e.fechaTermino||"",fechaReal:e.fechaReal||"",
+          oc:e.oc||"",monto:e.monto||"",obsExtra:e.obsExtra||"",
+          horaInicio:e.horaInicio||"",horaTermino:e.horaTermino||"",diasEjecucion:e.diasEjecucion||"",
+          estadoEspecial:e.estadoEspecial||"",_prevEstado:e._prevEstado||"",
+          prioridad:e.prioridad||"normal",encargado:e.encargado||"",encargado2:e.encargado2||"",encargado3:e.encargado3||"",lineaPlanta:e.lineaPlanta||"0",
+          tareas:filterTareas(e.tareas,true)
+        }));
+        desarme=(rec.desarme||[]).map(e=>({
+          ran:e.ran||"",equipo:e.equipo||"",cliente:e.cliente||"",
+          fechaInicio:e.fechaInicio||"",fechaTermino:e.fechaTermino||"",fechaReal:e.fechaReal||"",
+          obsExtra:e.obsExtra||"",horaInicio:e.horaInicio||"",horaTermino:e.horaTermino||"",
+          diasEjecucion:e.diasEjecucion||"",estadoEspecial:e.estadoEspecial||"",
+          _prevEstado:e._prevEstado||"",prioridad:e.prioridad||"normal",encargado:e.encargado||"",encargado2:e.encargado2||"",encargado3:e.encargado3||"",lineaPlanta:e.lineaPlanta||"0",
+          tareas:filterTareas(e.tareas,false),oc:"",monto:""
+        }));
         if(rec.RESPONSABLES&&Array.isArray(rec.RESPONSABLES))RESPONSABLES=rec.RESPONSABLES;
         if(rec.CLIENTES&&Array.isArray(rec.CLIENTES)){CLIENTES=rec.CLIENTES;saveClientes();}
         if(rec.tiempos&&Array.isArray(rec.tiempos)){try{localStorage.setItem("tiempos_v1",JSON.stringify(rec.tiempos));}catch{}}
@@ -4092,7 +4107,7 @@ async function jbinLoad(silent){
         try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch{}
         const hora=rec.ts?new Date(rec.ts).toLocaleString("es-CL"):"desconocida";
         const autor=rec.autor||"";
-        if(!silent)showJBinMsg(`✅ Datos cargados — ${hora}${autor?" por "+autor:""}`, "#10b981");
+        if(!silent){showJBinMsg(`✅ Datos cargados — ${hora}${autor?" por "+autor:""}`, "#10b981");setTimeout(()=>location.reload(),1500);}
         // Clean duplicates from cloud data before using
         ensamble.forEach(function(eq){
           var seen={};
