@@ -4047,12 +4047,7 @@ async function jbinLoad(silent){
       const rec=rows.length>0?JSON.parse(rows[0].data):null;
       if(rec&&rec.ensamble&&Array.isArray(rec.ensamble)){
         // Check if cloud data is newer than local
-        const localTs=localStorage.getItem("pie_lastSave")||"";
-        const cloudTs=rec.ts||"";
-        if(!silent&&localTs&&cloudTs&&localTs>cloudTs){
-          showJBinMsg("⚠️ Tus datos locales son más recientes que la nube","#f59e0b");
-          return;
-        }
+        // Siempre cargar datos de la nube sin verificar timestamp
         // Validate and merge data
         // Filter + map tareas removing cross-area tasks and dupes
         const filterTareas=(tareas,isEn)=>{
