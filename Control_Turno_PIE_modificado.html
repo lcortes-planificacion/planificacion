@@ -467,22 +467,26 @@ button,input,select,textarea{font-family:inherit}
 
   /* ── RESUMEN ENSAMBLE/DESARME MÓVIL ── */
   #resEnView, #resDeView {overflow-x:hidden}
-  .resMobileGrid {grid-template-columns:1fr!important}
+  .resMobileGrid {grid-template-columns:1fr!important;gap:8px!important}
+  .resMobileGrid > div {width:100%!important;min-width:0!important}
   .resMobileGrid > div:last-child {position:static!important;top:auto!important}
-  #resEnView table, #resDeView table {min-width:350px;font-size:10px}
+  #resEnView, #resDeView {overflow-x:hidden!important}
   #resEnView [style*="grid-template-columns:repeat(4"],
   #resDeView [style*="grid-template-columns:repeat(4"] {grid-template-columns:1fr 1fr!important;gap:6px!important}
   #resEnView [style*="display:flex"][style*="justify-content:space-between"],
   #resDeView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:6px!important}
   #resEnView [style*="display:flex"][style*="gap:8px"],
   #resDeView [style*="display:flex"][style*="gap:8px"] {flex-wrap:wrap!important}
+  #resEnView [style*="overflow-x:auto"], #resDeView [style*="overflow-x:auto"] {overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;display:block!important;width:100%!important}
 
   /* ── CARGA PLANTA MÓVIL ── */
-  .cargaMobileGrid {grid-template-columns:1fr!important}
+  .cargaMobileGrid {grid-template-columns:1fr!important;gap:8px!important}
+  .cargaMobileGrid > div {width:100%!important;min-width:0!important}
   .cargaMobileGrid > div:last-child {position:static!important}
   #cargaView [style*="grid-template-columns:repeat(4"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
   #cargaView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:6px!important}
-  #cargaView table {min-width:350px;font-size:10px}
+  #cargaView [style*="overflow-x:auto"] {overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;display:block!important;width:100%!important}
+  #cargaView table {min-width:550px!important;font-size:10px}
   #cargaView [style*="padding:14px"] {padding:8px!important}
 
   /* ── MAPA PLANTA MÓVIL ── */
@@ -8762,8 +8766,8 @@ function renderResumenArea(tipo){
         +'<div>'
           +'<div style="font-size:10px;font-weight:800;color:'+accentColor+';text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">'+filtered.length+' equipo'+(filtered.length!==1?"s":"")+'</div>'
           +(filtered.length
-            ?'<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;overflow-x:auto;">'
-              +'<table style="width:100%;border-collapse:collapse;">'
+            ?'<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;overflow-x:auto;-webkit-overflow-scrolling:touch;">'
+              +'<table style="width:100%;min-width:580px;border-collapse:collapse;">'
                 +'<thead><tr style="background:#1e3a5f;">'
                   +'<th style="padding:7px 6px;font-size:9px;color:#93c5fd;text-align:center;width:22px;">⠿</th>'
                   +'<th style="padding:7px 8px;font-size:9px;font-weight:700;color:#93c5fd;text-align:left;">PRIORIDAD</th>'
