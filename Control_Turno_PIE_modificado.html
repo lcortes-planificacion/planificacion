@@ -3986,6 +3986,8 @@ function initJSONBin(){
 }
 
 async function jbinSave(){
+  const SUPA_URL="https://wlxhephhhlhufgwfmwfm.supabase.co";
+  const SUPA_KEY="sb_publishable_WOTPiecKx5ai4F6feLbexQ_doYTScvd";
   showJBinMsg("⏳ Guardando en la nube...","#6b7280");
   loadRepuestos();
   // Recopilar TODOS los datos del localStorage
@@ -4013,16 +4015,19 @@ async function jbinSave(){
     resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe
   };
   try{
-    const res=await fetch("https://corsproxy.io/?https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec",{method:"POST",body:JSON.stringify(payload),redirect:"follow"});
-    const txt=await res.text();
-    if(res.ok){
+    const res=await fetch(SUPA_URL+"/rest/v1/pie_data?id=eq.main",{
+      method:"PATCH",
+      headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
+      body:JSON.stringify({data:JSON.stringify(payload),updated_at:new Date().toISOString()})
+    });
+    if(res.ok||res.status===204){
       const hora=new Date().toLocaleTimeString("es-CL");
       showJBinMsg(`✅ Guardado en nube — ${hora} por ${session?.nombre||""}`, "#10b981");
       try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch{}
       isDirty=false;pendingChanges=0;
       document.getElementById("saveBar").classList.add("hidden");
     } else {
-      showJBinMsg("❌ Error al guardar","#ef4444");
+      showJBinMsg("❌ Error al guardar: "+res.status,"#ef4444");
     }
   }catch(e){
     showJBinMsg("❌ Sin conexión — guardado localmente","#f59e0b");
@@ -4032,11 +4037,14 @@ async function jbinSave(){
 
 
 async function jbinLoad(silent){
+  const SUPA_URL="https://wlxhephhhlhufgwfmwfm.supabase.co";
+  const SUPA_KEY="sb_publishable_WOTPiecKx5ai4F6feLbexQ_doYTScvd";
   if(!silent)showJBinMsg("⏳ Cargando datos de la nube...","#6b7280");
   try{
-    const res=await fetch("https://corsproxy.io/?https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec",{redirect:"follow"});
+    const res=await fetch(SUPA_URL+"/rest/v1/pie_data?id=eq.main&select=data",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});
     if(res.ok){
-      const rec=await res.json();
+      const rows=await res.json();
+      const rec=rows.length>0?JSON.parse(rows[0].data):null;
       if(rec&&rec.ensamble&&Array.isArray(rec.ensamble)){
         // Check if cloud data is newer than local
         const localTs=localStorage.getItem("pie_lastSave")||"";
@@ -4196,7 +4204,7 @@ async function importarDatosJSON(){
         return;
       }
       showJBinMsg("⏳ Subiendo a la nube...", "#6b7280");
-      const GAS_URL="https://corsproxy.io/?https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec";
+      const GAS_URL="https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec";
       const res=await fetch(GAS_URL,{method:"POST",body:JSON.stringify(payload)});
       if(res.ok){
         const hora=new Date().toLocaleTimeString("es-CL");
