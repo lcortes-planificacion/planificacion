@@ -4003,6 +4003,10 @@ async function jbinSave(){
   let _resPersonalEn=[];try{_resPersonalEn=JSON.parse(localStorage.getItem("resPersonal_en")||"[]");}catch{}
   let _resPersonalDe=[];try{_resPersonalDe=JSON.parse(localStorage.getItem("resPersonal_de")||"[]");}catch{}
 
+  // Capturar TODO el localStorage
+  const _allLS={};
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);_allLS[k]=localStorage.getItem(k);}}catch{}
+  
   const payload={
     ensamble,desarme,RESPONSABLES,REPUESTOS_DATA,
     HISTORIAL_CAMBIOS:HISTORIAL_CAMBIOS.slice(-200),
@@ -4012,7 +4016,8 @@ async function jbinSave(){
     plantaConfig:_plantaConfig,notasPerm:_notasPerm,
     subtitle:_subtitle,mecanicos:_mecanicos,
     planifR:_planifR,PIE_N,PIE_D,
-    resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe
+    resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe,
+    _allLS
   };
   try{
     const res=await fetch(SUPA_URL+"/rest/v1/pie_data",{method:"POST",headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:"main",data:JSON.stringify(payload),updated_at:new Date().toISOString()})});
@@ -4101,6 +4106,8 @@ async function jbinLoad(silent){
         if(rec.PIE_N&&Array.isArray(rec.PIE_N)){PIE_N=rec.PIE_N;try{sv(SK.pn,PIE_N);}catch{}}
         if(rec.PIE_D&&Array.isArray(rec.PIE_D)){PIE_D=rec.PIE_D;try{sv(SK.pd,PIE_D);}catch{}}
         if(rec.resPersonalEn)try{localStorage.setItem("resPersonal_en",JSON.stringify(rec.resPersonalEn));}catch{}
+        // Restaurar TODO el localStorage
+        if(rec._allLS){try{Object.keys(rec._allLS).forEach(k=>{try{localStorage.setItem(k,rec._allLS[k]);}catch{}});}catch{}}
         if(rec.resPersonalDe)try{localStorage.setItem("resPersonal_de",JSON.stringify(rec.resPersonalDe));}catch{}
         expandedE=null;expandedD=null;
         // Save locally too
