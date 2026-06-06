@@ -4013,7 +4013,7 @@ async function jbinSave(){
     resPersonalEn:_resPersonalEn,resPersonalDe:_resPersonalDe
   };
   try{
-    const res=await fetch("https://script.google.com/macros/s/AKfycbyH7a5T86Iw2oYHddiwnzkFI6KQUXAysRtaU14rOtHmXBDLViWt431VUJq-9-W5ZfTB-Q/exec",{method:"POST",body:JSON.stringify(payload)});
+    const res=await fetch("https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec",{method:"POST",body:JSON.stringify(payload)});
     const txt=await res.text();
     if(res.ok){
       const hora=new Date().toLocaleTimeString("es-CL");
@@ -4034,7 +4034,7 @@ async function jbinSave(){
 async function jbinLoad(silent){
   if(!silent)showJBinMsg("⏳ Cargando datos de la nube...","#6b7280");
   try{
-    const res=await fetch("https://script.google.com/macros/s/AKfycbyH7a5T86Iw2oYHddiwnzkFI6KQUXAysRtaU14rOtHmXBDLViWt431VUJq-9-W5ZfTB-Q/exec");
+    const res=await fetch("https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec");
     if(res.ok){
       const rec=await res.json();
       if(rec&&rec.ensamble&&Array.isArray(rec.ensamble)){
@@ -4196,7 +4196,7 @@ async function importarDatosJSON(){
         return;
       }
       showJBinMsg("⏳ Subiendo a la nube...", "#6b7280");
-      const GAS_URL="https://script.google.com/macros/s/AKfycbyH7a5T86Iw2oYHddiwnzkFI6KQUXAysRtaU14rOtHmXBDLViWt431VUJq-9-W5ZfTB-Q/exec";
+      const GAS_URL="https://script.google.com/macros/s/AKfycbycCMPzb4o6onx2Gmf9GGYDB63wKlp4mqAVjTofkuudYWYft7oZdXqhiwxH7GHI8ac/exec";
       const res=await fetch(GAS_URL,{method:"POST",body:JSON.stringify(payload)});
       if(res.ok){
         const hora=new Date().toLocaleTimeString("es-CL");
