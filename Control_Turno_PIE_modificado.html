@@ -453,6 +453,7 @@ button,input,select,textarea{font-family:inherit}
   #ejecutivoView {overflow-x:hidden!important}
   .ejeWrap {padding:8px!important;min-height:auto!important}
   .ejeRow3 {grid-template-columns:1fr!important;gap:8px!important}
+  .ejeMecGrid {grid-template-columns:1fr!important;gap:8px!important}
   #ejecutivoView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:repeat(4"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:repeat(3"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
@@ -465,7 +466,7 @@ button,input,select,textarea{font-family:inherit}
   #ejecutivoView [style*="font-size:20px;font-weight:900"] {font-size:14px!important}
   #ejecutivoView [style*="overflow-x:auto"] {overflow-x:scroll!important;-webkit-overflow-scrolling:touch!important}
 
-  /* ── RESUMEN ENSAMBLE/DESARME MÓVIL ── */
+    /* ── RESUMEN ENSAMBLE/DESARME MÓVIL ── */
   #resEnView, #resDeView {overflow-x:hidden}
   .resMobileGrid {grid-template-columns:1fr!important;gap:8px!important}
   .resMobileGrid > div {width:100%!important;min-width:0!important}
@@ -6084,8 +6085,8 @@ function renderEjecutivo(){
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:16px">
         <h3 style="color:#fca5a5;font-size:12px;font-weight:800;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">⚠️ Equipos Prioritarios (${criticas.length})</h3>
         ${criticas.length?`
-        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-        <table style="width:100%;min-width:480px;border-collapse:collapse;font-size:10px">
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%">
+        <table style="width:100%;min-width:500px;border-collapse:collapse;font-size:10px">
           <thead><tr>
             <th style="color:#64748b;padding:4px 8px;text-align:left;font-size:8px;text-transform:uppercase">RAN</th>
             <th style="color:#64748b;padding:4px 8px;text-align:left;font-size:8px;text-transform:uppercase">Equipo</th>
