@@ -6084,7 +6084,8 @@ function renderEjecutivo(){
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:16px">
         <h3 style="color:#fca5a5;font-size:12px;font-weight:800;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">⚠️ Equipos Prioritarios (${criticas.length})</h3>
         ${criticas.length?`
-        <table style="width:100%;border-collapse:collapse;font-size:10px">
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table style="width:100%;min-width:480px;border-collapse:collapse;font-size:10px">
           <thead><tr>
             <th style="color:#64748b;padding:4px 8px;text-align:left;font-size:8px;text-transform:uppercase">RAN</th>
             <th style="color:#64748b;padding:4px 8px;text-align:left;font-size:8px;text-transform:uppercase">Equipo</th>
@@ -6119,6 +6120,7 @@ function renderEjecutivo(){
           }).join("")}
           </tbody>
         </table>
+        </div>
         <button onclick="setView('alertas')" style="width:100%;padding:7px;border-radius:7px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#fca5a5;font-size:10px;cursor:pointer;margin-top:10px">Ver todas las alertas →</button>
         `:`<div style="color:#34d399;text-align:center;padding:30px 0;font-size:13px;font-weight:700">✅ Sin equipos críticos</div>`}
       </div>
