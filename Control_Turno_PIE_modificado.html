@@ -450,23 +450,24 @@ button,input,select,textarea{font-family:inherit}
   body{font-size:13px}
 
   /* ── EJECUTIVO MÓVIL ── */
-  #ejecutivoView {overflow-x:hidden!important}
-  .ejeWrap {padding:8px!important;min-height:auto!important}
-  .ejeRow3 {grid-template-columns:1fr!important;gap:8px!important}
-  .ejeMecGrid {grid-template-columns:1fr!important;gap:8px!important}
+  #ejecutivoView {overflow-x:hidden!important;width:100%!important;box-sizing:border-box!important}
+  #ejecutivoView * {max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+  #ejecutivoView > div {padding:10px!important;border-radius:0!important;min-height:auto!important}
   #ejecutivoView [style*="display:flex"][style*="justify-content:space-between"] {flex-wrap:wrap!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:repeat(4"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:repeat(3"] {grid-template-columns:1fr 1fr!important;gap:8px!important}
   #ejecutivoView [style*="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr"] {grid-template-columns:1fr 1fr 1fr!important;gap:6px!important}
+  #ejecutivoView [style*="gap:14px"][style*="grid-template-columns:1fr 1fr 1fr"] {grid-template-columns:1fr!important;gap:10px!important}
+  #ejecutivoView [style*="padding:20px"] {padding:10px!important}
   #ejecutivoView [style*="font-size:32px"],[style*="font-size:28px"] {font-size:20px!important}
   #ejecutivoView button[onclick*="exportResumenSemanal"],
   #ejecutivoView button[onclick*="setView('dash')"] {display:none!important}
   #ejecutivoView canvas {max-width:100%!important;height:160px!important}
   #ejecutivoView [style*="min-height:100vh"] {min-height:auto!important}
   #ejecutivoView [style*="font-size:20px;font-weight:900"] {font-size:14px!important}
-  #ejecutivoView [style*="overflow-x:auto"] {overflow-x:scroll!important;-webkit-overflow-scrolling:touch!important}
+  #ejecutivoView [style*="overflow-x:auto"] {overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
 
-    /* ── RESUMEN ENSAMBLE/DESARME MÓVIL ── */
+  /* ── RESUMEN ENSAMBLE/DESARME MÓVIL ── */
   #resEnView, #resDeView {overflow-x:hidden}
   .resMobileGrid {grid-template-columns:1fr!important;gap:8px!important}
   .resMobileGrid > div {width:100%!important;min-width:0!important}
@@ -5835,7 +5836,18 @@ function renderEjecutivo(){
   const gIcon={"CRÍTICO":"🔴","ATENCIÓN":"🟡","OK":"🟢"}[globalStatus];
 
   el.innerHTML=`
-  <div class="ejeWrap" style="min-height:100vh;background:linear-gradient(160deg,#0f172a 0%,#1e293b 60%,#0f172a 100%);padding:20px;border-radius:16px">
+  <style>
+    @media(max-width:768px){
+      .eje-inner{padding:6px!important;overflow-x:hidden!important}
+      .eje-row3{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+      .eje-row2{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+      .eje-row6{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:6px!important}
+      .eje-mec{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+      .eje-scroll{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;width:100%!important}
+      .eje-scroll table{min-width:500px!important}
+    }
+  </style>
+  <div class="eje-inner" style="min-height:100vh;background:linear-gradient(160deg,#0f172a 0%,#1e293b 60%,#0f172a 100%);padding:20px;border-radius:16px">
 
     <!-- HEADER -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px">
@@ -5877,7 +5889,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- SEGUNDA FILA: KPIs operacionales + alertas + HH -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+    <div class="eje-row6" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px">
       ${[
         {icon:"🔴",val:vencidas.length,lbl:"Vencidas",c:vencidas.length>0?"#ef4444":"#34d399"},
         {icon:"⚡",val:proximas3.length,lbl:"Vencen en 3d",c:proximas3.length>0?"#f97316":"#34d399"},
@@ -5894,7 +5906,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- TERCERA FILA: HH + Cumplimiento PIE + Clientes -->
-    <div class="ejeRow3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px">
+    <div class="eje-row3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px">
 
       <!-- Ritmo Operacional del Taller -->
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px">
@@ -6057,7 +6069,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- CUARTA FILA: Carga mecánicos + Proyección + RANs críticas -->
-    <div class="ejeMecGrid" style="display:grid;grid-template-columns:1fr 1.8fr;gap:14px;margin-bottom:18px">
+    <div class="ejeMecGrid eje-mec" style="display:grid;grid-template-columns:1fr 1.8fr;gap:14px;margin-bottom:18px">
 
       <!-- Carga por mecánico -->
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px">
@@ -6085,7 +6097,7 @@ function renderEjecutivo(){
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:16px">
         <h3 style="color:#fca5a5;font-size:12px;font-weight:800;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">⚠️ Equipos Prioritarios (${criticas.length})</h3>
         ${criticas.length?`
-        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%">
+        <div class="eje-scroll">
         <table style="width:100%;min-width:500px;border-collapse:collapse;font-size:10px">
           <thead><tr>
             <th style="color:#64748b;padding:4px 8px;text-align:left;font-size:8px;text-transform:uppercase">RAN</th>
@@ -6128,7 +6140,7 @@ function renderEjecutivo(){
     </div>
 
     <!-- QUINTA FILA: Proyección + Indicadores financieros -->
-    <div class="ejeRow3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+    <div class="eje-row3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
 
       <!-- Proyección próximos 30 días -->
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px">
