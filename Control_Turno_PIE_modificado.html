@@ -247,6 +247,10 @@ button,input,select,textarea{font-family:inherit}
 .prio-alta{background:#ffedd5;color:#9a3412;border:1px solid #fdba74}
 .prio-normal{background:#fef9c3;color:#854d0e;border:1px solid #fde047}
 .prio-baja{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.prio-urgencia{background:#fef3c7;color:#92400e;border:1px solid #f59e0b}
+.prio-emergencia{background:#fce7f3;color:#831843;border:1px solid #f472b6}
+.prio-urgencia{background:#fef3c7;color:#92400e;border:1px solid #f59e0b}
+.prio-emergencia{background:#fce7f3;color:#831843;border:1px solid #f472b6}
 .dragRanHandle{color:#9ca3af;cursor:grab;font-size:13px;padding:0 3px;flex-shrink:0;user-select:none;line-height:1}
 .dragRanHandle:active{cursor:grabbing}
 .eCard.drag-over{border:2px dashed #3b82f6;background:#eff6ff}
@@ -591,6 +595,8 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
       <button class="navBtn" id="navGantt2" onclick="setView('gantt2')" style="border-bottom:3px solid #6366f1;color:#fff">📅 Gantt</button>
       <button class="navBtn" id="navTempario" onclick="setView('tempario')" style="border-bottom:3px solid #f472b6;color:#fff">⏱ Tempario</button>
       <button class="navBtn adminOnly" id="navCuando" onclick="setView('cuando')" style="border-bottom:3px solid #0f766e;color:#fff">🎯 ¿Cuándo Tomar Equipo?</button>
+      <button class="navBtn" id="navProgramacion" onclick="setView('programacion')" style="border-bottom:3px solid #0891b2;color:#fff">📅 Programación</button>
+      <button class="navBtn" id="navEmergencias" onclick="setView('emergencias')" style="border-bottom:3px solid #e11d48;color:#e11d48">🆘 Emergencias / 🚨 Urgencias</button>
       <button class="navBtn adminOnly" id="navEjecutivo" onclick="setView('ejecutivo')" style="border-bottom:3px solid #0f172a;color:#fff">📊 Ejecutivo</button>
       <button class="navBtn adminOnly" id="navAlertas" onclick="setView('alertas')" style="border-bottom:3px solid #ef4444;color:#fff">🔔 Alertas</button>
       <button class="navBtn" id="navITO" onclick="setView('ito')" style="border-bottom:3px solid #f59e0b;color:#fff">🔍 Visitas ITO</button>
@@ -923,6 +929,10 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
   <div id="resDeView" class="hidden"></div>
   <div id="cuandoView" class="hidden"></div>
   <div id="temparioView" class="hidden" style="overflow-y:auto;height:calc(100vh - 120px)"></div>
+  <div id="programacionView" class="hidden"></div>
+  <div id="emergenciasView" class="hidden"></div>
+  <div id="programacionView" class="hidden"></div>
+  <div id="emergenciasView" class="hidden"></div>
   <div id="ejecutivoView" class="hidden"></div>
   <div id="alertasView" class="hidden"></div>
   <div id="calendarioView" class="hidden"></div>
@@ -1090,6 +1100,8 @@ let USUARIOS=[
   {usuario:"jefe",    clave:"Jefe1sman",   nombre:"Jefe de Turno",  rol:"viewer"},
   {usuario:"turnoA",  clave:"Turno1sman",  nombre:"Turno A",        rol:"turno"},
   {usuario:"turnoB",  clave:"Turno2sman",  nombre:"Turno B",        rol:"turno"},
+  {usuario:"ventas",   clave:"Ventas1sman", nombre:"Área Ventas",     rol:"viewer"},
+  {usuario:"ventas",   clave:"Ventas1sman", nombre:"Área Ventas",     rol:"viewer"},
 ];
 let RESPONSABLES=["Produccion y Servicios","Leonardo Bravo","Richard Williams","Guillermo Arancibia","Jose Delgado","Jose Cortes","Humberto Guzman","Thomas Jimenez","Valeska Donoso","Empresa Externa","Marco Alfaro","Anders Avalos","Bryan Mendoza","Francis Ramirez","Cristian Balderrama","Schuarner Ayala","Maycol Vasquez","Jerald Lemus","Sebastian Ortiz","Luis Cortes","Ascanio Gallardo","Michel Diaz","Enrique Araya"];
 let MECANICOS=(function(){
@@ -1490,14 +1502,12 @@ function setView(v){
   const turno=session&&session.rol==="turno";
   if((viewer||turno)&&v==="notas"){return;} // notas = admin only
   currentView=v;
-  ["navDash","navTurno","navRes","navList","navDes","navEnProc","navFinEn","navFinDe","navRocOC","navGantt2","navNotas","navCarga","navDetVentas","navFabExt","navEspInfo","navDadoBaja","navCliente","navInformes","navCosteo","navTransporte","navRepuestos","navTempario","navCuando","navEjecutivo","navAlertas","navITO","navCalendario","navHistorial","navPlanta"].forEach((id,i)=>{
-    const active=["dash","turno","res","list","des","enproc","finen","finde","rococ","gantt2","notas","carga","detventas","fabext","espinfo","dadobaja","cliente","informes","costeo","transporte","repuestos","tempario","cuando","ejecutivo","alertas","ito","calendario","historial","planta"][i]===v;
+  ({"navDash":"dash","navTurno":"turno","navRes":"res","navResEn":"resen","navResDe":"resde","navList":"list","navDes":"des","navEnProc":"enproc","navFinEn":"finen","navFinDe":"finde","navRocOC":"rococ","navGantt2":"gantt2","navTempario":"tempario","navCuando":"cuando","navProgramacion":"programacion","navEmergencias":"emergencias","navEjecutivo":"ejecutivo","navAlertas":"alertas","navITO":"ito","navCalendario":"calendario","navHistorial":"historial","navNotas":"notas","navCarga":"carga","navPlanta":"planta","navDetVentas":"detventas","navFabExt":"fabext","navEspInfo":"espinfo","navDadoBaja":"dadobaja","navCliente":"cliente","navInformes":"informes","navCosteo":"costeo","navTransporte":"transporte","navRepuestos":"repuestos"}).constructor===Object&&Object.entries({"navDash":"dash","navTurno":"turno","navRes":"res","navResEn":"resen","navResDe":"resde","navList":"list","navDes":"des","navEnProc":"enproc","navFinEn":"finen","navFinDe":"finde","navRocOC":"rococ","navGantt2":"gantt2","navTempario":"tempario","navCuando":"cuando","navProgramacion":"programacion","navEmergencias":"emergencias","navEjecutivo":"ejecutivo","navAlertas":"alertas","navITO":"ito","navCalendario":"calendario","navHistorial":"historial","navNotas":"notas","navCarga":"carga","navPlanta":"planta","navDetVentas":"detventas","navFabExt":"fabext","navEspInfo":"espinfo","navDadoBaja":"dadobaja","navCliente":"cliente","navInformes":"informes","navCosteo":"costeo","navTransporte":"transporte","navRepuestos":"repuestos"}).forEach(([id,vista])=>{
+    const active=vista===v;
     const btn=document.getElementById(id);
     if(!btn)return;
     btn.className="navBtn"+(active?" nav-active":"");
-    // Extract color from inline border-bottom style
     if(active){
-      // Parse color from style attribute string
       const styleStr=btn.getAttribute("style")||"";
       const match=styleStr.match(/border-bottom:[^;]*?(#[0-9a-fA-F]{6})/);
       const col=match?match[1]:"#60a5fa";
@@ -1538,6 +1548,10 @@ function setView(v){
   document.getElementById("resDeView").classList.toggle("hidden",v!=="resde");
   document.getElementById("cuandoView").classList.toggle("hidden",v!=="cuando");
   document.getElementById("temparioView").classList.toggle("hidden",v!=="tempario");
+  document.getElementById("programacionView").classList.toggle("hidden",v!=="programacion");
+  document.getElementById("emergenciasView").classList.toggle("hidden",v!=="emergencias");
+  document.getElementById("programacionView").classList.toggle("hidden",v!=="programacion");
+  document.getElementById("emergenciasView").classList.toggle("hidden",v!=="emergencias");
   document.getElementById("ejecutivoView").classList.toggle("hidden",v!=="ejecutivo");
   document.getElementById("alertasView").classList.toggle("hidden",v!=="alertas");
   document.getElementById("calendarioView").classList.toggle("hidden",v!=="calendario");
@@ -1577,6 +1591,10 @@ function renderCurrent(){
   else if(currentView==="cuando")renderCuando();
   else if(currentView==="resen")renderResumenArea("en");
   else if(currentView==="resde")renderResumenArea("de");
+  else if(currentView==="programacion")renderProgramacion();
+  else if(currentView==="emergencias")renderEmergencias();
+  else if(currentView==="programacion")renderProgramacion();
+  else if(currentView==="emergencias")renderEmergencias();
   else if(currentView==="ejecutivo")renderEjecutivo();
   else if(currentView==="alertas")renderAlertas();
   else if(currentView==="calendario")renderCalendario();
@@ -2754,12 +2772,14 @@ function renderEqList(data,containerId,isEn){
 }
 
 const PRIO_MAP={
-  "critica":{label:"🔴 Crítica",cls:"prio-critica",order:0},
-  "alta":   {label:"🟠 Alta",   cls:"prio-alta",   order:1},
-  "normal": {label:"🟡 Normal", cls:"prio-normal",  order:2},
-  "baja":   {label:"🟢 Baja",   cls:"prio-baja",   order:3},
+  "emergencia":{label:"🆘 Emergencia",cls:"prio-emergencia",order:0},
+  "urgencia":  {label:"🚨 Urgencia",  cls:"prio-urgencia",  order:1},
+  "critica":   {label:"🔴 Crítica",   cls:"prio-critica",   order:2},
+  "alta":      {label:"🟠 Alta",      cls:"prio-alta",      order:3},
+  "normal":    {label:"🟡 Normal",    cls:"prio-normal",    order:4},
+  "baja":      {label:"🟢 Baja",      cls:"prio-baja",      order:5},
 };
-const PRIO_CYCLE=["critica","alta","normal","baja"];
+const PRIO_CYCLE=["emergencia","urgencia","critica","alta","normal","baja"];
 let currentSort="manual";
 let ranDragSrc=null,ranDragArea=null;
 
@@ -2769,8 +2789,8 @@ function prioNext(p){
 }
 
 function applyPrioSort(data){
-  const O={"critica":0,"alta":1,"normal":2,"baja":3};
-  function prioVal(p){var v=O[p||"normal"];return v===undefined?2:v;}
+  const O={"emergencia":0,"urgencia":1,"critica":2,"alta":3,"normal":4,"baja":5};
+  function prioVal(p){var v=O[p||"normal"];return v===undefined?4:v;}
   data.sort((a,b)=>prioVal(a.prioridad)-prioVal(b.prioridad));
 }
 
@@ -2779,9 +2799,9 @@ function setPrio(i,area,e){
   if(!isAdmin())return;
   const d=area==="en"?ensamble:desarme;
   d[i].prioridad=prioNext(d[i].prioridad||"normal");
-  // Auto-reorder immediately when priority sort is active
   if(currentSort==="prioridad") applyPrioSort(d);
   markDirty();
+  if(currentView==="emergencias")renderEmergencias();
   renderCurrent();
 }
 
@@ -2793,7 +2813,7 @@ function sortData(mode){
   });
   const data=currentView==="list"?ensamble:desarme;
   if(mode==="manual"){renderCurrent();return;}
-  const O={"critica":0,"alta":1,"normal":2,"baja":3};
+  const O={"emergencia":0,"urgencia":1,"critica":2,"alta":3,"normal":4,"baja":5};
   data.sort((a,b)=>{
     if(mode==="prioridad"){var va=O[a.prioridad||"normal"];var vb=O[b.prioridad||"normal"];return (va===undefined?2:va)-(vb===undefined?2:vb);}
     if(mode==="avance_asc")  return av(a.tareas)-av(b.tareas);
@@ -3354,7 +3374,7 @@ function saveEq(){
   if(savedEq&&savedEq.fechaInicio&&savedEq.fechaTermino){
     distribuirFechasPIE(savedEq,area==="en");
   }
-  closeModal("eqModal");markDirty();renderCurrent();
+  closeModal("eqModal");markDirty();renderCurrent();if(currentView==="emergencias")renderEmergencias();
 }
 function delEq(i,area){
   if(!isAdmin())return;
@@ -5006,7 +5026,7 @@ function exportViewWord(viewName){
 // Views turno CAN interact with (read+limited edit)
 const TURNO_ALLOWED_VIEWS=["list","des","dash","turno","res"];
 // Views completely READ-ONLY for turno (can navigate but not edit)
-const TURNO_READONLY_VIEWS=["notas","carga","informes","costeo","transporte","repuestos","enproc","finen","finde","rococ","gantt2","detventas","fabext","espinfo","dadobaja","cliente","turno","res","dash"];
+const TURNO_READONLY_VIEWS=["notas","carga","informes","costeo","transporte","repuestos","enproc","finen","finde","rococ","gantt2","detventas","programacion","fabext","espinfo","dadobaja","cliente","turno","res","dash"];
 
 function disableAllEditing(root){
   // Skip modals
@@ -5548,9 +5568,7 @@ function checkAlertasAlIngreso(){
   }).length;
   if(vencidas+proximas>0){
     const msg=`🔔 Alertas al ingresar:\n\n${vencidas>0?`⚠️ ${vencidas} RAN${vencidas!==1?"s":"" } con fecha de término VENCIDA\n`:""}${proximas>0?`⏰ ${proximas} RAN${proximas!==1?"s":""} vence${proximas!==1?"n":""} en los próximos 3 días\n`:""} \nVe a la pestaña 🔔 Alertas para ver el detalle.`;
-    setTimeout(()=>{
-      if(confirm(msg+"\n\n¿Ir a Alertas ahora?")){setView("alertas");}
-    },800);
+    // alerta inicio desactivada
   }
 }
 
@@ -5778,6 +5796,305 @@ function exportResumenSemanal(){
 }
 
 // ─── DASHBOARD EJECUTIVO ─────────────────────────────────
+
+
+function renderProgramacion(){
+  const el=document.getElementById("programacionView");
+  if(!el)return;
+
+  // Obtener lista de clientes únicos de RANs activas
+  const activos=[
+    ...ensamble.filter(e=>eg(e.tareas)!=="Finalizado").map(e=>({...e,_area:"Ensamble"})),
+    ...desarme.filter(e=>eg(e.tareas)!=="Finalizado").map(e=>({...e,_area:"Desarme"}))
+  ];
+  const clientes=[...new Set(activos.map(e=>e.cliente||"Sin cliente"))].sort();
+  const selCliente=el._clienteSel||"todos";
+  el._clienteSel=selCliente;
+  const selArea=el._areaSel||"todos";
+  el._areaSel=selArea;
+
+  const filtradas=activos.filter(e=>{
+    const okCliente=selCliente==="todos"||(e.cliente||"Sin cliente")===selCliente;
+    const okArea=selArea==="todos"||e._area===selArea;
+    return okCliente&&okArea;
+  });
+
+  // Agrupar por cliente
+  const porCliente={};
+  filtradas.forEach(e=>{
+    const cl=e.cliente||"Sin cliente";
+    if(!porCliente[cl])porCliente[cl]=[];
+    porCliente[cl].push(e);
+  });
+
+  function pct(e){return e.tareas&&e.tareas.length?Math.round(e.tareas.filter(t=>t.estado==="Finalizado").length/e.tareas.length*100):0;}
+  function avBadge(p){const col=p>=100?"#10b981":p>=60?"#3b82f6":p>=30?"#f59e0b":"#ef4444";return`<div style="display:flex;align-items:center;gap:4px"><div style="background:#e5e7eb;border-radius:4px;height:6px;width:60px;overflow:hidden"><div style="background:${col};height:100%;width:${p}%"></div></div><span style="font-size:10px;color:${col};font-weight:700">${p}%</span></div>`;}
+
+  function tareasTable(tareas){
+    if(!tareas||!tareas.length)return'<p style="color:#9ca3af;font-size:11px;font-style:italic;margin:4px 0">Sin tareas registradas.</p>';
+    return`<table style="width:100%;border-collapse:collapse;font-size:10px;margin-top:6px">
+      <thead><tr style="background:#f1f5f9">
+        <th style="padding:4px 8px;text-align:left;color:#475569;font-weight:700">ACTIVIDAD</th>
+        <th style="padding:4px 8px;text-align:left;color:#475569;font-weight:700">ESTADO</th>
+        <th style="padding:4px 8px;text-align:left;color:#475569;font-weight:700">RESPONSABLE</th>
+        <th style="padding:4px 8px;text-align:left;color:#475569;font-weight:700">FECHA</th>
+        <th style="padding:4px 8px;text-align:left;color:#475569;font-weight:700">OBSERVACIÓN</th>
+      </tr></thead>
+      <tbody>${tareas.map(t=>{
+        const stCol=t.estado==="Finalizado"?"#10b981":t.estado==="En proceso"?"#3b82f6":"#94a3b8";
+        const stBg=t.estado==="Finalizado"?"#f0fdf4":t.estado==="En proceso"?"#eff6ff":"#f8fafc";
+        return`<tr style="border-bottom:1px solid #f1f5f9;background:${stBg}">
+          <td style="padding:4px 8px;color:#1e293b">${t.nombre||"—"}</td>
+          <td style="padding:4px 8px"><span style="background:${stBg};color:${stCol};border:1px solid ${stCol}40;border-radius:4px;padding:1px 6px;font-weight:700;font-size:9px">${t.estado||"—"}</span></td>
+          <td style="padding:4px 8px;color:#374151">${t.responsable||"—"}</td>
+          <td style="padding:4px 8px;color:#374151">${t.fecha||"—"}</td>
+          <td style="padding:4px 8px;color:#6b7280;font-style:italic">${t.observacion||""}</td>
+        </tr>`;
+      }).join("")}</tbody>
+    </table>`;
+  }
+
+  function ranCard(e){
+    const p=pct(e);
+    const pi=PRIO_MAP[e.prioridad]||PRIO_MAP.normal;
+    const areaCol=e._area==="Ensamble"?"#1e3a5f":"#92400e";
+    const areaBg=e._area==="Ensamble"?"#dbeafe":"#fef3c7";
+    return`<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:12px;border-left:4px solid ${areaCol}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:800;color:#1e293b">RAN ${e.ran||"—"}</span>
+            <span style="background:${areaBg};color:${areaCol};border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700">${e._area}</span>
+            <span class="prioTag ${pi.cls}">${pi.label}</span>
+          </div>
+          <div style="font-size:12px;font-weight:600;color:#374151;margin-top:3px">${e.equipo||"—"}</div>
+        </div>
+        <div style="text-align:right;min-width:120px">
+          ${avBadge(p)}
+          <div style="font-size:10px;color:#6b7280;margin-top:3px">Encargado: ${e.encargado||"—"}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-bottom:10px;font-size:10px">
+        <div style="background:#f8fafc;border-radius:6px;padding:6px 8px"><span style="color:#6b7280">F.Inicio:</span> <strong>${e.fechaInicio||"—"}</strong></div>
+        <div style="background:#f8fafc;border-radius:6px;padding:6px 8px"><span style="color:#6b7280">F.Término:</span> <strong>${e.fechaTermino||"—"}</strong></div>
+        <div style="background:#f8fafc;border-radius:6px;padding:6px 8px"><span style="color:#6b7280">Estado:</span> <strong>${e.estadoEspecial||eg(e.tareas)||"—"}</strong></div>
+        <div style="background:#f8fafc;border-radius:6px;padding:6px 8px"><span style="color:#6b7280">Tareas:</span> <strong>${(e.tareas||[]).filter(t=>t.estado==="Finalizado").length}/${(e.tareas||[]).length}</strong></div>
+      </div>
+      <details style="margin-top:4px">
+        <summary style="cursor:pointer;font-size:11px;font-weight:700;color:#475569;user-select:none">▶ Ver plan de tareas (${(e.tareas||[]).length})</summary>
+        ${tareasTable(e.tareas||[])}
+      </details>
+    </div>`;
+  }
+
+  const resumen=Object.entries(porCliente).map(([cl,rans])=>`
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #e2e8f0">
+        <div>
+          <h3 style="font-size:14px;font-weight:800;color:#1e293b;margin:0">🏢 ${cl}</h3>
+          <span style="font-size:11px;color:#6b7280">${rans.length} equipo${rans.length!==1?"s":""} activo${rans.length!==1?"s":""}</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button onclick="exportProgExcel('${cl.replace(/'/g,"\'")}')" style="padding:5px 12px;border-radius:6px;border:none;background:#16a34a;color:#fff;font-size:10px;font-weight:700;cursor:pointer">📊 Excel</button>
+          <button onclick="exportProgPDF('${cl.replace(/'/g,"\'")}')" style="padding:5px 12px;border-radius:6px;border:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;cursor:pointer">📄 PDF</button>
+        </div>
+      </div>
+      ${rans.map(ranCard).join("")}
+    </div>`).join("");
+
+  const clienteOpts=['<option value="todos">Todos los clientes</option>']
+    .concat(clientes.map(cl=>`<option value="${cl}" ${selCliente===cl?"selected":""}>${cl}</option>`)).join("");
+
+  el.innerHTML=`<div style="padding:16px;max-width:1100px;margin:0 auto">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div>
+        <h2 style="font-size:20px;font-weight:800;color:#1e293b;margin:0">📅 Programación por Cliente</h2>
+        <p style="font-size:12px;color:#6b7280;margin:4px 0 0">Plan de desarme y ensamble de equipos activos en planta</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button onclick="exportProgExcel('todos')" style="padding:7px 14px;border-radius:8px;border:none;background:#16a34a;color:#fff;font-size:11px;font-weight:700;cursor:pointer">📊 Exportar Todo Excel</button>
+        <button onclick="exportProgPDF('todos')" style="padding:7px 14px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-size:11px;font-weight:700;cursor:pointer">📄 Exportar Todo PDF</button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;align-items:center;gap:6px">
+        <label style="font-size:11px;font-weight:700;color:#374151">CLIENTE</label>
+        <select onchange="document.getElementById('programacionView')._clienteSel=this.value;renderProgramacion()"
+          style="border:1px solid #d1d5db;border-radius:6px;padding:5px 10px;font-size:11px;background:#fff">${clienteOpts}</select>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <label style="font-size:11px;font-weight:700;color:#374151">ÁREA</label>
+        <select onchange="document.getElementById('programacionView')._areaSel=this.value;renderProgramacion()"
+          style="border:1px solid #d1d5db;border-radius:6px;padding:5px 10px;font-size:11px;background:#fff">
+          <option value="todos" ${selArea==="todos"?"selected":""}>Todas</option>
+          <option value="Ensamble" ${selArea==="Ensamble"?"selected":""}>⚙️ Ensamble</option>
+          <option value="Desarme" ${selArea==="Desarme"?"selected":""}>🔧 Desarme</option>
+        </select>
+      </div>
+      <span style="font-size:11px;color:#6b7280;margin-left:auto">${filtradas.length} equipo${filtradas.length!==1?"s":""} encontrado${filtradas.length!==1?"s":""}</span>
+    </div>
+
+    <!-- Contenido -->
+    ${Object.keys(porCliente).length?resumen:`<div style="text-align:center;padding:40px;color:#9ca3af"><div style="font-size:40px;margin-bottom:12px">📋</div><p style="font-size:14px">No hay equipos activos con los filtros seleccionados.</p></div>`}
+  </div>`;
+}
+
+// ── EXPORT EXCEL (CSV) para Programación ─────────────────────────────────────
+function exportProgExcel(clienteFiltro){
+  const activos=[
+    ...ensamble.filter(e=>eg(e.tareas)!=="Finalizado").map(e=>({...e,_area:"Ensamble"})),
+    ...desarme.filter(e=>eg(e.tareas)!=="Finalizado").map(e=>({...e,_area:"Desarme"}))
+  ].filter(e=>clienteFiltro==="todos"||(e.cliente||"Sin cliente")===clienteFiltro);
+
+  const now=new Date().toLocaleDateString("es-CL");
+  const BOM="﻿";
+  let csv="SEP=;\n";
+  csv+=`PROGRAMACIÓN FORMAL — SMAN ANTOFAGASTA — ${now}\n`;
+  if(clienteFiltro!=="todos")csv+=`Cliente: ${clienteFiltro}\n`;
+  csv+="\n";
+  csv+="RAN;EQUIPO;CLIENTE;ÁREA;PRIORIDAD;ENCARGADO;F.INICIO;F.TÉRMINO;F.REAL;ESTADO;AVANCE %\n";
+
+  activos.forEach(e=>{
+    const pct=e.tareas&&e.tareas.length?Math.round(e.tareas.filter(t=>t.estado==="Finalizado").length/e.tareas.length*100):0;
+    const prio=(PRIO_MAP[e.prioridad]||PRIO_MAP.normal).label.replace(/[🔴🟠🟡🟢🟣🆘🚨]/g,"").trim();
+    const estado=e.estadoEspecial||eg(e.tareas)||"";
+    csv+=`${e.ran};"${e.equipo}";"${e.cliente||""}";"${e._area}";"${prio}";"${e.encargado||""}";"${e.fechaInicio||""}";"${e.fechaTermino||""}";"${e.fechaReal||""}";"${estado}";${pct}%\n`;
+  });
+
+  const blob=new Blob([BOM+csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  const nombre=clienteFiltro==="todos"?"Programacion_Todos":clienteFiltro.replace(/[^a-zA-Z0-9]/g,"_");
+  a.download=`Programacion_${nombre}_${now.replace(/\//g,"-")}.csv`;
+  a.click();
+}
+
+// ── EXPORT PDF (Word compatible) para Programación ───────────────────────────
+function exportProgPDF(clienteFiltro){
+  const activos=[
+    ...ensamble.filter(e=>eg(e.tareas)!=="Finalizado").map(e=>({...e,_area:"Ensamble"})),
+    ...desarme.filter(e=>eg(e.tareas)!=="Finalizado").map(e=>({...e,_area:"Desarme"}))
+  ].filter(e=>clienteFiltro==="todos"||(e.cliente||"Sin cliente")===clienteFiltro);
+
+  const now=new Date().toLocaleDateString("es-CL");
+  const clientes=[...new Set(activos.map(e=>e.cliente||"Sin cliente"))].sort();
+
+  function stColor(st){return st==="Finalizado"?"#10b981":st==="En proceso"?"#3b82f6":"#94a3b8";}
+  function stBg(st){return st==="Finalizado"?"#f0fdf4":st==="En proceso"?"#eff6ff":"#f8fafc";}
+
+  function ranHTML(e){
+    const pct=e.tareas&&e.tareas.length?Math.round(e.tareas.filter(t=>t.estado==="Finalizado").length/e.tareas.length*100):0;
+    const prio=(PRIO_MAP[e.prioridad]||PRIO_MAP.normal).label.replace(/[🔴🟠🟡🟢🟣🆘🚨]/g,"").trim();
+    const areaCol=e._area==="Ensamble"?"#1e3a5f":"#92400e";
+    return`<div style="margin-bottom:12px;border:1px solid #e2e8f0;border-left:4px solid ${areaCol};padding:10px;page-break-inside:avoid">
+      <table style="width:100%;margin-bottom:6px"><tr>
+        <td><strong style="font-size:12pt">RAN ${e.ran||"—"}</strong> &nbsp; <span style="background:#e2e8f0;padding:2px 6px;border-radius:3px;font-size:9pt">${e._area}</span> &nbsp; <span style="font-size:9pt;color:#475569">${prio}</span><br><span style="font-size:10pt">${e.equipo||"—"}</span></td>
+        <td style="text-align:right;font-size:9pt;color:#475569">Avance: <strong>${pct}%</strong><br>Encargado: ${e.encargado||"—"}</td>
+      </tr></table>
+      <table style="width:100%;font-size:8pt;border-collapse:collapse"><tr>
+        <td style="padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0"><strong>F.Inicio:</strong> ${e.fechaInicio||"—"}</td>
+        <td style="padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0"><strong>F.Término:</strong> ${e.fechaTermino||"—"}</td>
+        <td style="padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0"><strong>Estado:</strong> ${e.estadoEspecial||eg(e.tareas)||"—"}</td>
+        <td style="padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0"><strong>Cliente:</strong> ${e.cliente||"—"}</td>
+      </tr></table>
+    </div>`;
+  }
+
+  let body="";
+  clientes.forEach(cl=>{
+    const rans=activos.filter(e=>(e.cliente||"Sin cliente")===cl);
+    body+=`<div style="page-break-before:auto">
+      <h2 style="color:#1e3a5f;font-size:14pt;border-bottom:2px solid #1e3a5f;padding-bottom:4px;margin-top:24px">🏢 ${cl} <span style="font-size:10pt;color:#475569;font-weight:normal">(${rans.length} equipo${rans.length!==1?"s":""})</span></h2>
+      ${rans.map(ranHTML).join("")}
+    </div>`;
+  });
+
+  const html=`<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'>
+<head><meta charset='utf-8'><title>Programación Formal SMAN</title>
+<style>
+body{font-family:Calibri,Arial,sans-serif;font-size:10pt;color:#1e293b;margin:2cm}
+h1{color:#1e3a5f;font-size:16pt;margin-bottom:4px}
+h2{color:#1e3a5f;font-size:14pt}
+table{border-collapse:collapse;width:100%}
+th{background:#f1f5f9;padding:4px 6px;text-align:left;border:1px solid #e2e8f0;font-size:8pt}
+td{padding:3px 6px;border:1px solid #e2e8f0;font-size:8pt;vertical-align:top}
+@page{margin:2cm;size:A4}
+</style></head>
+<body>
+<h1>📅 Programación Formal — SMAN Antofagasta</h1>
+<p style="color:#475569;font-size:9pt;margin-bottom:4px">Fecha: ${now} &nbsp;|&nbsp; ${clienteFiltro==="todos"?"Todos los clientes":"Cliente: "+clienteFiltro}</p>
+<p style="color:#475569;font-size:9pt;margin-bottom:20px">Total equipos activos: ${activos.length}</p>
+${body}
+</body></html>`;
+
+  const blob=new Blob([html],{type:"application/msword"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  const nombre=clienteFiltro==="todos"?"Todos":clienteFiltro.replace(/[^a-zA-Z0-9]/g,"_");
+  a.download=`Programacion_${nombre}_${now.replace(/\//g,"-")}.doc`;
+  a.click();
+}
+
+
+function renderEmergencias(){
+  const el=document.getElementById("emergenciasView");
+  if(!el)return;
+  const todas=[
+    ...ensamble.map(e=>({...e,_area:"Ensamble"})),
+    ...desarme.map(e=>({...e,_area:"Desarme"}))
+  ].filter(e=>e.prioridad==="emergencia"||e.prioridad==="urgencia");
+  const meses=new Set();
+  todas.forEach(e=>{const fi=e.fechaInicio||e.fechaTermino||"";if(fi)meses.add(fi.substring(0,7));});
+  const mesArr=[...meses].sort().reverse();
+  const selMes=el._mesSeleccionado||"todos";
+  el._mesSeleccionado=selMes;
+  const filtradas=selMes==="todos"?todas:todas.filter(e=>{
+    const fi=e.fechaInicio||e.fechaTermino||"";
+    return !fi||fi.startsWith(selMes);
+  });
+  const emerg=filtradas.filter(e=>e.prioridad==="emergencia");
+  const urg=filtradas.filter(e=>e.prioridad==="urgencia");
+  function fmtMes(ym){if(!ym)return"—";const[y,m]=ym.split("-");const names=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];return names[parseInt(m)-1]+" "+y;}
+  function ranRow(e){
+    const pi=PRIO_MAP[e.prioridad]||PRIO_MAP.normal;
+    const pct=e.tareas&&e.tareas.length?Math.round(e.tareas.filter(t=>t.estado==="Finalizado").length/e.tareas.length*100):0;
+    const avColor=pct>=100?"#10b981":pct>=50?"#3b82f6":"#ef4444";
+    return`<tr style="border-bottom:1px solid #f3f4f6">
+      <td style="padding:8px 10px;font-weight:700;color:#1e293b">${e.ran||"—"}</td>
+      <td style="padding:8px 10px;font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.equipo||"—"}</td>
+      <td style="padding:8px 10px;font-size:11px">${e.cliente||"—"}</td>
+      <td style="padding:8px 10px"><span class="prioTag ${pi.cls}">${pi.label}</span></td>
+      <td style="padding:8px 10px;font-size:11px">${e._area}</td>
+      <td style="padding:8px 10px;font-size:11px">${e.encargado||"—"}</td>
+      <td style="padding:8px 10px;font-size:11px">${e.fechaTermino||"—"}</td>
+      <td style="padding:8px 10px"><div style="background:#e5e7eb;border-radius:4px;height:8px;width:70px;overflow:hidden"><div style="background:${avColor};height:100%;width:${pct}%"></div></div><span style="font-size:10px;color:#6b7280">${pct}%</span></td>
+    </tr>`;
+  }
+  function tabla(arr,titulo,color){
+    if(!arr.length)return`<p style="color:#9ca3af;font-size:12px;font-style:italic;padding:10px 0">Sin RANs ${titulo.toLowerCase()} en este período.</p>`;
+    return`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#f8fafc;border-bottom:2px solid ${color}"><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">RAN</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">EQUIPO</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">CLIENTE</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">PRIORIDAD</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">ÁREA</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">ENCARGADO</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">F.TÉRMINO</th><th style="padding:8px 10px;text-align:left;font-size:10px;color:#6b7280">AVANCE</th></tr></thead><tbody>${arr.map(ranRow).join("")}</tbody></table></div>`;
+  }
+  const opsMes=[`<option value="todos" ${selMes==="todos"?"selected":""}>Todos los períodos</option>`].concat(mesArr.map(m=>`<option value="${m}" ${selMes===m?"selected":""}>${fmtMes(m)}</option>`)).join("");
+  el.innerHTML=`<div style="padding:16px;max-width:1200px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div><h2 style="font-size:20px;font-weight:800;color:#1e293b;margin:0">🆘 Emergencias / 🚨 Urgencias</h2><p style="font-size:12px;color:#6b7280;margin:4px 0 0">RANs con prioridad Emergencia o Urgencia</p></div>
+      <div style="display:flex;align-items:center;gap:8px"><label style="font-size:11px;font-weight:700;color:#374151">PERÍODO</label><select onchange="document.getElementById('emergenciasView')._mesSeleccionado=this.value;renderEmergencias()" style="border:1px solid #d1d5db;border-radius:8px;padding:6px 12px;font-size:12px;background:#fff">${opsMes}</select></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px">
+      <div style="background:#fce7f3;border:1px solid #f472b6;border-radius:12px;padding:14px;text-align:center"><div style="font-size:32px;font-weight:800;color:#831843">${emerg.length}</div><div style="font-size:11px;font-weight:600;color:#9d174d;margin-top:4px">🆘 Emergencias</div></div>
+      <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:14px;text-align:center"><div style="font-size:32px;font-weight:800;color:#92400e">${urg.length}</div><div style="font-size:11px;font-weight:600;color:#b45309;margin-top:4px">🚨 Urgencias</div></div>
+      <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:14px;text-align:center"><div style="font-size:32px;font-weight:800;color:#166534">${filtradas.filter(e=>e._area==="Ensamble").length}</div><div style="font-size:11px;font-weight:600;color:#15803d;margin-top:4px">⚙️ Ensamble</div></div>
+      <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:12px;padding:14px;text-align:center"><div style="font-size:32px;font-weight:800;color:#1e40af">${filtradas.filter(e=>e._area==="Desarme").length}</div><div style="font-size:11px;font-weight:600;color:#1d4ed8;margin-top:4px">🔧 Desarme</div></div>
+      <div style="background:#fff7ed;border:1px solid #fdba74;border-radius:12px;padding:14px;text-align:center"><div style="font-size:32px;font-weight:800;color:#9a3412">${filtradas.length}</div><div style="font-size:11px;font-weight:600;color:#c2410c;margin-top:4px">📋 Total</div></div>
+    </div>
+    <div style="background:#fff;border:1px solid #fecdd3;border-radius:12px;padding:16px;margin-bottom:16px"><h3 style="font-size:13px;font-weight:800;color:#831843;margin:0 0 12px">🆘 Emergencias (${emerg.length})</h3>${tabla(emerg,"Emergencias","#f472b6")}</div>
+    <div style="background:#fff;border:1px solid #fde68a;border-radius:12px;padding:16px"><h3 style="font-size:13px;font-weight:800;color:#92400e;margin:0 0 12px">🚨 Urgencias (${urg.length})</h3>${tabla(urg,"Urgencias","#f59e0b")}</div>
+  </div>`;
+}
+
 function renderEjecutivo(){
   const el=document.getElementById("ejecutivoView");
   if(!el)return;
@@ -7578,7 +7895,7 @@ function exportExcel(){
   function addData(data,areaName){
     data.forEach(function(eq){
       var avPct=Math.round(av(eq.tareas)*100);
-      var prioLabel=(PRIO_MAP[eq.prioridad||"normal"]||PRIO_MAP.normal).label.replace(/[🔴🟠🟡🟢]/g,"").trim();
+      var prioLabel=(PRIO_MAP[eq.prioridad||"normal"]||PRIO_MAP.normal).label.replace(/[🔴🟠🟡🟢🟣🆘]/g,"").trim();
       if(!eq.tareas.length){
         rows.push([eq.ran,eq.equipo,eq.cliente,areaName,prioLabel,"","","","","",eq.fechaInicio||"",eq.fechaTermino||"",eq.fechaReal||"",avPct+"%"]);
       } else {
@@ -7907,8 +8224,8 @@ function renderPlanta(){
       <div>${_pZonaBox(zona("prensa"))}</div>
     </div>
 
-    <!-- SIN ASIGNAR — siempre visible como zona de drop ───────────────── -->
-    <div style="margin-top:14px;background:#fff;border:2px dashed #d1d5db;border-radius:10px;padding:14px;">
+    <!-- SIN ASIGNAR — panel sticky roller siempre visible ───────────────── -->
+    <div id="plantaSinAsignar" style="margin-top:14px;background:#fff;border:2px dashed #d1d5db;border-radius:10px;padding:14px;">
       <h3 style="font-size:12px;font-weight:800;color:#6b7280;margin:0 0 10px;">${(unEn.length||unDe.length)?"⚠️ Equipos sin línea asignada":"📥 Zona de retorno — arrastra aquí para quitar de la línea"}</h3>
       ${unasignSection(unEn,"en")}
       ${unasignSection(unDe,"de")}
@@ -7949,109 +8266,110 @@ function _plantaRemoveFromLine(idx, tipo){
 }
 
 function _plantaInitDragDrop(){
-  // ── Cards: draggable source ──────────────────────────────────────────────
+  // ── Auto-scroll ───────────────────────────────────────────────────────────
+  let _sRAF=null;
+  function _scrollStart(cy){
+    const ZONE=120,SPEED=14;
+    cancelAnimationFrame(_sRAF);
+    function tick(){
+      const wh=window.innerHeight;
+      if(cy<ZONE) window.scrollBy(0,-SPEED*(1-cy/ZONE));
+      else if(wh-cy<ZONE) window.scrollBy(0,SPEED*(1-(wh-cy)/ZONE));
+      _sRAF=requestAnimationFrame(tick);
+    }
+    _sRAF=requestAnimationFrame(tick);
+  }
+  function _scrollStop(){cancelAnimationFrame(_sRAF);_sRAF=null;}
+
+  // ── HTML5 drag (desktop) ──────────────────────────────────────────────────
   document.querySelectorAll('.planta-ran-card[draggable="true"]').forEach(card=>{
-    card.addEventListener('dragstart', e=>{
-      window._plantaDragging = true;
-      window._plantaDragData = {
-        idx: parseInt(card.dataset.ranIdx),
-        tipo: card.dataset.ranTipo
-      };
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', card.dataset.ranIdx + ':' + card.dataset.ranTipo);
-      setTimeout(()=>{ card.style.opacity='0.35'; card.style.transform='scale(.97)'; }, 0);
+    card.addEventListener('dragstart',e=>{
+      window._plantaDragging=true;
+      window._plantaDragData={idx:parseInt(card.dataset.ranIdx),tipo:card.dataset.ranTipo};
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',card.dataset.ranIdx+':'+card.dataset.ranTipo);
+      setTimeout(()=>{card.style.opacity='0.35';card.style.transform='scale(.97)';},0);
     });
-    card.addEventListener('dragend', ()=>{
-      card.style.opacity='';
-      card.style.transform='';
-      window._plantaDragging = false;
-      // Remove all highlights
-      document.querySelectorAll('.planta-drop-zone').forEach(z=>{
-        z.style.borderColor='';
-        z.style.background='';
-        z.style.boxShadow='';
-      });
+    card.addEventListener('dragend',()=>{
+      card.style.opacity='';card.style.transform='';
+      window._plantaDragging=false;_scrollStop();
+      document.querySelectorAll('.planta-drop-zone').forEach(z=>{z.style.borderColor='';z.style.background='';z.style.boxShadow='';});
     });
   });
-
-  // ── Drop zones ────────────────────────────────────────────────────────────
   document.querySelectorAll('.planta-drop-zone').forEach(zone=>{
-    zone.addEventListener('dragover', e=>{
-      if(!window._plantaDragData) return;
-      e.preventDefault();
-      const targetTipo = zone.dataset.lineTipo;
-      const srcTipo   = window._plantaDragData.tipo;
-      // Only allow same type (en->en, de->de)
-      if(targetTipo !== srcTipo){
-        e.dataTransfer.dropEffect='none';
-        return;
-      }
-      const count = parseInt(zone.dataset.lineCount||'0');
-      const lineNum = zone.dataset.lineNum;
-      const MAX_RAN = 4;
-      const srcLineNum = (()=>{
-        const d = srcTipo==='en'?ensamble:desarme;
-        const item = d[window._plantaDragData.idx];
-        return item ? String(item.lineaPlanta||'0') : '0';
-      })();
-      const isSameLine = (lineNum === srcLineNum);
-      const full = !isSameLine && count >= MAX_RAN;
-      if(full){
-        e.dataTransfer.dropEffect='none';
-        zone.style.boxShadow='inset 0 0 0 3px #ef4444';
-        zone.style.background='#fff1f2';
-      } else {
-        e.dataTransfer.dropEffect='move';
-        zone.style.boxShadow='inset 0 0 0 3px #3b82f6';
-        zone.style.background=srcTipo==='en'?'#eff6ff':'#fffbeb';
-      }
+    zone.addEventListener('dragover',e=>{
+      if(!window._plantaDragData)return;
+      e.preventDefault();_scrollStart(e.clientY);
+      const tt=zone.dataset.lineTipo,st=window._plantaDragData.tipo;
+      if(tt!==st){e.dataTransfer.dropEffect='none';return;}
+      const cnt=parseInt(zone.dataset.lineCount||'0'),ln=zone.dataset.lineNum;
+      const d=st==='en'?ensamble:desarme,item=d[window._plantaDragData.idx];
+      const srcLn=item?String(item.lineaPlanta||'0'):'0';
+      const full=(ln!==srcLn)&&cnt>=4;
+      if(full){e.dataTransfer.dropEffect='none';zone.style.boxShadow='inset 0 0 0 3px #ef4444';zone.style.background='#fff1f2';}
+      else{e.dataTransfer.dropEffect='move';zone.style.boxShadow='inset 0 0 0 3px #3b82f6';zone.style.background=st==='en'?'#eff6ff':'#fffbeb';}
     });
-
-    zone.addEventListener('dragleave', e=>{
-      // Only clear if truly leaving the zone (not entering a child)
-      if(!zone.contains(e.relatedTarget)){
-        zone.style.boxShadow='';
-        zone.style.background='';
-      }
+    zone.addEventListener('dragleave',e=>{
+      if(!zone.contains(e.relatedTarget)){zone.style.boxShadow='';zone.style.background='';}
     });
-
-    zone.addEventListener('drop', e=>{
+    zone.addEventListener('drop',e=>{
+      e.preventDefault();zone.style.boxShadow='';zone.style.background='';_scrollStop();
+      if(!window._plantaDragData)return;
+      const tt=zone.dataset.lineTipo,st=window._plantaDragData.tipo;
+      if(tt!==st)return;
+      const tln=parseInt(zone.dataset.lineNum||'0'),cnt=parseInt(zone.dataset.lineCount||'0');
+      const d=st==='en'?ensamble:desarme,item=d[window._plantaDragData.idx];
+      if(!item)return;
+      const sln=parseInt(item.lineaPlanta||'0');
+      if(tln!==sln&&cnt>=4){showJBinMsg('Línea llena (máx 4 RANs)','#ef4444');return;}
+      item.lineaPlanta=String(tln);markDirty();window._plantaDragData=null;
+      renderPlanta();showJBinMsg(tln===0?'↩️ RAN sin asignar':`✅ RAN ${item.ran||''} → línea ${tln}`,'#10b981');
+    });
+  });
+  // ── TOUCH drag (móvil) ────────────────────────────────────────────────────
+  let _tCard=null,_tData=null,_tClone=null;
+  function _tzAt(x,y){
+    if(_tClone)_tClone.style.display='none';
+    const el=document.elementFromPoint(x,y);
+    if(_tClone)_tClone.style.display='';
+    return el?el.closest('.planta-drop-zone'):null;
+  }
+  document.querySelectorAll('.planta-ran-card[draggable="true"]').forEach(card=>{
+    card.addEventListener('touchstart',e=>{
+      const t=e.touches[0];_tCard=card;
+      _tData={idx:parseInt(card.dataset.ranIdx),tipo:card.dataset.ranTipo};
+      _tClone=card.cloneNode(true);
+      const r=card.getBoundingClientRect();
+      _tClone.style.cssText=`position:fixed;z-index:9999;width:${r.width}px;opacity:.85;pointer-events:none;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.25);left:${t.clientX-r.width/2}px;top:${t.clientY-r.height/2}px;transform:scale(1.05)`;
+      document.body.appendChild(_tClone);card.style.opacity='0.3';e.preventDefault();
+    },{passive:false});
+    card.addEventListener('touchmove',e=>{
+      if(!_tClone)return;
+      const t=e.touches[0],r=_tCard.getBoundingClientRect();
+      _tClone.style.left=(t.clientX-r.width/2)+'px';_tClone.style.top=(t.clientY-r.height/2)+'px';
+      _scrollStart(t.clientY);
+      document.querySelectorAll('.planta-drop-zone').forEach(z=>{z.style.boxShadow='';z.style.background='';});
+      const z=_tzAt(t.clientX,t.clientY);
+      if(z&&z.dataset.lineTipo===_tData.tipo){z.style.boxShadow='inset 0 0 0 3px #3b82f6';z.style.background=_tData.tipo==='en'?'#eff6ff':'#fffbeb';}
       e.preventDefault();
-      zone.style.boxShadow='';
-      zone.style.background='';
-      if(!window._plantaDragData) return;
-
-      const targetTipo = zone.dataset.lineTipo;
-      const srcTipo   = window._plantaDragData.tipo;
-      if(targetTipo !== srcTipo) return;
-
-      const targetLineNum = parseInt(zone.dataset.lineNum||'0');
-      const count = parseInt(zone.dataset.lineCount||'0');
-      const MAX_RAN = 4;
-
-      const arr = srcTipo==='en'?ensamble:desarme;
-      const item = arr[window._plantaDragData.idx];
-      if(!item) return;
-
-      const srcLineNum = parseInt(item.lineaPlanta||'0');
-      const isSameLine = (targetLineNum === srcLineNum);
-      if(isSameLine) return; // No-op: dropped on same line
-
-      // Block if target line is full (and it's a named line, not "sin asignar")
-      if(targetLineNum !== 0 && count >= MAX_RAN){
-        _plantaToast(`❌ Línea ${targetTipo==='en'?'Ensamble':'Desarme'} ${targetLineNum} ya tiene ${MAX_RAN} RANs (máximo alcanzado)`, 'red');
-        return;
+    },{passive:false});
+    card.addEventListener('touchend',e=>{
+      if(!_tData)return;_scrollStop();
+      const t=e.changedTouches[0];
+      if(_tClone){_tClone.remove();_tClone=null;}
+      if(_tCard)_tCard.style.opacity='';
+      document.querySelectorAll('.planta-drop-zone').forEach(z=>{z.style.boxShadow='';z.style.background='';});
+      const z=_tzAt(t.clientX,t.clientY);
+      if(z&&z.dataset.lineTipo===_tData.tipo){
+        const tln=parseInt(z.dataset.lineNum||'0'),cnt=parseInt(z.dataset.lineCount||'0');
+        const d=_tData.tipo==='en'?ensamble:desarme,item=d[_tData.idx];
+        if(item){
+          const sln=parseInt(item.lineaPlanta||'0');
+          if(tln!==sln&&cnt>=4)showJBinMsg('Línea llena (máx 4 RANs)','#ef4444');
+          else{item.lineaPlanta=String(tln);markDirty();renderPlanta();showJBinMsg(tln===0?'↩️ RAN sin asignar':`✅ RAN ${item.ran||''} → línea ${tln}`,'#10b981');}
+        }
       }
-
-      item.lineaPlanta = String(targetLineNum);
-      markDirty();
-      _plantaToast(
-        targetLineNum===0
-          ? `↩️ RAN ${item.ran||''} quitada de la línea`
-          : `✅ RAN ${item.ran||''} → ${targetTipo==='en'?'Ensamble':'Desarme'} ${targetLineNum}`,
-        targetLineNum===0?'gray':'green'
-      );
-      renderPlanta();
+      _tCard=null;_tData=null;
     });
   });
 }
@@ -8237,7 +8555,8 @@ function plantaOpenAssign(){
 function _pSetLinea(id,tipo,val){
   const arr=tipo==="en"?ensamble:desarme;
   const e=arr.find(x=>x.id===id);
-  if(e){e.lineaPlanta=val;markDirty();}
+  if(e){e.lineaPlanta=String(val);markDirty();}
+  if(!document.getElementById("plantaAsgn"))renderPlanta();
 }
 
 // ── EXPORTAR ──────────────────────────────────────────────────
