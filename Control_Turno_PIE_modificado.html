@@ -619,6 +619,7 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
       <button class="navBtnAction" style="background:rgba(167,139,250,.2);border:1px solid #a78bfa;color:#fff;font-size:11px;font-weight:700;border-radius:8px" onclick="openSync()">📲 Sincronizar</button>
       <button class="navBtnAction" style="background:rgba(16,185,129,.25);border:1px solid #6ee7b7;color:#6ee7b7;font-size:11px;font-weight:700;border-radius:8px" onclick="jbinSave()">☁️ Guardar nube</button>
       <button class="navBtnAction" style="background:rgba(59,130,246,.25);border:1px solid #93c5fd;color:#93c5fd;font-size:11px;font-weight:700;border-radius:8px" onclick="jbinLoad(false)">☁️ Cargar nube</button>
+      <button class="navBtnAction adminOnly" style="background:rgba(239,68,68,.25);border:1px solid #fca5a5;color:#fca5a5;font-size:11px;font-weight:700;border-radius:8px" onclick="limpiarCacheLocal()">🧹 Limpiar caché</button>
       <button class="navBtnAction" style="background:rgba(251,191,36,.25);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="forzarSyncLocalNube()" title="Exportar datos a JSON">💾 Exportar datos</button>
       <button class="navBtnAction" style="background:rgba(168,85,247,.25);border:1px solid #c084fc;color:#c084fc;font-size:11px;font-weight:700;border-radius:8px" onclick="importarDatosJSON()" title="Importar JSON y subir a nube">📂 Importar→nube</button>
       <button class="navBtnAction adminOnly" style="background:rgba(251,191,36,.15);border:1px solid #fbbf24;color:#fbbf24;font-size:11px;font-weight:700;border-radius:8px" onclick="openJBinConfig()">⚙️ Config. nube</button>
@@ -1412,6 +1413,14 @@ function doLogin(){
 document.getElementById("lUser").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 
 document.getElementById("lPass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+function limpiarCacheLocal(){
+  if(!confirm("¿Limpiar todos los datos locales y recargar desde la nube? Esto borrará el localStorage.")) return;
+  const keysToKeep = [];
+  localStorage.clear();
+  showJBinMsg("🧹 Caché local limpiada. Cargando desde la nube...","#6b7280");
+  setTimeout(()=>jbinLoad(false),800);
+}
+
 function doLogout(){
   session=null;
   document.getElementById("app").classList.add("hidden");
