@@ -4,7 +4,7 @@
    Permite trabajar en zonas del taller sin señal.
    Sube este archivo a la raíz del repositorio "planificacion".
    ══════════════════════════════════════════════════════════════ */
-const CACHE = 'planificacion-v1';
+const CACHE = 'planificacion-v2';
 const SHELL = [
   './Control_Turno_PIE_modificado.html',
   './manifest.json',
