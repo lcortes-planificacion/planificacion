@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes,maximum-scale=5"/>
 <title>Planificación de Producción</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -2749,7 +2749,7 @@ function getFiltered(data){
 
 function renderEqList(data,containerId,isEn){
   // Mobile: compact cards
-  if(window.innerWidth<=768){const cont=document.getElementById(containerId);if(cont){updateStats(data);const dataNoFin=data.filter(e=>eg(e.tareas)!=="Finalizado");renderMobileCards(dataNoFin,containerId,isEn);}return;}
+  if(window.innerWidth<=768 && !document.documentElement.classList.contains("modo-escritorio")){const cont=document.getElementById(containerId);if(cont){updateStats(data);const dataNoFin=data.filter(e=>eg(e.tareas)!=="Finalizado");renderMobileCards(dataNoFin,containerId,isEn);}return;}
   const filtered=getFiltered(data);
   document.getElementById("cLabel").textContent=`${filtered.length} de ${data.filter(e=>inPeriod(e)).length} equipos`;
   const c=document.getElementById(containerId);c.innerHTML="";
@@ -4330,7 +4330,7 @@ function handleResize(){
   const btn=document.getElementById("mobileMenuBtn");
   const row=document.getElementById("navBtnRow");
   if(!btn||!row)return;
-  if(window.innerWidth<=768){
+  if(window.innerWidth<=768 && !document.documentElement.classList.contains("modo-escritorio")){
     btn.style.display="block";
     row.style.display="none";
   } else {
@@ -8065,10 +8065,55 @@ function plantaNormalizaLinea(l){
   l.cargo = l.personas.length ? (l.personas[0].cargo||"") : "";
   return l;
 }
+// ── ORDEN DE VISUALIZACIÓN DE LÍNEAS ──────────────────────────
+// El número de línea identifica y se guarda en cada RAN (eq.lineaPlanta).
+// Reordenar aquí solo cambia la posición en pantalla, nunca las asignaciones.
+function plantaNormalizaOrden(cfg){
+  if(!cfg) return cfg;
+  ["en","de"].forEach(function(t){
+    var arr   = t==="en" ? (cfg.enLines||[]) : (cfg.deLines||[]);
+    var clave = t==="en" ? "ordenEn" : "ordenDe";
+    var validos=[]; for(var i=1;i<=arr.length;i++) validos.push(i);
+    var actual = Array.isArray(cfg[clave]) ? cfg[clave].slice() : [];
+    actual = actual.filter(function(n,i){ return validos.indexOf(n)!==-1 && actual.indexOf(n)===i; });
+    validos.forEach(function(n){ if(actual.indexOf(n)===-1) actual.push(n); });
+    cfg[clave]=actual;
+  });
+  return cfg;
+}
+function plantaOrden(cfg,tipo){
+  plantaNormalizaOrden(cfg);
+  var arr   = tipo==="en" ? (cfg.enLines||[]) : (cfg.deLines||[]);
+  var orden = tipo==="en" ? cfg.ordenEn : cfg.ordenDe;
+  return orden.map(function(n,idx){ return {n:n, l:arr[n-1], idx:idx}; })
+              .filter(function(o){ return !!o.l; });
+}
+function plantaMoverLinea(tipo,idx,dir){
+  var cfg=window._PC; if(!cfg)return;
+  plantaNormalizaOrden(cfg);
+  var o = tipo==="en" ? cfg.ordenEn : cfg.ordenDe;
+  var j = idx+dir; if(j<0||j>=o.length) return;
+  var t=o[idx]; o[idx]=o[j]; o[j]=t;
+  _plantaBuildEditor();
+}
+function plantaInvertirOrden(tipo){
+  var cfg=window._PC; if(!cfg)return;
+  plantaNormalizaOrden(cfg);
+  if(tipo==="en") cfg.ordenEn.reverse(); else cfg.ordenDe.reverse();
+  _plantaBuildEditor();
+}
+function plantaOrdenNatural(tipo){
+  var cfg=window._PC; if(!cfg)return;
+  var arr = tipo==="en" ? (cfg.enLines||[]) : (cfg.deLines||[]);
+  var o=[]; for(var i=1;i<=arr.length;i++)o.push(i);
+  if(tipo==="en") cfg.ordenEn=o; else cfg.ordenDe=o;
+  _plantaBuildEditor();
+}
 function plantaNormalizaCfg(cfg){
   if(!cfg) return cfg;
   (cfg.enLines||[]).forEach(plantaNormalizaLinea);
   (cfg.deLines||[]).forEach(plantaNormalizaLinea);
+  plantaNormalizaOrden(cfg);
   return cfg;
 }
 function plantaTextoPersonas(l,sep){
@@ -8221,7 +8266,7 @@ function renderPlanta(){
         ${_pZonaBox(zona("pintura"))}
         ${_pZonaBox(zona("banco"))}
       </div>
-      ${cfg.enLines.map((l,i)=>_pLineBox("en",i+1,l)).join("")}
+      ${plantaOrden(cfg,"en").map(o=>_pLineBox("en",o.n,o.l)).join("")}
     </div>
 
     <!-- MEDIO -->
@@ -8238,7 +8283,7 @@ function renderPlanta(){
         ${_pZonaBox(zona("lavado"))}
         ${_pZonaBox(zona("pintAux"))}
       </div>
-      ${cfg.deLines.slice(0,nDe-1).map((l,i)=>_pLineBox("de",i+1,l)).join("")}
+      ${plantaOrden(cfg,"de").slice(0,nDe-1).map(o=>_pLineBox("de",o.n,o.l)).join("")}
     </div>`:`<div style="display:grid;grid-template-columns:130px 1fr;gap:7px;margin-bottom:8px;">
       <div style="display:flex;flex-direction:column;gap:6px;">${_pZonaBox(zona("lavado"))}${_pZonaBox(zona("pintAux"))}</div>
       <div></div>
@@ -8247,7 +8292,7 @@ function renderPlanta(){
     <!-- FILA INFERIOR -->
     <div style="display:grid;grid-template-columns:1fr ${nDe>0?"1fr":"60px"} 120px 130px;gap:7px;">
       <div>${_pZonaBox(zona("calidad"))}</div>
-      ${nDe>0?`<div>${_pLineBox("de",nDe,cfg.deLines[nDe-1])}</div>`:"<div></div>"}
+      ${nDe>0?(function(){var _u=plantaOrden(cfg,"de")[nDe-1];return _u?`<div>${_pLineBox("de",_u.n,_u.l)}</div>`:"<div></div>";})():"<div></div>"}
       <div style="display:flex;flex-direction:column;gap:4px;">
         ${_pZonaBox(zona("prep1"))}${_pZonaBox(zona("prep2"))}${_pZonaBox(zona("prep3"))}
       </div>
@@ -8478,20 +8523,61 @@ function _plantaBuildEditor(){
     }
     return celdas;
   }
-  function rowEn(l,i){
+  function ctrlOrden(tipo,idx,total){
+    var arr=idx>0, ab=idx<total-1;
+    function b(dir,act,ic,tit){
+      return '<button onclick="plantaMoverLinea(\''+tipo+'\','+idx+','+dir+')" '+(act?'':'disabled ')+
+        'style="border:1px solid #cbd5e1;background:'+(act?'#fff':'#f1f5f9')+';color:'+(act?'#334155':'#cbd5e1')+
+        ';border-radius:4px;font-size:10px;padding:1px 7px;cursor:'+(act?'pointer':'default')+
+        ';font-family:inherit" title="'+tit+'">'+ic+'</button>';
+    }
+    return '<div style="display:flex;flex-direction:column;gap:2px;margin-top:5px">'+
+      b(-1,arr,'&#9650;','Subir')+b(1,ab,'&#9660;','Bajar')+'</div>';
+  }
+  function filaPersonas(arr,i){
+    const l=arr==="enLines"?window._PC.enLines[i]:window._PC.deLines[i];
+    plantaNormalizaLinea(l);
+    const et=(v)=>String(v||"").replace(/"/g,"&quot;");
+    let celdas="";
+    for(let j=0;j<MAX_PERSONAS_LINEA;j++){
+      const p=l.personas[j]||{resp:"",cargo:""};
+      celdas+=`<div style="display:flex;gap:4px;margin-bottom:4px;align-items:center;">
+        <span style="font-size:9px;color:#94a3b8;font-weight:700;width:12px;">${j+1}</span>
+        <input list="_plantaResp" value="${et(p.resp)}" placeholder="Persona ${j+1}"
+          style="border:1px solid #d1d5db;border-radius:5px;padding:4px 7px;font-size:11px;width:150px;"
+          oninput="_plantaSetPersona('${arr}',${i},${j},'resp',this.value)">
+        <input value="${et(p.cargo)}" placeholder="Cargo"
+          style="border:1px solid #d1d5db;border-radius:5px;padding:4px 7px;font-size:11px;width:135px;"
+          oninput="_plantaSetPersona('${arr}',${i},${j},'cargo',this.value)">
+        ${(p.resp||p.cargo)?`<button onclick="_plantaQuitarPersona('${arr}',${i},${j})"
+          style="border:none;background:#fee2e2;color:#dc2626;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer;">&#10005;</button>`:""}
+      </div>`;
+    }
+    return celdas;
+  }
+  function filaLinea(i,idx,tipo){
+    const ord = tipo==="en"?window._PC.ordenEn:window._PC.ordenDe;
+    const total=(ord||[]).length;
+    const nombre = tipo==="en"?"Ensamble":"Desarme";
+    const color  = tipo==="en"?"#1e3a5f":"#92400e";
+    const arrKey = tipo==="en"?"enLines":"deLines";
+    const ordKey = tipo==="en"?"ordenEn":"ordenDe";
     return `<tr style="border-bottom:1px solid #e5e7eb;">
-      <td style="padding:7px 8px;font-size:11px;font-weight:700;color:#1e3a5f;white-space:nowrap;vertical-align:top;">Ensamble ${i+1}<div style="font-size:9px;color:#94a3b8;font-weight:600;margin-top:3px;">hasta ${MAX_PERSONAS_LINEA} personas</div></td>
-      <td style="padding:6px 5px;" colspan="2">${filaPersonas("enLines",i,"#1e3a5f")}</td>
-      <td style="padding:6px 5px;vertical-align:top;"><button onclick="window._PC.enLines.splice(${i},1);_plantaBuildEditor()" style="border:none;background:#fee2e2;color:#dc2626;border-radius:5px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;">Eliminar</button></td>
+      <td style="padding:7px 8px;white-space:nowrap;vertical-align:top;">
+        <div style="font-size:11px;font-weight:700;color:${color};">${nombre} ${i+1}</div>
+        <div style="font-size:9px;color:#94a3b8;font-weight:600;margin-top:2px;">posición ${idx+1} de ${total}</div>
+        <div style="font-size:9px;color:#94a3b8;font-weight:600;">hasta ${MAX_PERSONAS_LINEA} personas</div>
+        ${ctrlOrden(tipo,idx,total)}
+      </td>
+      <td style="padding:6px 5px;" colspan="2">${filaPersonas(arrKey,i)}</td>
+      <td style="padding:6px 5px;vertical-align:top;">
+        <button onclick="window._PC.${arrKey}.splice(${i},1);window._PC.${ordKey}=null;_plantaBuildEditor()"
+          style="border:none;background:#fee2e2;color:#dc2626;border-radius:5px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;">Eliminar</button>
+      </td>
     </tr>`;
   }
-  function rowDe(l,i){
-    return `<tr style="border-bottom:1px solid #e5e7eb;">
-      <td style="padding:7px 8px;font-size:11px;font-weight:700;color:#92400e;white-space:nowrap;vertical-align:top;">Desarme ${i+1}<div style="font-size:9px;color:#94a3b8;font-weight:600;margin-top:3px;">hasta ${MAX_PERSONAS_LINEA} personas</div></td>
-      <td style="padding:6px 5px;" colspan="2">${filaPersonas("deLines",i,"#92400e")}</td>
-      <td style="padding:6px 5px;vertical-align:top;"><button onclick="window._PC.deLines.splice(${i},1);_plantaBuildEditor()" style="border:none;background:#fee2e2;color:#dc2626;border-radius:5px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;">Eliminar</button></td>
-    </tr>`;
-  }
+  function rowEn(l,i,idx){ return filaLinea(i,idx===undefined?i:idx,"en"); }
+  function rowDe(l,i,idx){ return filaLinea(i,idx===undefined?i:idx,"de"); }
   function rowZona(z,i){
     const sl=(z.label||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     const ss=(z.sub||"").replace(/"/g,"&quot;");
@@ -8521,12 +8607,12 @@ function _plantaBuildEditor(){
       <div style="margin-bottom:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
           <h4 style="margin:0;font-size:13px;font-weight:800;color:#1e3a5f;">⚙️ Líneas de Ensamble (${window._PC.enLines.length})</h4>
-          <button onclick="window._PC.enLines.push({resp:'',cargo:'',personas:[]});_plantaBuildEditor()" style="border:none;background:#dbeafe;color:#1d4ed8;border-radius:6px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;">+ Agregar línea</button>
+          <button onclick="window._PC.enLines.push({resp:'',cargo:'',personas:[]});window._PC.ordenEn=null;_plantaBuildEditor()" style="border:none;background:#dbeafe;color:#1d4ed8;border-radius:6px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;">+ Agregar línea</button><button onclick="plantaInvertirOrden('en')" style="border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;margin-left:6px;font-family:inherit" title="Invertir el orden en pantalla">&#8645; Invertir</button><button onclick="plantaOrdenNatural('en')" style="border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;margin-left:4px;font-family:inherit" title="Volver al orden 1-2-3">&#8597; 1-2-3</button>
         </div>
         ${window._PC.enLines.length===0?`<p style="text-align:center;color:#9ca3af;font-size:11px;padding:12px;">No hay líneas. Agrega una.</p>`:`
         <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;background:#f8fafc;border-radius:8px;overflow:hidden;">
           <thead><tr style="background:#dbeafe;"><th style="padding:6px 8px;font-size:9px;text-align:left;color:#1e40af;">LÍNEA</th><th style="padding:6px 8px;font-size:9px;text-align:left;color:#1e40af;">RESPONSABLE</th><th style="padding:6px 8px;font-size:9px;text-align:left;color:#1e40af;">CARGO</th><th style="padding:6px 8px;font-size:9px;color:#1e40af;"></th></tr></thead>
-          <tbody>${window._PC.enLines.map(rowEn).join("")}</tbody>
+          <tbody>${plantaOrden(window._PC,"en").map(o=>rowEn(o.l,o.n-1,o.idx)).join("")}</tbody>
         </table></div>`}
       </div>
 
@@ -8534,12 +8620,12 @@ function _plantaBuildEditor(){
       <div style="margin-bottom:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
           <h4 style="margin:0;font-size:13px;font-weight:800;color:#92400e;">🔧 Líneas de Desarme (${window._PC.deLines.length})</h4>
-          <button onclick="window._PC.deLines.push({resp:'',cargo:'',personas:[]});_plantaBuildEditor()" style="border:none;background:#fef3c7;color:#92400e;border-radius:6px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;">+ Agregar línea</button>
+          <button onclick="window._PC.deLines.push({resp:'',cargo:'',personas:[]});window._PC.ordenDe=null;_plantaBuildEditor()" style="border:none;background:#fef3c7;color:#92400e;border-radius:6px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;">+ Agregar línea</button><button onclick="plantaInvertirOrden('de')" style="border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;margin-left:6px;font-family:inherit" title="Invertir el orden en pantalla">&#8645; Invertir</button><button onclick="plantaOrdenNatural('de')" style="border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;margin-left:4px;font-family:inherit" title="Volver al orden 1-2-3">&#8597; 1-2-3</button>
         </div>
         ${window._PC.deLines.length===0?`<p style="text-align:center;color:#9ca3af;font-size:11px;padding:12px;">No hay líneas. Agrega una.</p>`:`
         <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;background:#f8fafc;border-radius:8px;overflow:hidden;">
           <thead><tr style="background:#fef3c7;"><th style="padding:6px 8px;font-size:9px;text-align:left;color:#92400e;">LÍNEA</th><th style="padding:6px 8px;font-size:9px;text-align:left;color:#92400e;">RESPONSABLE</th><th style="padding:6px 8px;font-size:9px;text-align:left;color:#92400e;">CARGO</th><th style="padding:6px 8px;font-size:9px;color:#92400e;"></th></tr></thead>
-          <tbody>${window._PC.deLines.map(rowDe).join("")}</tbody>
+          <tbody>${plantaOrden(window._PC,"de").map(o=>rowDe(o.l,o.n-1,o.idx)).join("")}</tbody>
         </table></div>`}
       </div>
 
@@ -12890,6 +12976,221 @@ if(typeof window.showApp==="function"){
   };
 }
 setTimeout(ajustarAlineacion,400);
+
+})();
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   VISTA DE ESCRITORIO EN EL MÓVIL  ·  v2.6
+   El teléfono muestra exactamente la misma disposición que el
+   computador. Se consigue fijando el ancho del lienzo en 1280 px:
+   las reglas @media dejan de aplicarse solas y el navegador ajusta
+   la escala. Se puede volver a la vista adaptada cuando se quiera.
+   ══════════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+
+var ANCHO_ESCRITORIO=1280;
+var CLAVE="vistaModo";           /* "escritorio" | "movil" */
+
+/* Ancho físico del aparato: no cambia aunque se altere el viewport */
+function esAparatoPequeno(){
+  try{
+    var w=(window.screen&&window.screen.width)||window.innerWidth;
+    var h=(window.screen&&window.screen.height)||window.innerHeight;
+    return Math.min(w,h)<=900;
+  }catch(e){return false;}
+}
+/* La aplicación se ve siempre igual que en el computador, en cualquier
+   aparato. No hay preferencia guardada que pueda dejarla en otro estado. */
+function modoActual(){
+  try{localStorage.removeItem(CLAVE);}catch(e){}
+  return "escritorio";
+}
+
+function metaViewport(){
+  var m=document.querySelector('meta[name="viewport"]');
+  if(!m){
+    m=document.createElement("meta");
+    m.name="viewport";
+    document.head.appendChild(m);
+  }
+  return m;
+}
+
+function aplicarModo(modo,recargarVista){
+  var m=metaViewport();
+  /* Lienzo fijo de 1280 px: las @media de 768/820 px dejan de cumplirse y
+     el navegador ajusta la escala. Los navegadores de computador ignoran
+     esta etiqueta, así que allí no cambia nada. */
+  m.setAttribute("content","width="+ANCHO_ESCRITORIO+",user-scalable=yes,minimum-scale=0.15,maximum-scale=5");
+  document.documentElement.classList.add("modo-escritorio");
+  actualizarBoton();
+  /* Los manejadores que dependen del ancho deben recalcular */
+  try{if(typeof handleResize==="function")handleResize();}catch(e){}
+  try{window.dispatchEvent(new Event("resize"));}catch(e){}
+  if(recargarVista){
+    try{if(typeof renderCurrent==="function")renderCurrent();}catch(e){}
+    try{if(window.CTRLMOD5&&window.CTRLMOD5.ajustarAlineacion)setTimeout(window.CTRLMOD5.ajustarAlineacion,150);}catch(e){}
+  }
+}
+
+function inyectarEstilos(){
+  if(document.getElementById("estilosV26"))return;
+  var st=document.createElement("style");
+  st.id="estilosV26";
+  st.textContent=[
+"/* Con lienzo fijo, el contenido nunca debe estrecharse por debajo del ancho de diseño */",
+"html.modo-escritorio body{min-width:"+ANCHO_ESCRITORIO+"px}",
+"html.modo-escritorio #topNav,html.modo-escritorio #mainContent{min-width:"+ANCHO_ESCRITORIO+"px}",
+"/* La botonera flotante y el menú de teléfono no corresponden en esta vista */",
+"html.modo-escritorio .mobileFab{display:none!important}",
+"html.modo-escritorio #mobileMenuBtn{display:none!important}",
+"/* Todo lo que la vista de teléfono ocultaba vuelve a estar disponible y editable */",
+"html.modo-escritorio .navActRow{display:flex!important}",
+"html.modo-escritorio .sortBar{display:flex!important}",
+"html.modo-escritorio .colHideM{display:table-cell!important}",
+"html.modo-escritorio .cargaExcluidosPanel{display:block!important}",
+"html.modo-escritorio .cargaMobileGrid > div:last-child{display:block!important}",
+"html.modo-escritorio #ejecutivoView{overflow-x:auto!important;width:auto!important}",
+"html.modo-escritorio #resEnView,html.modo-escritorio #resDeView{overflow-x:auto!important}",
+"html.modo-escritorio #mobilePanel{display:none!important}",
+"html.modo-escritorio .navActRow.navActRowMobile{display:none!important}",
+"html.modo-escritorio #btnVistaModo{display:none!important}",
+"/* Nada debe quedar fijado al ancho de la pantalla física */",
+"html.modo-escritorio #topNav,html.modo-escritorio #mainContent,html.modo-escritorio #footer{width:auto!important;max-width:none!important}",
+"html.modo-escritorio .navTop{flex-wrap:nowrap}",
+"html.modo-escritorio .editTBtn,html.modo-escritorio .adminOnly{}",
+"html.modo-escritorio #navV2{display:flex!important;flex-direction:row!important;background:transparent!important;padding:2px 0 9px!important;max-height:none!important;overflow:visible!important}",
+"html.modo-escritorio #navV2 .nv2{width:auto!important;justify-content:center!important}",
+"html.modo-escritorio #navV2 .nv2menu{position:absolute!important;margin:0!important;box-shadow:0 18px 42px rgba(11,37,69,.3)!important;max-height:min(62vh,520px)!important;overflow-y:auto!important}",
+"/* Las ventanas emergentes se ajustan al lienzo, no a la pantalla física */",
+"html.modo-escritorio .modalBox,html.modo-escritorio #plantaEd > div{max-width:960px}",
+"",
+"/* Conmutador de vista */",
+"#btnVistaModo{position:fixed;left:12px;bottom:12px;z-index:99990;padding:9px 13px;border-radius:11px;",
+"  border:1px solid rgba(255,255,255,.25);background:#0f172a;color:#fff;font-size:12px;font-weight:800;",
+"  font-family:inherit;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.34);display:none;align-items:center;gap:7px}",
+"#btnVistaModo:active{transform:translateY(1px)}",
+"html.modo-escritorio #btnVistaModo{font-size:15px;padding:11px 16px;border-radius:13px}"
+].join("\n");
+  document.head.appendChild(st);
+}
+
+function montarBoton(){
+  if(document.getElementById("btnVistaModo"))return;
+  /* Se elimina cualquier conmutador de una versión anterior */
+  var viejo=document.getElementById("btnVistaModo");
+  if(viejo&&viejo.parentNode)viejo.parentNode.removeChild(viejo);
+
+  if(!document.getElementById("btnActualizar")){
+    var a=document.createElement("button");
+    a.id="btnActualizar";
+    a.textContent="🔄";
+    a.title="Descargar la última versión publicada";
+    a.style.cssText="position:fixed;left:12px;bottom:12px;z-index:99990;width:40px;height:40px;border-radius:11px;"+
+      "border:1px solid rgba(255,255,255,.25);background:#334155;color:#fff;font-size:17px;cursor:pointer;"+
+      "box-shadow:0 6px 18px rgba(0,0,0,.34);display:none;align-items:center;justify-content:center";
+    a.onclick=function(){
+      if(confirm("Se descargará la última versión publicada y se recargará la aplicación.\n\nLos cambios sin guardar en la nube se perderán.\n\n¿Continuar?"))
+        forzarActualizacion();
+    };
+    document.body.appendChild(a);
+  }
+  actualizarBoton();
+}
+function esTactilOAngosto(){
+  try{
+    if(window.matchMedia&&window.matchMedia("(pointer:coarse)").matches)return true;
+    if("ontouchstart" in window)return true;
+  }catch(e){}
+  return esAparatoPequeno();
+}
+function actualizarBoton(){
+  var a=document.getElementById("btnActualizar");
+  if(a)a.style.display=esTactilOAngosto()?"flex":"none";
+}
+
+/* ── Correcciones para que nada quede a medias en el lienzo fijo ── */
+function ajustesDeLienzo(){
+  if(!document.documentElement.classList.contains("modo-escritorio"))return;
+  /* Tablas anchas dentro de contenedores: se asegura el desplazamiento */
+  document.querySelectorAll("#mainContent table").forEach(function(t){
+    var p=t.parentElement;
+    if(p&&p.scrollWidth>p.clientWidth&&getComputedStyle(p).overflowX==="visible"){
+      p.style.overflowX="auto";
+    }
+  });
+}
+
+/* Sello de versión: permite confirmar de un vistazo qué archivo está cargado */
+var VERSION_APP="v2.7";
+function montarSelloVersion(){
+  var f=document.getElementById("footer");
+  if(!f||document.getElementById("selloVersion"))return;
+  var s=document.createElement("span");
+  s.id="selloVersion";s.className="fNote";
+  s.style.cssText="margin-left:10px;font-weight:800;color:#2563eb";
+  s.textContent="⬢ "+VERSION_APP;
+  f.appendChild(s);
+}
+
+/* Fuerza la descarga de la versión publicada, saltándose la copia guardada */
+function forzarActualizacion(){
+  var pasos=[];
+  try{
+    if("serviceWorker" in navigator){
+      pasos.push(navigator.serviceWorker.getRegistrations().then(function(rs){
+        return Promise.all(rs.map(function(r){return r.unregister();}));
+      }).catch(function(){}));
+    }
+    if(window.caches&&caches.keys){
+      pasos.push(caches.keys().then(function(ks){
+        return Promise.all(ks.map(function(k){return caches.delete(k);}));
+      }).catch(function(){}));
+    }
+  }catch(e){}
+  Promise.all(pasos).then(function(){
+    var u=location.origin+location.pathname+"?v="+Date.now();
+    location.replace(u);
+  });
+}
+
+/* Al arrancar se pide al service worker que compruebe si hay versión nueva */
+function revisarActualizacion(){
+  try{
+    if(!("serviceWorker" in navigator))return;
+    navigator.serviceWorker.getRegistrations().then(function(rs){
+      rs.forEach(function(r){try{r.update();}catch(e){}});
+    }).catch(function(){});
+  }catch(e){}
+}
+
+window.CTRLMOD6={
+  aplicarModo:aplicarModo,
+  forzarActualizacion:forzarActualizacion,
+  VERSION_APP:VERSION_APP,
+  modoActual:modoActual,
+  esAparatoPequeno:esAparatoPequeno,
+  ANCHO_ESCRITORIO:ANCHO_ESCRITORIO
+};
+
+inyectarEstilos();
+aplicarModo(modoActual(),false);
+revisarActualizacion();
+if(document.body)montarBoton();
+else document.addEventListener("DOMContentLoaded",montarBoton);
+
+if(typeof window.showApp==="function"){
+  var _showAppPrev=window.showApp;
+  window.showApp=function(){
+    var r=_showAppPrev.apply(this,arguments);
+    try{inyectarEstilos();montarBoton();montarSelloVersion();aplicarModo(modoActual(),false);
+        setTimeout(ajustesDeLienzo,350);}catch(e){}
+    return r;
+  };
+}
+window.addEventListener("orientationchange",function(){setTimeout(function(){aplicarModo(modoActual(),true);},250);});
 
 })();
 </script>
