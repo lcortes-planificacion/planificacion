@@ -2015,6 +2015,52 @@ body.sbOn #psmNubeAviso{left:calc(50% + var(--sbw,240px)/2)}
 #psmNubeAviso button.x{background:transparent;color:#cbd5e1;padding:4px 6px}
 html.psmMovil #psmNubeAviso{top:auto;bottom:12px;left:12px;right:12px;transform:none;flex-wrap:wrap;font-size:12px}
 html.psmMovil body.sbOn #psmNubeAviso{left:12px}
+/* v15: Cargar nube en la barra de arriba */
+.tbLoad{border:1px solid #93c5fd;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff;font-weight:700;font-size:12px;border-radius:8px;padding:6px 12px;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,.28);white-space:nowrap}
+.tbLoad:hover{filter:brightness(1.08)}
+.tbCloud,.tbLoad{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.tbI{font-size:13px;line-height:1}
+html.psmMovil #psmTopbar .tbR{gap:6px;flex-shrink:0}
+html.psmMovil .tbCloud,html.psmMovil .tbLoad{padding:6px 8px!important;font-size:10.5px!important;border-radius:7px;gap:3px}
+html.psmMovil .tbCloud .tbTx::after,html.psmMovil .tbLoad .tbTx::after{content:''}
+html.psmMovil #psmTopbar .tbL{min-width:0;flex:1 1 auto}
+html.psmMovil #tbTitle{font-size:15px!important;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+@media (max-width:420px){
+  html.psmMovil .tbCloud .tbTx,html.psmMovil .tbLoad .tbTx{font-size:0}
+  html.psmMovil .tbCloud .tbTx::before{content:'Guardar';font-size:10.5px}
+  html.psmMovil .tbLoad .tbTx::before{content:'Cargar';font-size:10.5px}
+}
+/* v15: nota "Arribo de repuestos" completa */
+.psmNota{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:100%!important;box-sizing:border-box;line-height:1.25}
+.psmNota.enCli{display:block!important;width:max-content;max-width:100%!important;margin-top:4px;font-size:10.5px!important;font-weight:600!important;padding:2px 7px!important}
+.psmNota.enCli b{font-weight:800}
+td.psmCli{overflow:visible!important}
+.psmNota.big{display:inline-block!important;font-size:11.5px!important;padding:3px 8px!important}
+.mbNota{margin-top:6px;display:flex;flex-wrap:wrap;gap:5px}
+/* v15: tiempos contractuales en celular y cuadros angostos: tarjetas */
+@container (max-width:520px){
+  .tiTbl,.tiTbl tbody{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important}
+  .tiTbl thead{display:none!important}
+  .tiTbl tbody tr{display:grid!important;grid-template-columns:1fr 1fr auto auto;gap:8px 8px;align-items:center;padding:9px 10px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:8px;background:#fff}
+  .tiTbl tbody tr:nth-child(even) td,.tiTbl tbody tr:hover td{background:transparent!important}
+  .tiTbl td{display:flex!important;align-items:center;gap:6px;padding:0!important;border:0!important;overflow:visible!important;text-align:left!important;min-width:0}
+  .tiTbl td:nth-child(1){grid-column:1/3;grid-row:1}
+  .tiTbl td:nth-child(5){grid-column:3;grid-row:1;justify-content:flex-end}
+  .tiTbl td:nth-child(2){grid-column:1;grid-row:2}
+  .tiTbl td:nth-child(3){grid-column:2/-1;grid-row:2}
+  .tiTbl td:nth-child(6){grid-column:4;grid-row:1;justify-content:flex-end}
+  .tiTbl td:nth-child(4){display:flex!important;grid-column:1/-1;grid-row:3}
+  .tiTbl td:nth-child(2)::before{content:'Desarme';font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase}
+  .tiTbl td:nth-child(3)::before{content:'Armado';font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase}
+  .tiTbl td:nth-child(4)::before{content:'Días';font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase}
+  .tiTbl select{font-size:13px!important;font-weight:700;padding:4px 0}
+  .tiN input{width:52px!important;font-size:13px!important;padding:4px!important}
+  .tiN small{display:inline!important;font-size:10px}
+  .tiSeg{flex-direction:row!important}
+  .tiSeg button{padding:4px 12px!important;font-size:11px!important}
+  .tiTot{font-size:12px!important;padding:3px 9px!important}
+  .tiTbl td.psmEmpty{grid-column:1/-1}
+}
 
 </style>
 </head>
@@ -2629,7 +2675,10 @@ let USUARIOS=[
   {usuario:"taller",      clave:"Taller1sman",    nombre:"Supervisor de taller",   rol:"suptaller"},
   {usuario:"compras",     clave:"Compras1sman",   nombre:"Compras",                rol:"compras"},
   {usuario:"machineshop", clave:"Mshop1sman",     nombre:"Supervisor MS",          rol:"supms"},
-  {usuario:"sman",        clave:"Gestion1sman",   nombre:"Gestión general",        rol:"gestion"}
+  {usuario:"sman",        clave:"Gestion1sman",   nombre:"Gestión general",        rol:"gestion"},
+  {usuario:"bmendoza",    clave:"Bmendoza1sman",  nombre:"Bryan Mendoza · Supervisor",   rol:"usuario"},
+  {usuario:"rwilliams",   clave:"Rwilliams1sman", nombre:"Richard Williams · Supervisor", rol:"usuario"},
+  {usuario:"calidad",     clave:"Calidad1sman",   nombre:"Control de calidad",     rol:"usuario"}
 ];
 let RESPONSABLES=["Produccion y Servicios","Leonardo Bravo","Richard Williams","Guillermo Arancibia","Jose Delgado","Jose Cortes","Humberto Guzman","Thomas Jimenez","Valeska Donoso","Empresa Externa","Marco Alfaro","Anders Avalos","Bryan Mendoza","Francis Ramirez","Cristian Balderrama","Schuarner Ayala","Maycol Vasquez","Jerald Lemus","Sebastian Ortiz","Luis Cortes","Ascanio Gallardo","Michel Diaz","Enrique Araya"];
 let MECANICOS=(function(){
@@ -19593,6 +19642,85 @@ function psmFerAplicar(){
 
 // un cambio hecho por la persona deja de ser "solo la carga de planillas"
 (function(){var b=psmSave;psmSave=function(silent){if(!silent&&!PSM_APLICANDO){try{localStorage.removeItem('psm_mig_only');}catch(e){}}return b.apply(this,arguments);};})();
+
+// ══════════════════════════════════════════════════════════════
+// v15: usuarios supervisores y control de calidad, "Cargar nube" arriba,
+//      nota "Arribo de repuestos" completa
+// ══════════════════════════════════════════════════════════════
+
+// ── usuarios nuevos (se agregan una sola vez a la lista guardada) ──
+var PSM_USERS_VER=2;
+function psmUsersNuevos(){
+  var ver=psmVerStd();
+  return [
+    {u:'bmendoza',clave:'Bmendoza1sman',n:'Bryan Mendoza · Supervisor',ver:ver.slice(),edit:['plansman','reporte','carga','planta'],desc:true},
+    {u:'rwilliams',clave:'Rwilliams1sman',n:'Richard Williams · Supervisor',ver:ver.slice(),edit:['plansman','reporte','carga','planta'],desc:true},
+    {u:'calidad',clave:'Calidad1sman',n:'Control de calidad',ver:ver.slice(),edit:['reporte'],desc:true}
+  ];
+}
+(function(){
+  var bd=psmUsersDef;psmUsersDef=function(){return bd().concat(psmUsersNuevos());};
+  var bu=psmUsers;psmUsers=function(){
+    var L=bu();
+    try{
+      if(PSM&&Array.isArray(PSM.usuarios)&&(PSM.usuariosVer||0)<PSM_USERS_VER){
+        psmUsersNuevos().forEach(function(n){if(!PSM.usuarios.some(function(x){return x.u===n.u;}))PSM.usuarios.push(n);});
+        PSM.usuariosVer=PSM_USERS_VER;
+        var esAdm=false;try{esAdm=!!(session&&session.rol==='admin');}catch(e){}
+        if(esAdm)psmSave(true);else{PSM_MERGING=true;try{psmSave(true);}finally{PSM_MERGING=false;}}
+        L=PSM.usuarios;
+      }
+    }catch(e){}
+    return L;
+  };
+  try{psmUsersSync();}catch(e){}
+})();
+
+// ── botón "Cargar nube" junto a "Guardar nube" en la barra de arriba ──
+function psmTbCargar(){
+  var r=document.querySelector('#psmTopbar .tbR');if(!r||r.querySelector('.tbLoad'))return;
+  var g=r.querySelector('.tbCloud');
+  var b=document.createElement('button');b.className='tbLoad';b.title='Traer lo último guardado en la nube';
+  b.innerHTML='<span class="tbI">⬇</span><span class="tbTx">Cargar nube</span>';
+  b.onclick=function(){jbinLoad(false);};
+  if(g){g.innerHTML='<span class="tbI">☁</span><span class="tbTx">Guardar nube</span>';r.insertBefore(b,g);}else r.appendChild(b);
+}
+(function(){
+  var t=0,iv=setInterval(function(){psmTbCargar();if(document.querySelector('#psmTopbar .tbLoad')||++t>60)clearInterval(iv);},500);
+  document.addEventListener('DOMContentLoaded',psmTbCargar);
+})();
+
+// ── nota de la planilla: "Arribo de repuestos", completa ──
+var PSM_NOTA_LBL={pp:'Arribo de repuestos'};
+function psmNotaLbl(p){return PSM_NOTA_LBL[p.k]||p.es;}
+(function(){
+  // tabla (computador)
+  var bc=psmCell;psmCell=function(r,p){
+    var h=bc(r,p);
+    return h.replace(/<span class="psmNota" title="[^"]*">📝 ([\s\S]*?)<\/span>/,function(_,v){return '<span class="psmNota" title="'+psmEsc(psmNotaLbl(p))+'">📦 '+psmEsc(psmNotaLbl(p))+': <b>'+v+'</b></span>';});
+  };
+  // ficha de la RAN
+  var bo=psmOpen;psmOpen=function(id){
+    var res=bo.apply(this,arguments);
+    try{var R=psmRow(id);document.querySelectorAll('#psmModal .psmNotasF .psmNota').forEach(function(s,i){var N=psmNotasRAN(R)[i];if(N)s.innerHTML='📦 '+psmEsc(psmNotaLbl(N.p))+': <b>'+psmEsc(N.v)+'</b>';});}catch(e){}
+    return res;
+  };
+  // tarjetas (celular)
+  var bt=psmRenderTabla;psmRenderTabla=function(body,a){
+    var res=bt.apply(this,arguments);
+    // computador: la nota se muestra completa bajo el cliente (la columna del proceso es angosta)
+    try{if(!psmMovilOn())body.querySelectorAll('tr').forEach(function(tr){
+      var c=tr.querySelector('td.psmCli');if(!c)return;
+      tr.querySelectorAll('td:not(.psmCli) .psmNota').forEach(function(n){n.classList.add('enCli');c.appendChild(n);});
+    });}catch(e){}
+    try{if(psmMovilOn())body.querySelectorAll('.mbC').forEach(function(c){
+      var m=(c.getAttribute('onclick')||'').match(/psmOpen\('([^']+)'/);if(!m)return;var R=psmRow(m[1]);if(!R)return;
+      var N=psmNotasRAN(R);if(!N.length)return;
+      c.insertAdjacentHTML('beforeend','<div class="mbNota">'+N.map(function(n){return '<span class="psmNota big">📦 '+psmEsc(psmNotaLbl(n.p))+': <b>'+psmEsc(n.v)+'</b></span>';}).join('')+'</div>');
+    });}catch(e){}
+    return res;
+  };
+})();
 
 </script>
 </body>
