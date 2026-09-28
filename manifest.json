@@ -1,13 +1,13 @@
 {
-  "name": "Planificación de Producción — SMAN Antofagasta",
-  "short_name": "Planificación",
-  "description": "Control de turno, ensamble y desarme de reductores. SM Cyclo de Chile Ltda.",
-  "start_url": "./Control_Turno_PIE_modificado.html",
+  "name": "Planificación SMAN — SM Cyclo Antofagasta",
+  "short_name": "Planificación SMAN",
+  "description": "Planificación de ensamble, desarme y Machine Shop. SM Cyclo de Chile Ltda.",
+  "start_url": "./Planificacion.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "theme_color": "#0f2a4a",
   "lang": "es-CL",
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

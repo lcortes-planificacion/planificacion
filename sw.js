@@ -1,16 +1,19 @@
 /* ══════════════════════════════════════════════════════════════
-   Service Worker — Planificación de Producción SMAN
+   Service Worker — Planificación SMAN
    Estrategia: red primero, caché como respaldo.
    Permite trabajar en zonas del taller sin señal.
    Sube este archivo a la raíz del repositorio "planificacion".
    ══════════════════════════════════════════════════════════════ */
-const CACHE = 'planificacion-v2';
+const CACHE = 'planificacion-sman-v8';
 const SHELL = [
-  './Control_Turno_PIE_modificado.html',
+  './Planificacion.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
 ];
 
 self.addEventListener('install', e => {
@@ -47,7 +50,7 @@ self.addEventListener('fetch', e => {
       })
       .catch(() =>
         caches.match(req, { ignoreSearch: true })
-          .then(hit => hit || caches.match('./Control_Turno_PIE_modificado.html', { ignoreSearch: true }))
+          .then(hit => hit || caches.match('./Planificacion.html', { ignoreSearch: true }))
       )
   );
 });
