@@ -21009,6 +21009,65 @@ function psmFotoPendSet(p){try{localStorage.setItem('psm_fotos_pend',JSON.string
   setInterval(function(){if(Object.keys(psmFotoPendGet()).length)psmFotosSincronizar();},60000);
 })();
 
+// ══════════════════════════════════════════════════════════════
+// v22: la nube (Supabase) no deja crear registros nuevos.
+//  · el aviso de cambios usa la hora del registro principal (que sí se puede escribir)
+//  · si la nube rechaza, la app no insiste a cada rato y explica qué falta
+// ══════════════════════════════════════════════════════════════
+var PSM_RLS={meta:false,pres:false,foto:false};
+function psmEsRLS(st,txt){return st===401||st===403||/42501|row-level security/i.test(txt||'');}
+function psmMainTs(){
+  return fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.main&select=updated_at',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY},cache:'no-store'})
+    .then(function(r){return r.ok?r.json():[];}).then(function(j){return (j&&j[0]&&j[0].updated_at)||'';}).catch(function(){return '';});
+}
+// cambios en la nube: manda la hora del registro principal; el nombre de quién guardó viene del aviso si existe
+var psmMetaGetBase=psmMetaGet;
+psmMetaGet=function(){
+  return Promise.all([psmMainTs(),PSM_RLS.meta?Promise.resolve(null):psmMetaGetBase()]).then(function(x){
+    var ts=x[0],m=x[1]||{};if(!ts)return null;
+    return {ts:ts,autor:m.autor||'otro equipo',u:m.u||'',dev:''};
+  });
+};
+var psmMetaPutBase=psmMetaPut;
+psmMetaPut=function(ts){
+  if(PSM_RLS.meta)return Promise.resolve();
+  var body=JSON.stringify({id:PSM_META_ID,data:JSON.stringify({ts:ts,autor:(typeof psmUser==='function'?psmUser():''),u:(session&&session.usuario)||'',dev:(typeof presDev==='function'?presDev():'')})});
+  return fetch(PSM_SUPA_URL+'/rest/v1/pie_data',{method:'POST',headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:body})
+    .then(function(r){if(!r.ok)return r.text().then(function(t){if(psmEsRLS(r.status,t))PSM_RLS.meta=true;});}).catch(function(){});
+};
+// después de guardar, la hora que queda "vista" es la del registro principal (así no me aviso a mí mismo)
+(function(){
+  var js=window.jbinSave;window.jbinSave=async function(){
+    var r=await js.apply(this,arguments);var ok=false;try{ok=isDirty===false;}catch(e){}
+    if(ok){var t=await psmMainTs();if(t){PSM_META_VISTO=t;PSM_CLOUD_TS=t;}}
+    return r;
+  };
+})();
+// presencia: si la nube no deja crear el registro, se deja de intentar (no molesta ni gasta datos)
+(function(){
+  var be=presEnviar;presEnviar=function(forzar,off){
+    if(PSM_RLS.pres)return;
+    var s=presYo();if(!s)return;
+    var E=off?{off:1}:presEstado(),clave=JSON.stringify(E);
+    if(!forzar&&clave===PRES.enviado)return;
+    PRES.enviado=clave;PRES.seq++;
+    var data={u:s.usuario,n:s.nombre||s.usuario,dev:presDev(),seq:PRES.seq,t:Date.now(),e:E};
+    try{fetch(PSM_SUPA_URL+'/rest/v1/pie_data',{method:'POST',keepalive:!!off,headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({id:'pres_'+s.usuario+'_'+presDev(),data:JSON.stringify(data),updated_at:new Date().toISOString()})})
+      .then(function(r){if(!r.ok)return r.text().then(function(t){if(psmEsRLS(r.status,t)){PSM_RLS.pres=true;}});}).catch(function(){});}catch(e){}
+  };
+})();
+// fotos: mensaje claro cuando falta el permiso en la nube
+(function(){
+  var bs2=psmFotoCloudSet2;psmFotoCloudSet2=function(id,arr){
+    return bs2(id,arr).then(function(x){
+      if(!x.ok&&psmEsRLS(+((x.msg||'').match(/error (\d+)/)||[0,0])[1],x.msg)){PSM_RLS.foto=true;x.msg='la nube todavía no tiene el permiso para guardar fotos';}
+      else if(x.ok)PSM_RLS.foto=false;
+      return x;
+    });
+  };
+})();
+
 </script>
 </body>
 </html>
