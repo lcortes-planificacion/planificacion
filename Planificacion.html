@@ -2061,6 +2061,141 @@ td.psmCli{overflow:visible!important}
   .tiTot{font-size:12px!important;padding:3px 9px!important}
   .tiTbl td.psmEmpty{grid-column:1/-1}
 }
+/* v16: desarme terminadas ocultas dentro de su mes */
+tr.psmFinOc,.mbC.psmFinOc{display:none}
+tr.psmFinOc.ver{display:table-row}
+.mbC.psmFinOc.ver{display:block}
+tr.psmFinOc.ver td{background:#f6fbf7}
+tr.psmFinTg td{padding:4px 10px!important;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+.psmFinB{display:inline-flex;align-items:center;gap:8px;border:1px dashed #86c49a;background:#f0fdf4;color:#166534;font-weight:700;font-size:12px;border-radius:8px;padding:5px 12px;cursor:pointer}
+.psmFinB:hover{background:#dcfce7}
+.psmFinB .ok{display:inline-flex;width:16px;height:16px;border-radius:50%;background:#16a34a;color:#fff;font-size:10px;align-items:center;justify-content:center}
+.psmFinB .ver,.psmFinB .ocu{color:#15803d;font-weight:800;margin-left:4px}
+.psmFinB .ocu{display:none}
+.open>td>.psmFinB .ver,.psmFinM.open .psmFinB .ver{display:none}
+.open>td>.psmFinB .ocu,.psmFinM.open .psmFinB .ocu{display:inline}
+.psmFinM{margin:2px 0 8px}
+.psmFinM .psmFinB{width:100%;justify-content:center;padding:9px 12px;font-size:13px}
+/* v16: tiempos de evaluación */
+.teCard{margin-top:14px}
+.teHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.teHead h4{margin:0 0 2px}
+.teHead span{font-size:12px;color:#64748b}
+.teSeg{display:inline-flex;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;flex-shrink:0}
+.teSeg button{border:0;background:#fff;color:#475569;font-size:12px;font-weight:700;padding:6px 11px;cursor:pointer}
+.teSeg button+button{border-left:1px solid #e2e8f0}
+.teSeg button.on{background:#1f3a5f;color:#fff}
+.teKs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.teK{border:1px solid #e2e8f0;border-top:4px solid var(--c);border-radius:12px;padding:12px 14px;background:#fff;display:flex;flex-direction:column;gap:4px;min-width:0}
+.teK small{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--c)}
+.teN{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.teN b{font-size:30px;line-height:1.1;color:#0f172a}
+.teN i{font-style:normal;font-size:12px;color:#64748b;font-weight:600}
+.tePz{font-size:11px;font-weight:800;border-radius:999px;padding:2px 8px}
+.tePz.ok{background:#dcfce7;color:#166534}.tePz.bad{background:#fee2e2;color:#991b1b}
+.teK em{font-style:normal;font-size:12px;color:#64748b;line-height:1.35}
+.teSub{font-size:11.5px;color:#475569}
+.teRara{color:#b45309;font-weight:700;cursor:help;text-decoration:underline dotted}
+.teCh{margin-top:12px}
+.teNo{color:#cbd5e1}
+html.psmMovil .teKs{grid-template-columns:1fr}
+@media (max-width:900px){.teKs{grid-template-columns:1fr}}
+/* v16: guardado automático (discreto) */
+.tbAuto{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(203,213,225,.85);white-space:nowrap;cursor:default}
+.tbAuto i{width:7px;height:7px;border-radius:50%;background:#94a3b8;flex-shrink:0}
+.tbAuto.ok i{background:#4ade80}.tbAuto.run i{background:#fbbf24;animation:tbAutoP 1s infinite}
+.tbAuto.err i{background:#f87171}.tbAuto.off i{background:#f59e0b}
+@keyframes tbAutoP{50%{opacity:.3}}
+html.psmMovil .tbAuto span{display:none}
+html.psmMovil .tbAuto{padding:0 2px}
+/* v17: presencia en tiempo real */
+.prGrp{display:inline-flex;align-items:center;cursor:pointer;padding-right:4px}
+.prAv{width:26px;height:26px;border-radius:50%;background:var(--pc,#64748b);color:#fff;font-style:normal;font-size:10.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;border:2px solid #0f1e3d;margin-left:-6px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.prAv:first-child{margin-left:0}
+.prAv.ed::after{content:'✏';position:absolute;right:-4px;bottom:-4px;width:13px;height:13px;border-radius:50%;background:#fbbf24;color:#000;font-size:8px;display:flex;align-items:center;justify-content:center;border:1px solid #fff}
+.prAv.mas{background:#334155;font-size:10px}
+html.psmMovil .prAv{width:22px;height:22px;font-size:9px}
+.prNav{display:inline-flex;margin-left:auto;padding-left:6px}
+.prNav i{width:18px;height:18px;border-radius:50%;background:var(--pc);color:#fff;font-style:normal;font-size:8px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-left:-4px;border:1.5px solid #13254a}
+body.sbMin .prNav{position:absolute;right:4px;top:2px}
+tr.prOn>td{box-shadow:inset 0 2px 0 var(--pc),inset 0 -2px 0 var(--pc)}
+tr.prOn>td:first-child{box-shadow:inset 3px 0 0 var(--pc),inset 0 2px 0 var(--pc),inset 0 -2px 0 var(--pc)}
+.rpCard.prOn,.mbC.prOn{outline:2px solid var(--pc);outline-offset:1px}
+tbody.msG.prOn>tr:first-child>td{box-shadow:inset 0 2px 0 var(--pc)}
+.prTag{display:inline-flex;align-items:center;gap:4px;background:var(--pc);color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px 1px 2px;margin:2px 2px 0 0;white-space:nowrap;line-height:16px;vertical-align:middle}
+.prTag b{display:inline-flex;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.28);font-size:8px;align-items:center;justify-content:center}
+.prTag.ed{animation:prPulse 1.6s infinite}
+@keyframes prPulse{50%{opacity:.7}}
+.rpCard>.prTag,.mbC>.prTag{position:absolute;top:-9px;right:10px;z-index:2}
+.rpCard.prOn,.mbC.prOn{position:relative}
+#prBan{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px;background:#fffbeb;border-bottom:1px solid #fde68a}
+#prBan span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#78350f}
+#prBan b{width:22px;height:22px;border-radius:50%;background:var(--pc);color:#fff;font-size:9px;display:inline-flex;align-items:center;justify-content:center}
+#prPop{position:fixed;top:56px;right:16px;z-index:9999;background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.22);padding:12px 14px;min-width:260px;max-width:min(360px,calc(100vw - 32px))}
+#prPop h4{margin:0 0 8px;font-size:13px}
+#prPop p{margin:0;font-size:12px;color:#64748b}
+.prIt{display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid #f1f5f9}
+.prIt .prAv{margin:0;border-color:#fff;flex-shrink:0}
+.prIt b{display:block;font-size:13px}.prIt small{font-size:11.5px;color:#475569}
+td.psmCli>.prTag{display:flex;width:max-content;margin:0 0 3px}
+.rpCard>.prTag{top:6px;right:8px}
+.mbC>.prTag{top:auto;bottom:6px;right:8px}
+/* v18: hoja para imprimir el mapa de planta */
+.pmExp{max-width:560px}
+.pmExpB{padding:16px 20px 20px;display:flex;flex-direction:column;gap:14px}
+.pmExpChk{font-size:13px;display:flex;gap:8px;align-items:center}
+.pmExpOps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pmExpOp{text-align:left;border:1px solid #cbd5e1;background:#fff;border-radius:12px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.pmExpOp:hover{border-color:#1d4ed8;background:#eff6ff}
+.pmExpOp b{font-size:15px;color:#0f172a}.pmExpOp span{font-size:12px;color:#475569;line-height:1.35}
+html.psmMovil .pmExpOps{grid-template-columns:1fr}
+#pmHojaBox{position:fixed;left:-30000px;top:0;z-index:-1;pointer-events:none}
+#pmHoja{background:#fff;padding:22px 24px 14px;font-family:'Segoe UI',system-ui,sans-serif;color:#0f172a;box-sizing:border-box}
+.phHead{display:flex;align-items:flex-end;gap:24px;border-bottom:3px solid #0f1e3d;padding-bottom:10px;margin-bottom:12px}
+.phHead>div:first-child{flex:1}
+.phHead small{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b45309}
+.phHead h1{margin:2px 0 2px;font-size:30px;line-height:1.1;color:#0f1e3d}
+.phHead p{margin:0;font-size:13px;color:#475569}
+.phSum{display:flex;gap:8px}
+.phSum span{display:flex;flex-direction:column;align-items:center;min-width:86px;border:1px solid #e2e8f0;border-radius:10px;padding:6px 10px;font-size:11px;color:#475569;font-weight:600}
+.phSum b{font-size:24px;line-height:1.1;color:#0f172a}
+.phSum .en b{color:#1d4ed8}.phSum .de b{color:#0d9488}.phSum .po b{color:#b45309}
+.phLeg{display:grid;grid-template-columns:repeat(3,auto);gap:4px 12px;font-size:11px;font-weight:600;color:#334155}
+.phLeg span{display:flex;align-items:center;gap:5px}
+.phLeg span::before{content:'';width:12px;height:12px;border-radius:3px;background:var(--c)}
+.phMap{position:relative}
+.phZ{position:absolute;display:flex;flex-direction:column;border-radius:9px;background:var(--zbg);border:1.5px solid var(--zb);overflow:hidden;--k:1}
+.phZh{display:flex;align-items:center;gap:6px;padding:4px 8px;background:var(--zc);color:#fff;font-size:12.5px;min-height:24px}
+.phZh b{flex:1;line-height:1.15}
+.phZh span{font-size:10.5px;font-weight:700;background:rgba(255,255,255,.22);border-radius:999px;padding:1px 7px;white-space:nowrap}
+.phZ.t-area .phZh{background:transparent;color:var(--zt);justify-content:center;text-align:center}
+.phZ.t-area .phZh b{flex:0 1 auto}
+.phZ.t-area .phZh span{background:var(--zs)}
+.phPer{display:flex;flex-wrap:wrap;gap:3px;padding:3px 6px 0}
+.phPer span{font-size:calc(10px*var(--k));background:#f1f5f9;color:#334155;border-radius:4px;padding:0 5px}
+.phL{flex:1;display:grid;gap:calc(4px*var(--k));padding:calc(5px*var(--k));align-content:start;overflow:hidden;min-height:0}
+.phC{border:1px solid #e2e8f0;border-left:4px solid var(--s);border-radius:6px;padding:calc(3px*var(--k)) calc(5px*var(--k));background:#fff;min-width:0}
+.phC1{display:flex;align-items:center;gap:4px;font-size:calc(13px*var(--k));line-height:1.2}
+.phC1 b{color:#0f172a}
+.phC1 i{font-style:normal;font-size:calc(8.5px*var(--k));font-weight:800;color:#fff;border-radius:3px;padding:0 3px}
+.phC1 i.en{background:#1d4ed8}.phC1 i.de{background:#0d9488}
+.phC1 u{text-decoration:none;font-size:calc(8.5px*var(--k));font-weight:800;color:#fff;background:var(--c);border-radius:3px;padding:0 3px;white-space:nowrap}
+.phC1 em{font-style:normal;margin-left:auto;font-weight:800;color:var(--s)}
+.phC2{font-size:calc(10.5px*var(--k));color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25}
+.phC3{display:flex;justify-content:space-between;gap:4px;font-size:calc(9.5px*var(--k));line-height:1.25;color:#64748b}
+.phC3 span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phC3 span:first-child{color:var(--s);font-weight:700}
+.phCb{height:3px;background:#eef1f5;border-radius:2px;margin-top:2px;overflow:hidden}
+.phCb i{display:block;height:100%;background:var(--s)}
+.phMas{grid-column:1/-1;font-size:calc(10px*var(--k));font-weight:700;color:#9a3412;background:#fff7ed;border:1px dashed #fdba74;border-radius:6px;padding:2px 6px}
+.phPool{margin-top:12px;border-top:1px solid #e2e8f0;padding-top:8px}
+.phPool h3{margin:0 0 6px;font-size:14px;color:#b45309}
+.phPool .phL{overflow:visible;padding:0}
+.phFoot{margin-top:8px;font-size:10px;color:#94a3b8;text-align:right}
+.phC1 u{overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto}
+.phC1 em,.phC1 b,.phC1 i{flex-shrink:0}
+html.psmMovil #tbCrumb{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+html.psmMovil #psmTopbar .tbL{overflow:hidden}
 
 </style>
 </head>
@@ -17297,7 +17432,7 @@ psmPdGo=function(){
 };
 psmRepPDF=function(ids,op){
   op=op||{};var fecha=PSM_R.fecha||psmToday();
-  var incl=ids.map(psmRow).filter(Boolean);
+  var incl=(ids||psmRepActivas().map(function(r){return r.id;})).map(psmRow).filter(Boolean);
   psmToast('Preparando el PDF de '+incl.length+' RAN…','#1d4ed8');
   Promise.all(incl.map(function(r){return op.fotos&&r.fotos?psmFotosGet(r.id).catch(function(){return [];}):Promise.resolve([]);})).then(function(fotos){
     var tot={plan:0,done:0,A:0,B:0};incl.forEach(function(r){var x=psmHH(r);tot.plan+=x.plan;tot.done+=x.done;tot.A+=x.tA;tot.B+=x.tB;});
@@ -18840,35 +18975,76 @@ function psmMergeCloud(cloud){
 }
 (function(){
   var orig=window.jbinSave;if(typeof orig!=='function')return;
+  var LOCAL_SOLO=/^psm_(dirty|dbase|cambio_ts|nube_ok|pres)|^psm_side|^psm_nav|^ctrl_tsVisto$/;
+  async function traerNube(){
+    var res=await fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.main&select=data,updated_at',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}});
+    if(!res.ok)return null;var rows=await res.json();if(!rows||!rows.length)return {ts:null,rec:null};
+    var rec=null;try{rec=JSON.parse(rows[0].data||'{}');}catch(e){rec=null;}
+    return {ts:rows[0].updated_at||null,rec:rec};
+  }
+  async function tsNube(){try{var r=await fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.main&select=updated_at',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}});if(!r.ok)return null;var j=await r.json();return (j&&j[0]&&j[0].updated_at)||null;}catch(e){return null;}}
+  function juntar(N){
+    var rec=N&&N.rec,cls=rec&&rec._allLS||null,cp=null;try{cp=cls&&cls.psm_v1?JSON.parse(cls.psm_v1):null;}catch(e){cp=null;}
+    if(!cp||!Array.isArray(cp.rows))return false;
+    if(psmRol()&&psmRol()!=='admin'){
+      // los perfiles que no son administrador no pisan datos de otras secciones
+      Object.keys(cls).forEach(function(k){if(k==='psm_v1'||LOCAL_SOLO.test(k))return;try{localStorage.setItem(k,cls[k]);}catch(e){}});
+      try{if(Array.isArray(rec.ensamble))ensamble=rec.ensamble;if(Array.isArray(rec.desarme))desarme=rec.desarme;}catch(e){}
+    }
+    PSM_MERGING=true;
+    try{PSM=psmMergeCloud(cp);psmSave(true);psmDSnap();try{psmSyncLegacy();}catch(e){}}finally{PSM_MERGING=false;}
+    return true;
+  }
   window.jbinSave=async function(){
     if(!psmPuedeEditarAlgo()){psmToast('Tu perfil es de solo lectura','#d03b3b');return;}
+    var subido=null,baseAntes=null;
     try{
-      psmLoad();
-      var res=await fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.main&select=data',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}});
-      if(res.ok){
-        var rows=await res.json(),rec=rows&&rows.length?JSON.parse(rows[0].data||'{}'):null;
-        var cls=rec&&rec._allLS||null,cp=null;try{cp=cls&&cls.psm_v1?JSON.parse(cls.psm_v1):null;}catch(e){cp=null;}
-        if(cp&&Array.isArray(cp.rows)){
-          if(psmRol()&&psmRol()!=='admin'){
-            // los perfiles que no son administrador no pisan datos de otras secciones
-            Object.keys(cls).forEach(function(k){if(k==='psm_v1'||k==='psm_dirty'||/^psm_side|^psm_nav/.test(k))return;try{localStorage.setItem(k,cls[k]);}catch(e){}});
-            try{if(Array.isArray(rec.ensamble))ensamble=rec.ensamble;if(Array.isArray(rec.desarme))desarme=rec.desarme;}catch(e){}
-          }
-          PSM_MERGING=true;
-          try{PSM=psmMergeCloud(cp);psmSave(true);psmDSnap();try{psmSyncLegacy();}catch(e){}}finally{PSM_MERGING=false;}
-        }
+      psmLoad();try{psmDMark();}catch(e){}
+      // se junta con la nube; si alguien guardó justo en ese momento, se vuelve a juntar
+      for(var vuelta=0;vuelta<3;vuelta++){
+        var N=await traerNube();if(!N)break;
+        var hubo=juntar(N);
+        if(N.ts)try{localStorage.setItem('ctrl_tsVisto',N.ts);}catch(e){}
+        if(!hubo)break;
+        var t2=await tsNube();
+        if(!t2||t2===N.ts)break;
       }
+      subido=psmDirtyFoto();baseAntes=psmDBaseGet();
     }catch(e){}
     try{isDirty=true;}catch(e){}
     var r=await orig.apply(this,arguments);
     var ok=false;try{ok=isDirty===false;}catch(e){}
-    if(ok){psmDirtySet({});psmDSnap();try{if(typeof renderCurrent==='function')renderCurrent();}catch(e){}}
+    if(ok){window.PSM_ULT_SUBIDO=subido?{f:subido,b:baseAntes||{}}:null;psmDirtyLimpiar(subido);try{if(typeof renderCurrent==='function')renderCurrent();}catch(e){}}
     return r;
   };
   var ol=window.jbinLoad;
   if(typeof ol==='function')window.jbinLoad=async function(){var r=await ol.apply(this,arguments);try{psmDirtySet({});psmLoad();psmDSnap();}catch(e){}return r;};
 })();
-
+// foto de lo que se sube: después de guardar solo se limpia lo que no cambió mientras se guardaba
+function psmDirtyFoto(){
+  var d=psmDirtyGet(),f={};
+  Object.keys(d).forEach(function(k){var o=psmDItem(k);f[k]=o===undefined?null:JSON.stringify(o);});
+  return f;
+}
+function psmDItem(k){
+  if(!PSM)return undefined;var t=k.slice(0,2),id=k.slice(2);
+  if(t==='r:'){for(var i=0;i<(PSM.rows||[]).length;i++)if(PSM.rows[i].id===id)return PSM.rows[i];return undefined;}
+  if(t==='m:'){var L=(PSM.ms&&PSM.ms.items)||[];for(var j=0;j<L.length;j++)if(L[j].id===id)return L[j];return undefined;}
+  if(t==='t:')return PSM[id];
+  return undefined;
+}
+function psmDirtyLimpiar(f){
+  if(!f){psmDirtySet({});psmDSnap();return;}
+  var d=psmDirtyGet(),b=psmDBaseGet(),nd={},nb={};
+  Object.keys(d).forEach(function(k){
+    if(k.charAt(0)==='_'){return;}
+    var o=psmDItem(k),cur=o===undefined?null:JSON.stringify(o);
+    if(k in f&&f[k]===cur)return; // subido tal cual
+    nd[k]=1;nb[k]=(k in f)?f[k]:b[k]; // cambió mientras se guardaba: la base pasa a ser lo subido
+  });
+  psmDirtySet(nd);psmDBaseSet(nb);
+  if(!Object.keys(nd).length)psmDSnap();
+}
 // ── perfil sin descargas (Gestión general / usuario sman) ──
 function psmSinDescargas(){return psmRol()==='gestion';}
 function psmNoDescMsg(){psmToast('🔒 Tu perfil no permite descargar información','#d03b3b');}
@@ -19424,7 +19600,8 @@ var PSM_ULT_CARGA=null,PSM_APLICANDO=false;
   var lb=psmLoad;
   psmLoad=function(){
     lb();
-    if(PSM&&PSM.dataVer!==PSM_DATA_VER&&!PSM_APLICANDO){
+    var hay=false;try{hay=!!session;}catch(e){}
+    if(hay&&PSM&&PSM.dataVer!==PSM_DATA_VER&&!PSM_APLICANDO){
       PSM_APLICANDO=true;
       try{psmAplicarPlanillas();}catch(e){try{console.error('carga planillas',e);}catch(x){}}
       PSM_APLICANDO=false;
@@ -19721,6 +19898,692 @@ function psmNotaLbl(p){return PSM_NOTA_LBL[p.k]||p.es;}
     return res;
   };
 })();
+
+// ══════════════════════════════════════════════════════════════
+// v16: desarme terminadas ocultas en su mes, tiempos de evaluación en el
+//      dashboard, nombres parecidos en Carga en planta, guardado automático
+// ══════════════════════════════════════════════════════════════
+
+// ── 1) Desarme: las RAN al 100% quedan en el mes en que se terminaron, ocultas ──
+function psmDeFinMes(r){
+  var f=r.ff_cs||'';
+  if(!f)PSM_PROC.de.forEach(function(p){var x=r['ff_'+p.k];if(x&&x>f)f=x;});
+  return f?f.slice(0,7):'';
+}
+(function(){
+  var bm=psmMes;psmMes=function(r){
+    if(r&&r.a==='de'&&!r.mesM&&psmAv(r)>=100){var m=psmDeFinMes(r);if(m)return m;}
+    return bm(r);
+  };
+})();
+var PSM_FIN_OPEN={};
+function psmFinTog(m){PSM_FIN_OPEN[m]=!PSM_FIN_OPEN[m];
+  document.querySelectorAll('[data-fin-mes="'+m+'"]').forEach(function(e){e.classList.toggle('open',!!PSM_FIN_OPEN[m]);});
+  document.querySelectorAll('.psmFinOc[data-mes="'+m+'"]').forEach(function(e){e.classList.toggle('ver',!!PSM_FIN_OPEN[m]);});
+}
+function psmFinBtn(m,n){
+  return '<button type="button" class="psmFinB" onclick="psmFinTog(\''+m+'\')"><span class="ok">✓</span> '+n+' RAN terminada'+(n>1?'s':'')+' en '+psmEsc(psmMesLbl(m))+
+    '<span class="ver">Mostrar ▾</span><span class="ocu">Ocultar ▴</span></button>';
+}
+(function(){
+  var bt=psmRenderTabla;psmRenderTabla=function(body,a){
+    var res=bt.apply(this,arguments);
+    try{
+      if(a!=='de'||(PSM_F.q||'').trim())return res;
+      if(psmMovilOn()){
+        // tarjetas: se agrupan al final de cada mes
+        var list=body.querySelector('.mbList');if(!list)return res;
+        var grupos=[],g=null;
+        [].slice.call(list.children).forEach(function(el){
+          if(el.classList.contains('mbSep')){g={sep:el,fin:[],last:el};grupos.push(g);return;}
+          if(!g)return;g.last=el;
+          var m=(el.getAttribute('onclick')||'').match(/psmOpen\('([^']+)'/),r=m&&psmRow(m[1]);
+          if(r&&psmAv(r)>=100)g.fin.push({el:el,r:r});
+        });
+        grupos.forEach(function(g){
+          if(!g.fin.length)return;var mes=psmMes(g.fin[0].r);
+          var w=document.createElement('div');w.className='psmFinM'+(PSM_FIN_OPEN[mes]?' open':'');w.setAttribute('data-fin-mes',mes);
+          w.innerHTML=psmFinBtn(mes,g.fin.length);
+          var ref=g.last.nextSibling;list.insertBefore(w,ref);
+          g.fin.forEach(function(x){x.el.classList.add('psmFinOc');x.el.setAttribute('data-mes',mes);if(PSM_FIN_OPEN[mes])x.el.classList.add('ver');list.insertBefore(x.el,ref);});
+        });
+        return res;
+      }
+      var tb=body.querySelector('#psmTb');if(!tb)return res;
+      var ncol=(tb.closest('table').querySelectorAll('thead th')||[]).length||14;
+      var by={},orden=[];
+      tb.querySelectorAll('tr.psmRow').forEach(function(tr){var m=tr.dataset.mes;if(!by[m]){by[m]={last:null,fin:[]};orden.push(m);}by[m].last=tr;var r=psmRow(tr.dataset.id);if(r&&psmAv(r)>=100)by[m].fin.push(tr);});
+      orden.forEach(function(m){
+        var G=by[m];if(!G.fin.length)return;
+        // el último visible del mes (si todos están terminados, el separador)
+        var vis=[].slice.call(tb.querySelectorAll('tr.psmRow[data-mes="'+m+'"]')).filter(function(t){return G.fin.indexOf(t)<0;});
+        var ref=vis.length?vis[vis.length-1]:null;
+        if(!ref){ref=G.fin[0].previousElementSibling;}
+        var tg=document.createElement('tr');tg.className='psmFinTg'+(PSM_FIN_OPEN[m]?' open':'');tg.setAttribute('data-fin-mes',m);
+        tg.innerHTML='<td colspan="'+ncol+'">'+psmFinBtn(m,G.fin.length)+'</td>';
+        ref.parentNode.insertBefore(tg,ref.nextSibling);
+        var after=tg;
+        G.fin.forEach(function(tr){tr.classList.add('psmFinOc');if(PSM_FIN_OPEN[m])tr.classList.add('ver');after.parentNode.insertBefore(tr,after.nextSibling);after=tr;});
+      });
+    }catch(e){try{console.error('desarme ocultas',e);}catch(x){}}
+    return res;
+  };
+})();
+
+// ── 2) Dashboard desarme: tiempos entre etapas ──
+var PSM_TE_PER='6';
+var PSM_TE=[
+  {id:'met',de:'sd',a:'me',t:'Inicio → END / Metrología',s:'Desde que parte la evaluación hasta terminar END y metrología',c:'#2563eb'},
+  {id:'inf',de:'re',a:'rs',t:'Informe → Informe enviado',s:'Desde que se termina el informe hasta que se envía al cliente',c:'#0d9488'},
+  {id:'cos',de:'rs',a:'cs',t:'Informe enviado → Costeo',s:'Desde que se envía el informe hasta que se envía el costeo',c:'#b45309',ref:2}
+];
+var PSM_FER_SET=null;
+function psmFerSet(){
+  if(PSM_FER_SET)return PSM_FER_SET;PSM_FER_SET={};
+  try{var y=new Date().getFullYear();for(var a=y-3;a<=y+1;a++){var F=psmFeriadosChile(a);Object.keys(F).forEach(function(k){PSM_FER_SET[k]=1;});}}catch(e){}
+  return PSM_FER_SET;
+}
+// días hábiles transcurridos (mismo día = 0), sin fines de semana ni feriados
+function psmHabEntre(a,b){
+  var d1=psmDate(a),d2=psmDate(b);if(d2<d1)return -1;var F=psmFerSet(),n=0;
+  for(var d=new Date(d1);d<d2;d.setDate(d.getDate()+1)){var x=new Date(d);x.setDate(x.getDate()+1);var w=x.getDay(),iso=x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');if(w!==0&&w!==6&&!F[iso])n++;}
+  return n;
+}
+function psmCorr(a,b){return Math.round((psmDate(b)-psmDate(a))/864e5);}
+function psmFechaEt(r,k){return r['ff_'+k]||r['fi_'+k]||'';}
+function psmTiemposDe(rows){
+  var desde='';if(PSM_TE_PER!=='todo'){var m=psmAddM(psmToday().slice(0,7),-(+PSM_TE_PER-1));desde=m+'-01';}
+  return PSM_TE.map(function(T){
+    var ok=[],raras=[];
+    rows.forEach(function(r){
+      var f1=psmFechaEt(r,T.de),f2=psmFechaEt(r,T.a);if(!f1||!f2)return;
+      if(desde&&f2<desde)return;
+      var c=psmCorr(f1,f2);
+      if(c<0||c>120){raras.push(r);return;}
+      ok.push({r:r,f1:f1,f2:f2,d:psmHabEntre(f1,f2),c:c});
+    });
+    var ds=ok.map(function(x){return x.d;}).sort(function(a,b){return a-b;});
+    var n=ds.length,avg=n?ds.reduce(function(s,v){return s+v;},0)/n:0,med=n?(n%2?ds[(n-1)/2]:(ds[n/2-1]+ds[n/2])/2):0;
+    var cavg=n?ok.reduce(function(s,x){return s+x.c;},0)/n:0;
+    return {T:T,ok:ok,raras:raras,n:n,avg:avg,med:med,max:n?ds[n-1]:0,min:n?ds[0]:0,cavg:cavg};
+  });
+}
+function psmF1(v){return (Math.round(v*10)/10).toString().replace('.',',');}
+function psmTiemposHTML_de(deAll){
+  var S=psmTiemposDe(deAll);PSM_TE_LAST=S;
+  var per=[['3','3 meses'],['6','6 meses'],['12','12 meses'],['todo','Todo']];
+  var h='<div class="psmCard teCard"><div class="teHead"><div><h4>⏱️ Tiempos de evaluación</h4><span>Promedio en días hábiles (sin fines de semana ni feriados), según la fecha de término de cada tramo</span></div>'+
+    '<div class="teSeg">'+per.map(function(p){return '<button class="'+(PSM_TE_PER===p[0]?'on':'')+'" onclick="PSM_TE_PER=\''+p[0]+'\';psmRender()">'+p[1]+'</button>';}).join('')+'</div></div>';
+  h+='<div class="teKs">'+S.map(function(s){
+    var est=s.T.ref?(s.avg<=s.T.ref?'ok':'bad'):'';
+    return '<div class="teK" style="--c:'+s.T.c+'"><small>'+psmEsc(s.T.t)+'</small>'+
+      '<div class="teN"><b>'+(s.n?psmF1(s.avg):'—')+'</b><i>días háb.</i>'+(est?'<span class="tePz '+est+'">'+(est==='ok'?'en plazo':'sobre')+' ('+s.T.ref+' d)</span>':'')+'</div>'+
+      '<em>'+psmEsc(s.T.s)+'</em>'+
+      '<div class="teSub">'+(s.n?'Mediana <b>'+psmF1(s.med)+'</b> · mín <b>'+s.min+'</b> · máx <b>'+s.max+'</b> · '+psmF1(s.cavg)+' días corridos':'Sin datos en el período')+'</div>'+
+      '<div class="teSub">'+s.n+' RAN con las dos fechas'+(s.raras.length?' · <span class="teRara" title="Fecha de término antes del inicio o más de 120 días: '+psmEsc(s.raras.map(function(r){return r.ran;}).join(', '))+'">'+s.raras.length+' con fechas por revisar</span>':'')+'</div></div>';
+  }).join('')+'</div>';
+  h+='<div class="psmCharts two teCh"><div class="psmCard"><h4>Promedio por mes (días hábiles)</h4><div class="psmCv"><canvas id="psmC6"></canvas></div></div>'+
+    '<div class="psmCard"><h4>Cuántas RAN por rango de días</h4><div class="psmCv"><canvas id="psmC7"></canvas></div></div></div>';
+  // las más demoradas
+  var M={};S.forEach(function(s,i){s.ok.forEach(function(x){var o=M[x.r.id]||(M[x.r.id]={r:x.r,d:[null,null,null]});o.d[i]=x.d;});});
+  var L=Object.keys(M).map(function(k){var o=M[k];o.t=o.d.reduce(function(s,v){return s+(v||0);},0);return o;}).sort(function(a,b){return b.t-a.t;}).slice(0,10);
+  var cel=function(v,i){if(v==null)return '<td class="c teNo">—</td>';var lim=i===2?2:(S[i].avg||0);var cl=v>lim*1.5&&v>2?'bad':v<=lim?'ok':'';return '<td class="c"><span class="psmPz '+cl+'">'+v+' d</span></td>';};
+  h+='<div class="psmCard"><h4>Las que más se demoraron en el período</h4>'+(L.length?'<div class="psmTblWrap"><table class="psmTbl mini"><thead><tr><th>RAN</th><th>Cliente</th><th>Modelo</th><th class="c">Inicio → END/Met.</th><th class="c">Informe → Enviado</th><th class="c">Enviado → Costeo</th></tr></thead><tbody>'+
+    L.map(function(o){var r=o.r;return '<tr><td><button class="psmRan" onclick="psmOpen(\''+r.id+'\')">'+psmEsc(r.ran)+'</button></td><td>'+psmEsc(r.cli||'')+'</td><td class="psmMod">'+psmEsc(r.mod||'')+'</td>'+o.d.map(cel).join('')+'</tr>';}).join('')+
+    '</tbody></table></div>':'<p class="psmEmpty">No hay RAN con fechas suficientes en el período.</p>')+'</div></div>';
+  return h;
+}
+var PSM_TE_LAST=null;
+(function(){
+  var bd=psmRenderDash;psmRenderDash=function(body){
+    var res=bd.apply(this,arguments);
+    try{
+      var sec=body.querySelector('.psmDSec.de .psmDB');if(!sec)return res;
+      var deAll=PSM.rows.filter(function(r){return r.a==='de'&&(!PSM_F.cli||r.cli===PSM_F.cli);});
+      sec.insertAdjacentHTML('beforeend',psmTiemposHTML_de(deAll));
+      if(typeof Chart==='undefined'||!PSM_TE_LAST)return res;
+      var S=PSM_TE_LAST,grid='#e7e5e0';
+      // por mes
+      var meses=[],n=PSM_TE_PER==='todo'?12:+PSM_TE_PER,m0=psmAddM(psmToday().slice(0,7),-(n-1));
+      if(PSM_TE_PER==='todo'){var mn='';S.forEach(function(s){s.ok.forEach(function(x){var mm=x.f2.slice(0,7);if(!mn||mm<mn)mn=mm;});});if(mn)m0=mn;}
+      for(var m=m0;m<=psmToday().slice(0,7);m=psmAddM(m,1))meses.push(m);
+      if(meses.length>18)meses=meses.slice(meses.length-18);
+      var ds=S.map(function(s){var sum={},cnt={};s.ok.forEach(function(x){var k=x.f2.slice(0,7);sum[k]=(sum[k]||0)+x.d;cnt[k]=(cnt[k]||0)+1;});
+        return {label:s.T.t,data:meses.map(function(k){return cnt[k]?Math.round(sum[k]/cnt[k]*10)/10:null;}),backgroundColor:s.T.c,borderRadius:4,maxBarThickness:18,_n:meses.map(function(k){return cnt[k]||0;})};});
+      PSM_CH.c6=new Chart(document.getElementById('psmC6'),{type:'bar',data:{labels:meses.map(function(x){var l=psmMesLbl(x);return l.slice(0,3)+' '+l.slice(-2);}),datasets:ds},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,usePointStyle:true}},tooltip:{callbacks:{label:function(c){var nn=c.dataset._n[c.dataIndex];return ' '+c.dataset.label+': '+String(c.raw).replace('.',',')+' d ('+nn+' RAN)';}}}},
+          scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid},border:{display:false},ticks:{precision:0}}}}});
+      // distribución
+      var B=[['0–1',0,1],['2–3',2,3],['4–5',4,5],['6–10',6,10],['11–20',11,20],['21+',21,1e9]];
+      var ds2=S.map(function(s){return {label:s.T.t,data:B.map(function(b){return s.ok.filter(function(x){return x.d>=b[1]&&x.d<=b[2];}).length;}),backgroundColor:s.T.c,borderRadius:4,maxBarThickness:18};});
+      PSM_CH.c7=new Chart(document.getElementById('psmC7'),{type:'bar',data:{labels:B.map(function(b){return b[0]+' d';}),datasets:ds2},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,usePointStyle:true}},tooltip:{callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.raw+' RAN';}}}},
+          scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid},border:{display:false},ticks:{precision:0}}}}});
+    }catch(e){try{console.error('tiempos desarme',e);}catch(x){}}
+    return res;
+  };
+})();
+
+// ── 3) Nombres escritos distinto (Cristhian / Christian / Cristian) ──
+function psmNomKey(s){
+  return psmNorm(s).replace(/h/g,'').replace(/([a-z])\1+/g,'$1').replace(/y/g,'i').replace(/z/g,'s').replace(/v/g,'b');
+}
+function psmLev(a,b){if(a===b)return 0;var m=a.length,n=b.length;if(!m)return n;if(!n)return m;var p=[],i,j;for(j=0;j<=n;j++)p[j]=j;
+  for(i=1;i<=m;i++){var prev=p[0];p[0]=i;for(j=1;j<=n;j++){var t=p[j];p[j]=Math.min(p[j]+1,p[j-1]+1,prev+(a[i-1]===b[j-1]?0:1));prev=t;}}return p[n];}
+function psmMismaPersona(a,b){
+  var x=psmNomKey(a).split(' ').filter(Boolean),y=psmNomKey(b).split(' ').filter(Boolean);
+  if(!x.length||!y.length)return false;
+  if(x.join(' ')===y.join(' '))return true;
+  // nombre parecido y mismo apellido
+  if(x.length>=2&&y.length>=2){
+    var ap=x[x.length-1]===y[y.length-1]||x.slice(1).some(function(w){return y.slice(1).indexOf(w)>=0;});
+    if(ap&&psmLev(x[0],y[0])<=2&&x[0].slice(0,2)===y[0].slice(0,2))return true;
+  }
+  return false;
+}
+(function(){
+  var bp=psmPersonMatch;psmPersonMatch=function(p,s){
+    if(bp(p,s))return true;
+    return psmSplitNames(s).some(function(x){return psmMismaPersona(p,x);});
+  };
+  // en el selector de encargados se muestra un solo nombre por persona (el del personal)
+  var bn=psmNames;psmNames=function(){
+    var L=bn(),R=[];try{R=psmRoster().map(function(p){return p.n;});}catch(e){}
+    var out={};R.forEach(function(n){out[n]=1;});
+    L.forEach(function(n){if(R.some(function(r){return r===n||psmMismaPersona(r,n);}))return;out[n]=1;});
+    return Object.keys(out).sort(function(a,b){return a.localeCompare(b,'es');});
+  };
+})();
+
+// ── 4) Guardado automático en la nube (cada minuto, solo si hay cambios) ──
+var PSM_AUTO={on:false,busy:false,ult:null};
+function psmAutoHay(){
+  try{if(psmHayCambiosLocales())return true;}catch(e){}
+  try{if(typeof isDirty!=='undefined'&&isDirty)return true;}catch(e){}
+  try{if(session&&session.rol==='admin'){var c=+localStorage.getItem('psm_cambio_ts')||0,n=+localStorage.getItem('psm_nube_ok')||0;if(c>n)return true;}}catch(e){}
+  return false;
+}
+function psmAutoOcupado(){
+  var a=document.activeElement;
+  if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'||a.isContentEditable))return true;
+  if(document.querySelector('#psmPop,#psmFrm,#psmLock'))return true;
+  if(document.body.classList.contains('pnlEdit'))return true;
+  return false;
+}
+function psmAutoChip(txt,cls,tit){
+  var r=document.querySelector('#psmTopbar .tbR');if(!r)return;
+  var c=r.querySelector('.tbAuto');
+  if(!c){c=document.createElement('span');c.className='tbAuto';var ref=r.querySelector('.tbLoad')||r.querySelector('.tbCloud');r.insertBefore(c,ref);}
+  c.className='tbAuto '+(cls||'');c.innerHTML='<i></i><span>'+txt+'</span>';c.title=tit||'';
+}
+async function psmAutoGuardar(){
+  if(PSM_AUTO.busy)return;
+  try{if(typeof session==='undefined'||!session)return;}catch(e){return;}
+  if(!psmPuedeEditarAlgo()||!psmAutoHay())return;
+  if(!navigator.onLine){psmAutoChip('Sin internet','off','Tus cambios quedan en este equipo. Se suben solos cuando vuelva internet.');return;}
+  if(psmAutoOcupado())return; // se intenta en el próximo minuto
+  PSM_AUTO.busy=true;PSM_AUTO.on=true;psmAutoChip('Guardando…','run','Guardando tus cambios en la nube');
+  var oc=window.confirm,om=window.showJBinMsg,ot=window.psmToast,orc=window.renderCurrent;
+  window.confirm=function(t){return !/menos de la mitad/i.test(String(t||''));};
+  window.showJBinMsg=function(){};window.psmToast=function(){};
+  if(typeof orc==='function')window.renderCurrent=function(){};
+  var ok=false;
+  try{await window.jbinSave();ok=(typeof isDirty==='undefined'||isDirty===false)&&!psmHayCambiosLocales();}catch(e){ok=false;}
+  finally{window.confirm=oc;window.showJBinMsg=om;window.psmToast=ot;if(typeof orc==='function')window.renderCurrent=orc;PSM_AUTO.busy=false;PSM_AUTO.on=false;}
+  var h=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+  if(ok){PSM_AUTO.ult=h;psmAutoChip('Guardado '+h,'ok','Guardado automático en la nube a las '+h+'. Se guarda solo cada minuto cuando hay cambios.');}
+  else psmAutoChip('No se pudo guardar','err','No se pudo guardar solo. Se vuelve a intentar en un minuto; también puedes presionar Guardar nube.');
+}
+(function(){
+  // marca de cambios (para el administrador, que sube todo)
+  var bs=psmSave;psmSave=function(sil){var r=bs.apply(this,arguments);try{if(!PSM_MERGING&&!PSM_AUTO.on&&!PSM_APLICANDO)localStorage.setItem('psm_cambio_ts',String(Date.now()));}catch(e){}return r;};
+  var js=window.jbinSave;window.jbinSave=async function(){var t=Date.now();var r=await js.apply(this,arguments);var ok=false;try{ok=isDirty===false;}catch(e){}
+    if(ok){try{localStorage.setItem('psm_nube_ok',String(t));}catch(e){}if(!PSM_AUTO.on){var h=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});psmAutoChip('Guardado '+h,'ok','Guardado en la nube a las '+h);}}
+    return r;};
+  var jl=window.jbinLoad;window.jbinLoad=async function(){var r=await jl.apply(this,arguments);try{localStorage.setItem('psm_nube_ok',String(Date.now()));}catch(e){}return r;};
+  setInterval(psmAutoGuardar,60000);
+  window.addEventListener('online',function(){setTimeout(psmAutoGuardar,4000);});
+  // si se cierra la pestaña con cambios sin subir, se avisa
+  window.addEventListener('beforeunload',function(e){try{if(session&&psmPuedeEditarAlgo()&&psmHayCambiosLocales()){e.preventDefault();e.returnValue='';}}catch(x){}});
+})();
+
+// ══════════════════════════════════════════════════════════════
+// v17: guardado que junta por campo (varias personas a la vez) y
+//      presencia en tiempo real (quién está dónde y qué edita)
+// ══════════════════════════════════════════════════════════════
+
+// ── 1) Cambios propios con su "base" (cómo estaba al traerlo de la nube) ──
+var PSM_TOP_SYNC=['planta','plantaHist','personal','turnos']; // secciones que editan otros perfiles
+var PSM_TOP_AREA={planta:'planta',plantaHist:'planta',personal:'carga',turnos:'turnos'};
+var PSM_ULT_ACCION=0; // última vez que la persona tocó algo (los ajustes automáticos al abrir no cuentan como cambios)
+function psmAccion(ev){
+  try{if(!session)return;}catch(e){return;}
+  if(ev&&ev.target&&ev.target.closest&&ev.target.closest('#loginScreen'))return; // entrar no es un cambio
+  PSM_ULT_ACCION=Date.now();
+}
+document.addEventListener('pointerdown',psmAccion,true);
+document.addEventListener('keydown',psmAccion,true);
+document.addEventListener('change',psmAccion,true);
+(function(){var dl=window.doLogin;if(typeof dl==='function')window.doLogin=async function(){var r=await dl.apply(this,arguments);PSM_ULT_ACCION=0;setTimeout(function(){PSM_ULT_ACCION=0;},3000);return r;};})();
+function psmDBaseGet(){try{return JSON.parse(localStorage.getItem('psm_dbase')||'{}')||{};}catch(e){return {};}}
+function psmDBaseSet(b){try{localStorage.setItem('psm_dbase',JSON.stringify(b||{}));}catch(e){}}
+(function(){
+  var ds=psmDirtySet;psmDirtySet=function(d){ds(d);if(!d||!Object.keys(d).length)psmDBaseSet({});};
+})();
+psmDSnap=function(){
+  PSM_DS={};PSM_DSOBJ=PSM;if(!PSM)return;
+  (PSM.rows||[]).forEach(function(r){PSM_DS['r:'+r.id]=JSON.stringify(r);});
+  ((PSM.ms&&PSM.ms.items)||[]).forEach(function(i){PSM_DS['m:'+i.id]=JSON.stringify(i);});
+  PSM_TOP_SYNC.forEach(function(k){PSM_DS['t:'+k]=PSM[k]===undefined?'__u':JSON.stringify(PSM[k]);});
+};
+psmDMark=function(){
+  if(!PSM)return;if(!PSM_DS||PSM_DSOBJ!==PSM){psmDSnap();return;}
+  var d=psmDirtyGet(),b=null,ch=false,seen={};
+  var chk=function(k,o){seen[k]=1;var j=o===undefined?'__u':JSON.stringify(o);if(PSM_DS[k]!==j){
+    if(!d[k]){if(!b)b=psmDBaseGet();if(!(k in b))b[k]=(PSM_DS[k]===undefined||PSM_DS[k]==='__u')?null:PSM_DS[k];}
+    d[k]=1;ch=true;PSM_DS[k]=j;}};
+  (PSM.rows||[]).forEach(function(r){chk('r:'+r.id,r);});
+  ((PSM.ms&&PSM.ms.items)||[]).forEach(function(i){chk('m:'+i.id,i);});
+  PSM_TOP_SYNC.forEach(function(k){
+    var j=PSM[k]===undefined?'__u':JSON.stringify(PSM[k]);if(PSM_DS['t:'+k]===j){seen['t:'+k]=1;return;}
+    var puede=false;try{puede=psmCanEdit(PSM_TOP_AREA[k]);}catch(e){}
+    if(!puede||Date.now()-PSM_ULT_ACCION>10000){seen['t:'+k]=1;PSM_DS['t:'+k]=j;return;} // ajuste automático: no se sube
+    chk('t:'+k,PSM[k]);
+  });
+  Object.keys(PSM_DS).forEach(function(k){if(!seen[k]){if(!d[k]){if(!b)b=psmDBaseGet();if(!(k in b))b[k]=PSM_DS[k];}d[k]=1;ch=true;delete PSM_DS[k];}});
+  if(b)psmDBaseSet(b);
+  if(ch)psmDirtySet(d);
+};
+
+// ── 2) Juntar por campo: solo se sube lo que yo cambié, el resto queda como en la nube ──
+function psmEsObj(x){return x!==null&&typeof x==='object'&&!Array.isArray(x);}
+function psmClaveIt(x){return psmEsObj(x)?(x.id!=null?'id:'+x.id:(x.n!=null?'n:'+x.n:(x.k!=null?'k:'+x.k:null))):null;}
+function psmJuntarListas(c,l,b){
+  // listas de cosas con id o nombre: se junta elemento por elemento
+  var todos=c.concat(l,b);if(!todos.length||!todos.every(function(x){return psmClaveIt(x)!=null;}))return JSON.parse(JSON.stringify(l));
+  var mp=function(L){var o={};L.forEach(function(x){o[psmClaveIt(x)]=x;});return o;};
+  var C=mp(c),Lm=mp(l),B=mp(b),out=[],usados={};
+  c.forEach(function(x){var k=psmClaveIt(x);
+    if(k in B&&!(k in Lm))return;                      // lo quité yo
+    if(k in Lm&&k in B){out.push(JSON.stringify(Lm[k])===JSON.stringify(B[k])?x:psmJuntarCampos(x,Lm[k],B[k]));}
+    else if(k in Lm&&!(k in B)){out.push(Lm[k]);}       // lo agregué yo y otro también
+    else out.push(x);
+    usados[k]=1;});
+  l.forEach(function(x){var k=psmClaveIt(x);if(!usados[k]&&!(k in B))out.push(JSON.parse(JSON.stringify(x)));}); // nuevos míos
+  return out;
+}
+function psmJuntarCampos(c,l,b){
+  if(Array.isArray(c)&&Array.isArray(l)&&Array.isArray(b))return psmJuntarListas(c,l,b);
+  if(!psmEsObj(c)||!psmEsObj(l)||!psmEsObj(b))return l===undefined?undefined:JSON.parse(JSON.stringify(l));
+  var res=JSON.parse(JSON.stringify(c)),ks={};
+  Object.keys(l).forEach(function(k){ks[k]=1;});Object.keys(b).forEach(function(k){ks[k]=1;});
+  Object.keys(ks).forEach(function(k){
+    if(JSON.stringify(l[k])===JSON.stringify(b[k]))return; // no lo cambié yo
+    if((psmEsObj(l[k])&&psmEsObj(b[k])&&psmEsObj(c[k]))||(Array.isArray(l[k])&&Array.isArray(b[k])&&Array.isArray(c[k])))res[k]=psmJuntarCampos(c[k],l[k],b[k]);
+    else if(l[k]===undefined)delete res[k];
+    else res[k]=JSON.parse(JSON.stringify(l[k]));
+  });
+  return res;
+}
+function psmBaseDe(B,k){var s=B[k];if(s==null)return null;try{return JSON.parse(s);}catch(e){return null;}}
+psmMergeList=function(cl,ll,pre,d){
+  var B=psmDBaseGet(),cm={},lm={};(cl||[]).forEach(function(x){cm[x.id]=x;});(ll||[]).forEach(function(x){lm[x.id]=x;});
+  var out=[];
+  (ll||[]).forEach(function(x){
+    var k=pre+x.id;
+    if(d[k]||d.__todo){var b=psmBaseDe(B,k),c=cm[x.id];out.push(b&&c&&!d.__todo?psmJuntarCampos(c,x,b):x);}
+    else if(cm[x.id])out.push(cm[x.id]);
+  });
+  (cl||[]).forEach(function(x){if(!lm[x.id]&&!d[pre+x.id]&&!d.__todo)out.push(x);});
+  return out;
+};
+psmMergeCloud=function(cloud){
+  var d=psmDirtyGet(),B=psmDBaseGet(),loc=PSM,adm=psmRol()==='admin'||!psmRol();
+  var M=JSON.parse(JSON.stringify(adm?loc:cloud));
+  M.rows=psmMergeList(cloud.rows,loc.rows,'r:',d);
+  var cms=(cloud.ms&&cloud.ms.items)||null,lms=(loc.ms&&loc.ms.items)||[];
+  if(cms||lms.length){M.ms=M.ms||{};M.ms.items=cms?psmMergeList(cms,lms,'m:',d):lms;if(!adm&&loc.ms&&loc.ms.imp&&d.__msimp)M.ms.imp=loc.ms.imp;}
+  // planta, carga y turnos: cada uno sube solo lo que cambió
+  PSM_TOP_SYNC.forEach(function(k){
+    var dk='t:'+k;
+    if(d[dk]||d.__todo){
+      var b=psmBaseDe(B,dk);
+      if(b!=null&&cloud[k]!==undefined&&!d.__todo){var v=psmJuntarCampos(cloud[k],loc[k],b);if(v===undefined)delete M[k];else M[k]=v;}
+      else if(cloud[k]===undefined||d.__todo){if(loc[k]!==undefined)M[k]=JSON.parse(JSON.stringify(loc[k]));}
+      else M[k]=JSON.parse(JSON.stringify(cloud[k])); // sin base no se pisa lo de la nube
+    }else if(cloud[k]!==undefined)M[k]=JSON.parse(JSON.stringify(cloud[k]));
+  });
+  var seen={},lg=[];(cloud.log||[]).concat(loc.log||[]).forEach(function(e){var kk=e.t+'|'+e.u+'|'+e.ran+'|'+(e.c||[]).join('/');if(seen[kk])return;seen[kk]=1;lg.push(e);});
+  lg.sort(function(a,b){return a.t<b.t?-1:a.t>b.t?1:0;});if(lg.length>2500)lg=lg.slice(lg.length-2500);M.log=lg;
+  return M;
+};
+// ── 3) Cambios de otros: si no tengo nada pendiente se traen solos; si tengo, se juntan al guardar ──
+(function(){
+  var ba=psmAvisoNube;psmAvisoNube=function(meta){
+    try{
+      if(!meta)return ba(meta);
+      var mios=psmHayCambiosLocales();
+      if(!mios&&!psmAutoOcupado()){
+        jbinLoad(true).then(function(){var h=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});psmAutoChip('Al día '+h,'ok','Se trajeron solos los cambios de '+(meta.autor||'otro usuario')+' ('+h+')');});
+        return;
+      }
+      if(mios&&psmPuedeEditarAlgo()){setTimeout(psmAutoGuardar,1500);return;}
+    }catch(e){}
+    return ba(meta);
+  };
+})();
+
+// ── 4) PRESENCIA EN TIEMPO REAL ──────────────────────────────
+var PRES={dev:'',seq:0,id:'',gk:'',ed:false,lastKey:0,otros:{},visto:{},avisados:{},enviado:'',pintando:false,timer:null};
+function presDev(){if(PRES.dev)return PRES.dev;try{PRES.dev=localStorage.getItem('psm_pres_dev')||'';if(!PRES.dev){PRES.dev=Math.random().toString(36).slice(2,8);localStorage.setItem('psm_pres_dev',PRES.dev);}}catch(e){PRES.dev=Math.random().toString(36).slice(2,8);}return PRES.dev;}
+function presYo(){try{return session&&session.usuario?session:null;}catch(e){return null;}}
+function presNom(n){return String(n||'').split('·')[0].trim();}
+function presIni(n){var p=presNom(n).split(/\s+/).filter(Boolean);return ((p[0]||'?')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+function presCol(u){var h=0;String(u).split('').forEach(function(c){h=(h*31+c.charCodeAt(0))>>>0;});var C=['#e11d48','#7c3aed','#0891b2','#ea580c','#16a34a','#c026d3','#2563eb','#ca8a04','#0d9488','#dc2626'];return C[h%C.length];}
+function presVista(){
+  var v='';try{v=currentView||'';}catch(e){}
+  if(v==='plansman'){try{v+=':'+(PSM_F.sub||'');}catch(e){}}
+  if(v==='reporte'){try{v+=':'+(PSM_R.tab||'');}catch(e){}}
+  if(v==='ms'){try{v+=':'+(MS_F.sub||'');}catch(e){}}
+  return v;
+}
+function presVistaTxt(v){
+  var p=String(v||'').split(':'),b=p[0],s=p[1]||'';
+  var T={};try{PSM_VIEWS.forEach(function(x){T[x[0]]=x[1];});}catch(e){}
+  var t=T[b]||(typeof PSM_VIEW_TITLES!=='undefined'&&PSM_VIEW_TITLES[b])||b||'Inicio';
+  var S={en:'Ensamble',de:'Desarme',dash:'Dashboard',caja:'Terminadas',cur:'En curso',fin:'Terminadas'};
+  return t+(S[s]?' · '+S[s]:'');
+}
+function presCtxDe(el){
+  if(!el||!el.closest)return null;
+  var x=el.closest('[data-rid]');if(x)return {id:x.getAttribute('data-rid')};
+  x=el.closest('tr.psmRow[data-id]');if(x)return {id:x.getAttribute('data-id')};
+  x=el.closest('.mbC');if(x){var m=(x.getAttribute('onclick')||'').match(/psmOpen\('([^']+)'/);if(m)return {id:m[1]};}
+  x=el.closest('tbody.msG[data-gk]');if(x)return {gk:x.getAttribute('data-gk')};
+  x=el.closest('[data-pres-id]');if(x)return {id:x.getAttribute('data-pres-id')};
+  return null;
+}
+function presModalId(){var m=document.getElementById('psmModal');return m&&m.getAttribute('data-pres-id')||'';}
+function presEstado(){
+  var id=presModalId()||PRES.id,gk=id?'':PRES.gk;
+  var a=document.activeElement,foco=a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'||a.isContentEditable)&&!(a.id==='lUser'||a.id==='lPass');
+  var ed=!!(document.getElementById('psmFrm')||document.getElementById('psmPop')||foco||(Date.now()-PRES.lastKey<15000));
+  if(!id&&!gk&&!foco)ed=false;
+  var r=id&&typeof psmRow==='function'?psmRow(id):null;
+  return {v:presVista(),id:id||'',ran:r?String(r.ran):'',a:r?r.a:'',gk:gk||'',ed:ed};
+}
+function presEnviar(forzar,off){
+  var s=presYo();if(!s)return;
+  var E=off?{off:1}:presEstado(),clave=JSON.stringify(E);
+  if(!forzar&&clave===PRES.enviado)return;
+  PRES.enviado=clave;PRES.seq++;
+  var data={u:s.usuario,n:s.nombre||s.usuario,dev:presDev(),seq:PRES.seq,t:Date.now(),e:E};
+  try{fetch(PSM_SUPA_URL+'/rest/v1/pie_data',{method:'POST',keepalive:!!off,headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify({id:'pres_'+s.usuario+'_'+presDev(),data:JSON.stringify(data),updated_at:new Date().toISOString()})}).catch(function(){});}catch(e){}
+}
+function presLeer(){
+  var s=presYo();if(!s||document.hidden)return;
+  fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=like.pres_*&select=id,data',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}})
+    .then(function(r){return r.ok?r.json():[];}).then(function(L){
+      var ahora=Date.now(),O={};
+      (L||[]).forEach(function(row){
+        var d=null;try{d=JSON.parse(row.data||'{}');}catch(e){}if(!d||!d.u||d.u===s.usuario)return;
+        var v=PRES.visto[row.id];
+        if(!v||v.seq!==d.seq){PRES.visto[row.id]={seq:d.seq,at:(v?ahora:(Math.abs(ahora-(d.t||0))<45000?ahora:0))};}
+        var at=PRES.visto[row.id].at;
+        if(!at||ahora-at>45000||!d.e||d.e.off)return;
+        // si la misma persona está en dos equipos, se muestra el más reciente
+        if(!O[d.u]||O[d.u].t<d.t)O[d.u]={u:d.u,n:d.n,t:d.t,e:d.e};
+      });
+      PRES.otros=O;presPintar();presAvisos();
+    }).catch(function(){});
+}
+function presTxt(o){
+  var e=o.e||{},t=presVistaTxt(e.v);
+  if(e.ran)t+=' · '+(e.ed?'editando':'viendo')+' RAN '+e.ran+(e.a?(e.a==='en'?' (ensamble)':' (desarme)'):'');
+  else if(e.gk)t+=' · '+(e.ed?'editando':'viendo')+' '+e.gk.split('|').pop();
+  else if(e.ed)t+=' · editando';
+  return t;
+}
+function presPintar(){
+  if(PRES.pintando)return;PRES.pintando=true;
+  try{
+    var O=PRES.otros,L=Object.keys(O).map(function(k){return O[k];}).sort(function(a,b){return presNom(a.n).localeCompare(presNom(b.n));});
+    // barra de arriba
+    var r=document.querySelector('#psmTopbar .tbR');
+    if(r){var g=r.querySelector('.prGrp');if(!g){g=document.createElement('span');g.className='prGrp';r.insertBefore(g,r.firstChild);g.onclick=function(ev){ev.stopPropagation();presLista();};}
+      var max=psmMovilOn()?1:5;
+      g.innerHTML=L.slice(0,max).map(function(o){return '<i class="prAv'+(o.e.ed?' ed':'')+'" style="--pc:'+presCol(o.u)+'" title="'+psmEsc(presNom(o.n)+' — '+presTxt(o))+'">'+psmEsc(presIni(o.n))+'</i>';}).join('')+(L.length>max?'<i class="prAv mas">+'+(L.length-max)+'</i>':'');
+      g.style.display=L.length?'':'none';g.title=L.length?L.length+' conectado(s) ahora · clic para ver dónde está cada uno':'';}
+    // menú lateral: quién está en cada pestaña
+    document.querySelectorAll('.prNav').forEach(function(x){x.remove();});
+    var porV={};L.forEach(function(o){var b=String(o.e.v||'').split(':')[0]||'inicio';(porV[b]=porV[b]||[]).push(o);});
+    Object.keys(porV).forEach(function(v){
+      var al={list:'plansman',des:'plansman',gantt2:'gantt',tempcal:'tempario'};
+      var btn=document.querySelector('#navV2 [data-view="'+v+'"]')||document.querySelector('#navV2 [data-view="'+(al[v]||v)+'"]');if(!btn)return;
+      var s=document.createElement('span');s.className='prNav';
+      s.innerHTML=porV[v].slice(0,3).map(function(o){return '<i style="--pc:'+presCol(o.u)+'" title="'+psmEsc(presNom(o.n)+' — '+presTxt(o))+'">'+psmEsc(presIni(o.n))+'</i>';}).join('');
+      btn.appendChild(s);
+    });
+    // marcas en la RAN donde está cada uno
+    document.querySelectorAll('.prTag').forEach(function(x){x.remove();});
+    document.querySelectorAll('.prOn').forEach(function(x){x.classList.remove('prOn','prEd');x.style.removeProperty('--pc');});
+    L.forEach(function(o){
+      var e=o.e;if(!e.id&&!e.gk)return;
+      var tag='<span class="prTag'+(e.ed?' ed':'')+'" style="--pc:'+presCol(o.u)+'" title="'+psmEsc(presNom(o.n)+' — '+presTxt(o))+'"><b>'+psmEsc(presIni(o.n))+'</b>'+psmEsc(presNom(o.n).split(' ')[0])+(e.ed?' ✏️ editando':' 👁')+'</span>';
+      var els=[];
+      if(e.id){
+        document.querySelectorAll('tr.psmRow[data-id="'+e.id+'"],[data-rid="'+e.id+'"]').forEach(function(x){els.push(x);});
+        document.querySelectorAll('.mbC').forEach(function(x){if((x.getAttribute('onclick')||'').indexOf("'"+e.id+"'")>=0)els.push(x);});
+      }
+      if(e.gk)document.querySelectorAll('tbody.msG').forEach(function(x){if(x.getAttribute('data-gk')===e.gk)els.push(x);});
+      els.forEach(function(x){
+        x.classList.add('prOn');if(e.ed)x.classList.add('prEd');x.style.setProperty('--pc',presCol(o.u));
+        var host=x.tagName==='TR'?(x.querySelector('td.psmCli')||x.cells[2]||x.cells[0]):x.tagName==='TBODY'?(x.querySelector('td')):x;
+        if(host)host.insertAdjacentHTML(x.tagName==='TR'?'afterbegin':x.tagName==='TBODY'?'beforeend':'afterbegin',tag);
+      });
+    });
+    // ficha abierta: quién más está en esta RAN
+    var mid=presModalId(),box=document.querySelector('#psmModal .psmMBox,#psmModal>div');
+    var ban=document.getElementById('prBan');if(ban)ban.remove();
+    if(mid&&box){var aq=L.filter(function(o){return o.e.id===mid;});
+      if(aq.length){box.insertAdjacentHTML('afterbegin','<div id="prBan">'+aq.map(function(o){return '<span style="--pc:'+presCol(o.u)+'"><b>'+psmEsc(presIni(o.n))+'</b>'+psmEsc(presNom(o.n))+(o.e.ed?' está <u>editando</u> esta RAN':' está viendo esta RAN')+'</span>';}).join('')+'</div>');}}
+  }catch(e){try{console.error('presencia',e);}catch(x){}}
+  setTimeout(function(){PRES.pintando=false;},0);
+}
+function presAvisos(){
+  var yo=presEstado();if(!yo.ed||(!yo.id&&!yo.gk))return;
+  Object.keys(PRES.otros).forEach(function(u){
+    var o=PRES.otros[u];if(!o.e.ed)return;
+    var mismo=(yo.id&&o.e.id===yo.id)||(yo.gk&&o.e.gk===yo.gk);if(!mismo)return;
+    var k=u+'|'+(yo.id||yo.gk);if(PRES.avisados[k]&&Date.now()-PRES.avisados[k]<300000)return;PRES.avisados[k]=Date.now();
+    psmToast('Ojo: '+presNom(o.n)+' está editando esto mismo ahora. Lo que cambien en datos distintos se junta; si cambian el mismo dato, queda el último que guarde.','#b45309');
+  });
+}
+function presLista(){
+  var old=document.getElementById('prPop');if(old){old.remove();return;}
+  var O=PRES.otros,L=Object.keys(O).map(function(k){return O[k];});
+  var p=document.createElement('div');p.id='prPop';
+  p.innerHTML='<h4>Conectados ahora ('+L.length+')</h4>'+(L.length?L.map(function(o){return '<div class="prIt"><i class="prAv'+(o.e.ed?' ed':'')+'" style="--pc:'+presCol(o.u)+'">'+psmEsc(presIni(o.n))+'</i><div><b>'+psmEsc(presNom(o.n))+'</b><small>'+psmEsc(presTxt(o))+'</small></div></div>';}).join(''):'<p>No hay nadie más conectado.</p>');
+  document.body.appendChild(p);
+  setTimeout(function(){document.addEventListener('pointerdown',function f(ev){if(!p.contains(ev.target)){p.remove();document.removeEventListener('pointerdown',f);}});},0);
+}
+(function(){
+  // la ficha guarda qué RAN tiene abierta
+  var bo=psmOpen;psmOpen=function(id){var r=bo.apply(this,arguments);try{var m=document.getElementById('psmModal');if(m)m.setAttribute('data-pres-id',id);PRES.id=id;presCambio();setTimeout(presPintar,30);}catch(e){}return r;};
+  var bf=psmForm;psmForm=function(id){var r=bf.apply(this,arguments);try{var m=document.getElementById('psmModal');if(m&&id)m.setAttribute('data-pres-id',id);if(id)PRES.id=id;presCambio();}catch(e){}return r;};
+  var bc=psmClose;psmClose=function(){var r=bc.apply(this,arguments);presCambio();return r;};
+  // tarjetas del reporte con su RAN
+  if(typeof psmRepCard==='function'){var brc=psmRepCard;psmRepCard=function(r,ed){var h=brc.apply(this,arguments);return h.replace(/<div([^>]*class="rpCard)/,'<div data-rid="'+r.id+'"$1');};}
+  var vez=function(ev){var c=presCtxDe(ev.target);if(c){PRES.id=c.id||'';PRES.gk=c.gk||'';}else if(!ev.target.closest||!ev.target.closest('#psmModal,#psmPop,#psmTopbar,#psmSide,.psmModal,#prPop')){PRES.id='';PRES.gk='';}presCambio();};
+  document.addEventListener('pointerdown',vez,true);
+  document.addEventListener('focusin',vez,true);
+  document.addEventListener('keydown',function(ev){if(ev.target&&(ev.target.id==='lUser'||ev.target.id==='lPass'))return;PRES.lastKey=Date.now();presCambio();},true);
+  document.addEventListener('focusout',function(){setTimeout(presCambio,50);},true);
+  var cambioT=null;window.presCambio=function(){clearTimeout(cambioT);cambioT=setTimeout(function(){presEnviar(false);},700);};
+  // cambios de pestaña
+  var t=0;setInterval(function(){var v=presVista();if(v!==PRES._v){PRES._v=v;presCambio();}},1000);
+  setInterval(function(){presEnviar(true);},15000);           // sigo conectado
+  setInterval(presLeer,6000);                                  // quién más está
+  setInterval(function(){if(Date.now()-PRES.lastKey>15000&&PRES._ed){PRES._ed=false;presCambio();}if(Date.now()-PRES.lastKey<15000)PRES._ed=true;},5000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden){presEnviar(true);presLeer();}});
+  window.addEventListener('pagehide',function(){presEnviar(true,true);});
+  var bl=window.doLogout;if(typeof bl==='function')window.doLogout=function(){presEnviar(true,true);PRES.otros={};return bl.apply(this,arguments);};
+  // al volver a dibujar una pestaña, se vuelven a poner las marcas
+  var mo=new MutationObserver(function(){if(PRES.pintando||!Object.keys(PRES.otros).length)return;clearTimeout(PRES.timer);PRES.timer=setTimeout(presPintar,250);});
+  var ini=setInterval(function(){var m=document.getElementById('mainContent');if(m&&presYo()){mo.observe(m,{childList:true,subtree:true});clearInterval(ini);presEnviar(true);setTimeout(presLeer,1500);}},1000);
+})();
+
+// ── 5) Después de guardar se revisa que lo mío haya quedado en la nube
+//       (si dos guardaron en el mismo segundo, se vuelve a subir lo que faltó) ──
+var PSM_VERIF={n:0};
+async function psmVerificarSubida(S){
+  if(!S||!S.f)return;
+  await new Promise(function(r){setTimeout(r,600+Math.random()*900);});
+  var cp=null;
+  try{var res=await fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.main&select=data',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}});
+    if(!res.ok)return;var rows=await res.json();var rec=JSON.parse(rows[0].data||'{}');cp=JSON.parse(rec._allLS.psm_v1);}catch(e){return;}
+  var item=function(k){var t=k.slice(0,2),id=k.slice(2);if(t==='r:')return (cp.rows||[]).filter(function(x){return x.id===id;})[0];if(t==='m:')return ((cp.ms&&cp.ms.items)||[]).filter(function(x){return x.id===id;})[0];if(t==='t:')return cp[id];};
+  var falta=[];
+  Object.keys(S.f).forEach(function(k){
+    if(k.charAt(0)==='_')return;
+    var U=S.f[k]==null?undefined:JSON.parse(S.f[k]),Bs=S.b[k],B=Bs==null?null:JSON.parse(Bs),C=item(k);
+    if(U===undefined){if(C!==undefined)falta.push(k);return;} // lo borré y sigue
+    if(C===undefined){falta.push(k);return;}
+    if(!psmEsObj(U)||!psmEsObj(B)){if(B!=null&&JSON.stringify(C)===JSON.stringify(B)&&JSON.stringify(U)!==JSON.stringify(B))falta.push(k);return;}
+    var ks={};Object.keys(U).forEach(function(x){ks[x]=1;});Object.keys(B).forEach(function(x){ks[x]=1;});
+    // se perdió solo si volvió al valor antiguo (si otro lo cambió después a otra cosa, se respeta)
+    var ok=Object.keys(ks).every(function(x){var u=JSON.stringify(U[x]),bb=JSON.stringify(B[x]),c=JSON.stringify(C[x]);if(u===bb)return true;return c!==bb;});
+    if(!ok)falta.push(k);
+  });
+  if(!falta.length){PSM_VERIF.n=0;return;}
+  if(++PSM_VERIF.n>3){PSM_VERIF.n=0;psmAutoChip('Revisa: no se pudo subir todo','err','Varias personas guardaron al mismo tiempo. Presiona Guardar nube.');return;}
+  var d=psmDirtyGet(),b=psmDBaseGet();
+  falta.forEach(function(k){d[k]=1;if(!(k in b))b[k]=S.b[k]==null?null:S.b[k];});
+  psmDirtySet(d);psmDBaseSet(b);
+  setTimeout(function(){PSM_AUTO.busy=false;psmAutoGuardar();},300);
+}
+(function(){
+  var js=window.jbinSave;window.jbinSave=async function(){
+    window.PSM_ULT_SUBIDO=null;
+    var r=await js.apply(this,arguments);
+    var S=window.PSM_ULT_SUBIDO;window.PSM_ULT_SUBIDO=null;
+    if(S)psmVerificarSubida(S);
+    return r;
+  };
+})();
+
+// ══════════════════════════════════════════════════════════════
+// v18: Mapa de planta como imagen (PNG) o PDF para imprimir
+// ══════════════════════════════════════════════════════════════
+var PM_HOJA={pool:true};
+function pmImprimir(){
+  if(typeof psmSinDescargas==='function'&&psmSinDescargas()){psmNoDescMsg();return;}
+  psmClose();
+  var m=document.createElement('div');m.id='psmModal';m.className='psmModal';m.onclick=function(e){if(e.target===m)psmClose();};
+  m.innerHTML='<div class="psmMBox pmExp"><div class="psmMHead"><div><h3>🖨 Imprimir mapa de planta</h3><small>Sale el mapa completo, con todas las RAN de cada zona, en una hoja horizontal.</small></div><button class="psmMX" onclick="psmClose()">✕</button></div>'+
+    '<div class="pmExpB">'+
+      '<label class="pmExpChk"><input type="checkbox" id="pmExpPool"'+(PM_HOJA.pool?' checked':'')+'> Agregar abajo la lista de RAN sin ubicar</label>'+
+      '<div class="pmExpOps">'+
+        '<button class="pmExpOp" onclick="pmExportar(\'pdf\')"><b>📄 PDF / Imprimir</b><span>Abre la hoja lista para imprimir. Para PDF elige “Guardar como PDF” en la impresora.</span></button>'+
+        '<button class="pmExpOp" onclick="pmExportar(\'png\')"><b>🖼 Imagen (PNG)</b><span>Se descarga y queda copiada para pegarla en un correo o WhatsApp.</span></button>'+
+      '</div></div></div>';
+  document.body.appendChild(m);
+}
+function pmMix(hex,p,con){ // mezcla un color con blanco (o negro) — html2canvas no entiende color-mix
+  var m=String(hex||'#64748b').replace('#','');if(m.length===3)m=m.split('').map(function(c){return c+c;}).join('');
+  var n=parseInt(m,16);if(isNaN(n))n=0x64748b;var r=n>>16&255,g=n>>8&255,b=n&255,o=con==='negro'?0:255;
+  var f=function(x){return Math.round(x*p+o*(1-p));};
+  return 'rgb('+f(r)+','+f(g)+','+f(b)+')';
+}
+function pmHojaHTML(conPool){
+  var P=pmData(),ub=pmUbicadas(),W=1680,COL=W/PM_COLS,ROW=64;
+  var maxY=P.zonas.reduce(function(mx,z){return Math.max(mx,z.y+z.h);},0);
+  var nE=0,nD=0;P.zonas.forEach(function(z){z.rans.forEach(function(id){var r=psmRow(id);if(!r)return;if(r.a==='en')nE++;else nD++;});});
+  var pool=PSM.rows.filter(function(r){if(ub[r.id])return false;var e=psmEstado(r);return !(psmAv(r)>=100||e==='Facturado'||e==='Despachado'||e==='Costeo enviado');})
+    .sort(function(x,y){if(x.a!==y.a)return x.a==='en'?-1:1;return (+x.ran||0)-(+y.ran||0);});
+  var ahora=new Date(),fecha=ahora.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),hora=ahora.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+  var quien='';try{quien=presNom(session.nombre||session.usuario);}catch(e){}
+  var chip=function(r){
+    var av=psmAv(r),col=pmCardCol(r),e=psmEstado(r),fl=psmFlag(r),enc=psmSplitNames(r.mec);
+    return '<div class="phC" style="--s:'+col+'"><div class="phC1"><b>'+psmEsc(r.ran)+'</b><i class="'+r.a+'">'+(r.a==='en'?'ENS':'DES')+'</i>'+(fl&&fl.t!==e?'<u style="--c:'+fl.c+'">'+psmEsc(fl.t)+'</u>':'')+'<em>'+av+'%</em></div>'+
+      '<div class="phC2">'+psmEsc((r.cli||'').replace(/^(MINERA|COMPA[ÑN]IA MINERA|SOC\.? CONTRACTUAL MINERA)\s+/i,''))+'</div>'+
+      '<div class="phC3"><span>'+psmEsc(e)+'</span>'+(enc.length?'<span>👷 '+psmEsc(enc[0].split(' ')[0]+(enc.length>1?' +'+(enc.length-1):''))+'</span>':'')+'</div>'+
+      '<div class="phCb"><i style="width:'+av+'%"></i></div></div>';
+  };
+  var h='<div id="pmHoja" style="width:'+(W+48)+'px">'+
+    '<div class="phHead"><div><small>SM Cyclo de Chile · SMAN Antofagasta</small><h1>'+psmEsc(P.titulo||'Mapa de planta')+'</h1><p>'+psmEsc(fecha.charAt(0).toUpperCase()+fecha.slice(1))+' · '+hora+(quien?' · '+psmEsc(quien):'')+'</p></div>'+
+      '<div class="phSum"><span><b>'+(nE+nD)+'</b>RAN en planta</span><span class="en"><b>'+nE+'</b>Ensamble</span><span class="de"><b>'+nD+'</b>Desarme</span><span class="po"><b>'+pool.length+'</b>Sin ubicar</span></div>'+
+      '<div class="phLeg"><span style="--c:#16a34a">≥ 75%</span><span style="--c:#ca8a04">40–74%</span><span style="--c:#ea580c">&lt; 40%</span><span style="--c:#e11d48">Emergencia</span><span style="--c:#f97316">Urgencia</span><span style="--c:#7f1d1d">Detenido</span></div></div>'+
+    '<div class="phMap" style="height:'+(maxY*ROW)+'px">';
+  P.zonas.forEach(function(z){
+    var rs=z.rans.map(psmRow).filter(Boolean),e=rs.filter(function(r){return r.a==='en';}).length,d=rs.length-e;
+    var cols=z.w>=3?3:z.w>=2?2:1;
+    h+='<div class="phZ t-'+z.t+'" style="left:'+(z.x*COL+3)+'px;top:'+(z.y*ROW+3)+'px;width:'+(z.w*COL-6)+'px;height:'+(z.h*ROW-6)+'px;--zc:'+z.c+';--zb:'+pmMix(z.c,.5)+';--zbg:'+(z.t==='area'?pmMix(z.c,.09):'#fff')+';--zt:'+pmMix(z.c,.75,'negro')+';--zs:'+pmMix(z.c,.15)+'">'+
+      '<div class="phZh"><b>'+psmEsc(z.n)+'</b>'+(rs.length?'<span>'+(e?e+' ENS':'')+(e&&d?' · ':'')+(d?d+' DES':'')+'</span>':'')+'</div>'+
+      (z.per&&z.per.length?'<div class="phPer">'+z.per.map(function(p){return '<span>'+psmEsc(p)+'</span>';}).join('')+'</div>':'')+
+      '<div class="phL" style="grid-template-columns:repeat('+cols+',minmax(0,1fr))">'+rs.map(chip).join('')+'</div></div>';
+  });
+  h+='</div>';
+  if(conPool&&pool.length){
+    h+='<div class="phPool"><h3>RAN sin ubicar ('+pool.length+')</h3><div class="phL" style="grid-template-columns:repeat(10,minmax(0,1fr))">'+pool.map(chip).join('')+'</div></div>';
+  }
+  h+='<div class="phFoot">Planificación SMAN · Mapa de planta</div></div>';
+  return h;
+}
+// si en una zona no caben todas las RAN, se achica la letra; si aun así no caben, se indican las que faltan
+function pmHojaAjustar(hoja){
+  hoja.querySelectorAll('.phZ').forEach(function(z){
+    var L=z.querySelector('.phL');if(!L||!L.children.length)return;
+    var k=1,cols=(L.style.gridTemplateColumns.match(/repeat\((\d+)/)||[0,1])[1]*1;
+    var cabe=function(){return L.scrollHeight<=L.clientHeight+1;};
+    while(!cabe()&&k>0.8){k=Math.round((k-0.05)*100)/100;z.style.setProperty('--k',k);}
+    // si no cabe, primero más columnas y después letra más chica
+    while(!cabe()&&cols<4&&z.offsetWidth/(cols+1)>84){cols++;L.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';k=0.85;z.style.setProperty('--k',k);while(!cabe()&&k>0.65){k=Math.round((k-0.05)*100)/100;z.style.setProperty('--k',k);}}
+    while(!cabe()&&k>0.6){k=Math.round((k-0.05)*100)/100;z.style.setProperty('--k',k);}
+    if(L.scrollHeight>L.clientHeight+1){
+      var ch=[].slice.call(L.children),lim=L.clientHeight,ocultas=[];
+      var top0=L.offsetTop;ch.forEach(function(c){if(c.offsetTop-top0+c.offsetHeight>lim-24)ocultas.push(c);});
+      if(ocultas.length){
+        var nums=ocultas.map(function(c){return c.querySelector('b').textContent;});
+        ocultas.forEach(function(c){c.remove();});
+        L.insertAdjacentHTML('beforeend','<div class="phMas">+'+nums.length+' más: '+psmEsc(nums.join(', '))+'</div>');
+      }
+    }
+  });
+}
+function pmExportar(tipo){
+  if(typeof psmSinDescargas==='function'&&psmSinDescargas()){psmNoDescMsg();return;}
+  var chk=document.getElementById('pmExpPool');PM_HOJA.pool=chk?chk.checked:PM_HOJA.pool;
+  var win=null;
+  if(tipo==='pdf'){win=window.open('','_blank');if(!win){psmToast('Permite las ventanas emergentes para imprimir','#d03b3b');return;}win.document.write('<p style="font-family:sans-serif;padding:20px">Preparando el mapa…</p>');}
+  psmClose();psmToast('Preparando el mapa…','#1d4ed8');
+  var box=document.createElement('div');box.id='pmHojaBox';box.innerHTML=pmHojaHTML(PM_HOJA.pool);document.body.appendChild(box);
+  var hoja=box.firstChild;
+  var fin=function(){box.remove();};
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){
+    pmHojaAjustar(hoja);
+    return psmH2C();
+  }).then(function(h2c){return h2c(hoja,{scale:2,backgroundColor:'#ffffff',logging:false,useCORS:true,width:hoja.offsetWidth,height:hoja.offsetHeight,windowWidth:hoja.offsetWidth+40});})
+  .then(function(cv){
+    fin();
+    var nombre='Mapa_Planta_SMAN_'+psmToday()+'.png';
+    if(tipo==='pdf'){
+      var url=cv.toDataURL('image/png');
+      win.document.open();
+      win.document.write('<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Mapa de planta SMAN '+psmToday()+'</title><style>@page{size:A4 landscape;margin:7mm}html,body{margin:0;background:#fff}img{display:block;width:100%;height:auto;max-height:196mm;object-fit:contain;margin:0 auto}@media screen{body{background:#e2e8f0;padding:16px}img{max-width:1400px;box-shadow:0 4px 18px rgba(0,0,0,.2);background:#fff}}</style></head><body><img src="'+url+'" alt="Mapa de planta"><script>var i=document.querySelector("img");function p(){setTimeout(function(){window.focus();window.print();},250);}if(i.complete)p();else i.onload=p;<\/script></body></html>');
+      win.document.close();
+      psmToast('✅ Mapa listo · en la impresora elige “Guardar como PDF” si lo quieres en PDF','#16a34a');
+      return;
+    }
+    cv.toBlob(function(blob){
+      var bajar=function(){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=nombre;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();},500);};
+      if(navigator.clipboard&&window.ClipboardItem){
+        navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(function(){bajar();psmToast('✅ Imagen descargada y copiada · puedes pegarla con Ctrl+V','#16a34a');},function(){bajar();psmToast('✅ Imagen descargada: '+nombre,'#16a34a');});
+      }else{bajar();psmToast('✅ Imagen descargada: '+nombre,'#16a34a');}
+    },'image/png');
+  }).catch(function(e){fin();if(win)try{win.close();}catch(x){}psmToast('No se pudo crear el mapa: '+(e&&e.message||e),'#d03b3b');});
+}
 
 </script>
 </body>
