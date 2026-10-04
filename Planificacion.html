@@ -2223,6 +2223,12 @@ html.psmMovil .stCnt{margin-left:0}
 .edFin{display:flex;justify-content:center}
 .edFin input{width:18px;height:18px}
 #saveBar{display:none!important}
+/* v20: dónde están las fotos */
+.fotoAv{grid-column:1/-1;font-size:12px;border-radius:8px;padding:7px 10px;line-height:1.4}
+.fotoAv button{border:0;border-radius:6px;padding:3px 9px;font-weight:700;cursor:pointer;margin-left:4px}
+.fotoAv.warn{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.fotoAv.warn button{background:#ea580c;color:#fff}
+.fotoAv.err{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}.fotoAv.err button{background:#dc2626;color:#fff}
+.fotoAv.ok{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
 
 </style>
 </head>
@@ -19569,6 +19575,7 @@ document.addEventListener('click',function(e){var h=e.target.closest&&e.target.c
 var PSM_DATA_VER='2026-09-27c planillas';
 var PSM_DATA_TXT='Actualizado con Planificacion_SMCHAN.xlsx · 27-09-2026';
 function psmAplicarPlanillas(){
+  window.PSM_MIG_TS=Date.now();
   if(!PSM||!Array.isArray(PSM.rows)||typeof PSM_SEED==='undefined')return false;
   var st={upd:0,add:0,ms:0,msAdd:0};
   // 1) Planificación
@@ -19699,13 +19706,13 @@ function psmMigMarcar(){try{var ids=JSON.parse(localStorage.getItem('psm_mig_ids
 //      "Más opciones" ordenado, respaldo, feriados de Chile por año
 //      y librerías guardadas para trabajar sin internet
 // ══════════════════════════════════════════════════════════════
-var PSM_CLOUD_TS='',PSM_META_ID='meta_main';
+var PSM_CLOUD_TS='',PSM_META_ID='meta_main',PSM_META_VISTO='';
 function psmMetaGet(){
   return fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.'+PSM_META_ID+'&select=data',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY},cache:'no-store'})
     .then(function(r){return r.ok?r.json():[];}).then(function(rows){try{return rows&&rows.length?JSON.parse(rows[0].data||'{}'):null;}catch(e){return null;}}).catch(function(){return null;});
 }
 function psmMetaPut(ts){
-  var body=JSON.stringify({id:PSM_META_ID,data:JSON.stringify({ts:ts,autor:(typeof psmUser==='function'?psmUser():''),u:(session&&session.usuario)||''})});
+  var body=JSON.stringify({id:PSM_META_ID,data:JSON.stringify({ts:ts,autor:(typeof psmUser==='function'?psmUser():''),u:(session&&session.usuario)||'',dev:(typeof presDev==='function'?presDev():'')})});
   return fetch(PSM_SUPA_URL+'/rest/v1/pie_data',{method:'POST',headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:body}).catch(function(){});
 }
 function psmHayCambiosLocales(){try{return Object.keys(psmDirtyGet()).length>0;}catch(e){return false;}}
@@ -19724,13 +19731,13 @@ function psmAvisoNube(meta){
 (function(){
   var os=window.jbinSave;window.jbinSave=async function(){
     var r=await os.apply(this,arguments);var ok=false;try{ok=isDirty===false;}catch(e){}
-    if(ok){try{localStorage.removeItem('psm_mig_ids');localStorage.removeItem('psm_mig_only');}catch(e){}var ts=new Date().toISOString();PSM_CLOUD_TS=ts;psmMetaPut(ts);var a=document.getElementById('psmNubeAviso');if(a)a.remove();}
+    if(ok){try{localStorage.removeItem('psm_mig_ids');localStorage.removeItem('psm_mig_only');}catch(e){}var ts=new Date().toISOString();PSM_CLOUD_TS=ts;PSM_META_VISTO=ts;psmMetaPut(ts);var a=document.getElementById('psmNubeAviso');if(a)a.remove();}
     return r;
   };
   var ol=window.jbinLoad;window.jbinLoad=async function(){
-    var r=await ol.apply(this,arguments);
-    try{if(session&&session.rol==='admin')psmMigMarcar();}catch(e){}
-    var m=await psmMetaGet();PSM_CLOUD_TS=(m&&m.ts)||new Date().toISOString();
+    var t0=Date.now();var r=await ol.apply(this,arguments);
+    try{psmLoad();if((window.PSM_MIG_TS||0)>=t0){if(session&&session.rol==='admin')psmMigMarcar();}else if(PSM&&PSM.dataVer===PSM_DATA_VER){localStorage.removeItem('psm_mig_ids');localStorage.removeItem('psm_mig_only');}}catch(e){}
+    var m=await psmMetaGet();PSM_CLOUD_TS=(m&&m.ts)||new Date().toISOString();PSM_META_VISTO=(m&&m.ts)||'';
     var a=document.getElementById('psmNubeAviso');if(a)a.remove();
     try{if(typeof renderCurrent==='function')renderCurrent();}catch(e){}
     return r;
@@ -19746,16 +19753,19 @@ function psmAvisoNube(meta){
     setTimeout(function(){try{jbinLoad(true);}catch(e){}},900);
   }
   (function t(){try{if(typeof session!=='undefined'&&session&&document.getElementById('psmSide')){alEntrar();}else{cargado=false;}}catch(e){}setTimeout(t,1500);})();
-  setInterval(function(){
+  // cada 20 segundos se mira si otro equipo guardó (también el mismo usuario en otro equipo)
+  var revisar=function(){
     try{
-      if(typeof session==='undefined'||!session||document.hidden||!PSM_CLOUD_TS)return;
+      if(typeof session==='undefined'||!session||document.hidden||!document.getElementById('psmSide'))return;
       psmMetaGet().then(function(m){
-        if(!m||!m.ts||m.ts<=PSM_CLOUD_TS)return;
-        if(m.u&&session&&m.u===session.usuario&&!document.getElementById('psmNubeAviso')){PSM_CLOUD_TS=m.ts;return;}
+        if(!m||!m.ts||m.ts===PSM_META_VISTO)return;
+        if(m.dev&&typeof presDev==='function'&&m.dev===presDev()){PSM_META_VISTO=m.ts;return;}
         if(!document.getElementById('psmNubeAviso'))psmAvisoNube(m);
       });
     }catch(e){}
-  },60000);
+  };
+  setInterval(revisar,20000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)setTimeout(revisar,800);});
 })();
 
 // ── "Más opciones": solo lo que sirve ────────────────────────
@@ -20768,6 +20778,235 @@ PSM_OWN.cliente[1]=psmRenderCli;
     try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch(e){}
     try{if(psmPuedeEditarAlgo())psmAutoChip('Por subir','off','Tu cambio ya quedó guardado en este equipo y se sube solo a la nube en menos de un minuto.');}catch(e){}
   };
+})();
+
+// ══════════════════════════════════════════════════════════════
+// v20: fotos de las RAN — se suben de nuevo si no llegaron a la nube,
+//      no se pierde la cuenta de fotos por un error de conexión y se
+//      muestra dónde está cada foto
+// ══════════════════════════════════════════════════════════════
+var PSM_FOTO_EST={},PSM_FOTO_ERR='';
+function psmFotoHay(arr){return (arr||[]).filter(Boolean).length;}
+function psmFotoTsMax(arr){var m='';(arr||[]).forEach(function(f){if(f&&f.ts&&f.ts>m)m=f.ts;});return m;}
+function psmFotoCloudGet2(id){
+  return fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.psm_foto_'+encodeURIComponent(id)+'&select=data,updated_at',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}})
+    .then(function(r){if(!r.ok)throw new Error('error '+r.status);return r.json();})
+    .then(function(j){if(!j||!j[0])return null;return {f:JSON.parse(j[0].data||'[]'),ts:j[0].updated_at};});
+}
+function psmFotoCloudSet2(id,arr){
+  return fetch(PSM_SUPA_URL+'/rest/v1/pie_data',{method:'POST',headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify({id:'psm_foto_'+id,data:JSON.stringify(arr),updated_at:new Date().toISOString()})})
+    .then(function(r){if(r.ok)return {ok:true};return r.text().then(function(t){return {ok:false,msg:'error '+r.status+(t?' · '+t.slice(0,120):'')};});})
+    .catch(function(e){return {ok:false,msg:'sin conexión'};});
+}
+// al subir una foto: si falla, queda marcada para volver a intentarlo
+psmFotoCloudSet=function(id,arr){
+  return psmFotoCloudSet2(id,arr).then(function(x){
+    if(x.ok){PSM_FOTO_EST[id]='nube';PSM_FOTO_ERR='';return true;}
+    PSM_FOTO_EST[id]='local';PSM_FOTO_ERR=x.msg;
+    setTimeout(function(){psmToast('⚠ La foto quedó solo en este equipo ('+x.msg+'). Se vuelve a intentar sola.','#b45309');},400);
+    return false;
+  });
+};
+// al leer: primero la nube; si la nube no responde no se da por hecho que no hay fotos
+psmFotosGet=function(id){
+  if(PSM_FOTOS[id])return Promise.resolve(PSM_FOTOS[id]);
+  return psmFotoCloudGet2(id).then(function(c){
+    if(c){
+      return psmIDBget(id).then(function(l){
+        // si en este equipo hay una foto más nueva que no alcanzó a subir, manda la de este equipo
+        if(psmFotoHay(l)&&psmFotoTsMax(l)>psmFotoTsMax(c.f)){PSM_FOTOS[id]=l;PSM_FOTO_EST[id]='local';psmFotoSubir(id);return l;}
+        PSM_FOTOS[id]=c.f;PSM_FOTO_EST[id]='nube';psmIDBset(id,c.f);return c.f;
+      });
+    }
+    return psmIDBget(id).then(function(l){
+      l=l||[];PSM_FOTOS[id]=l;
+      if(psmFotoHay(l)){PSM_FOTO_EST[id]='local';psmFotoSubir(id);}else PSM_FOTO_EST[id]='vacia';
+      return l;
+    });
+  }).catch(function(){
+    PSM_FOTO_EST[id]='err';
+    return psmIDBget(id).then(function(l){return l||[];}); // no se guarda en memoria: se vuelve a intentar
+  });
+};
+function psmFotoSubir(id,aviso){
+  var arr=PSM_FOTOS[id];
+  var p=arr?Promise.resolve(arr):psmIDBget(id);
+  return p.then(function(a){
+    if(!psmFotoHay(a))return false;
+    return psmFotoCloudSet2(id,a).then(function(x){
+      PSM_FOTO_EST[id]=x.ok?'nube':'local';if(!x.ok)PSM_FOTO_ERR=x.msg;
+      if(x.ok){var r=psmRow(id);if(r&&(r.fotos||0)!==psmFotoHay(a)){r.fotos=psmFotoHay(a);psmSave(true);}}
+      if(aviso)psmToast(x.ok?'✅ Fotos subidas a la nube':'No se pudieron subir ('+x.msg+')',x.ok?'#16a34a':'#d03b3b');
+      var box=document.getElementById('psmFotos'),m=document.getElementById('psmModal');
+      if(box&&m&&m.getAttribute('data-pres-id')===id){var r2=psmRow(id);if(r2)psmFotosRender(r2);}
+      return x.ok;
+    });
+  });
+}
+function psmFotoReintentar(id){delete PSM_FOTOS[id];var r=psmRow(id);if(r)psmFotosRender(r);}
+// ficha: la cuenta de fotos solo se corrige con lo que dice la nube, y se muestra dónde están
+psmFotosRender=function(r){
+  var box=document.getElementById('psmFotos');if(!box)return;
+  var ed=psmCanEdit('plansman')||psmCanEdit('reporte');
+  psmFotosGet(r.id).then(function(arr){
+    box=document.getElementById('psmFotos');if(!box)return;
+    arr=arr||[];var est=PSM_FOTO_EST[r.id],n=psmFotoHay(arr);
+    if(est==='nube'&&(r.fotos||0)!==n){r.fotos=n;psmSave(true);}
+    var h='';
+    for(var i=0;i<2;i++){
+      var f=arr[i];
+      if(f)h+='<div class="psmFoto"><img src="'+f.src+'" onclick="psmFull(\''+r.id+'\','+i+')" alt="Foto '+(i+1)+' RAN '+psmEsc(r.ran)+'"/>'+
+        '<div class="psmFotoB"><span>'+(f.ts?psmFd(psmIso(new Date(f.ts))):'')+(f.by?' · '+psmEsc(f.by):'')+'</span>'+(ed?'<button onclick="psmFotoPick(\''+r.id+'\','+i+')" title="Cambiar">↻</button><button onclick="psmFotoDel(\''+r.id+'\','+i+')" title="Eliminar">🗑</button>':'')+'</div></div>';
+      else h+=ed?'<button class="psmFoto add" onclick="psmFotoPick(\''+r.id+'\','+i+')"><b>＋</b>Agregar foto '+(i+1)+'<small>estado actual del equipo</small></button>':'<div class="psmFoto add dis">Sin foto</div>';
+    }
+    var aviso='';
+    if(est==='local'&&n)aviso='<div class="fotoAv warn">⚠ Estas fotos están solo en este equipo y todavía no llegan a la nube'+(PSM_FOTO_ERR?' ('+psmEsc(PSM_FOTO_ERR)+')':'')+'. <button onclick="psmFotoSubir(\''+r.id+'\',true)">Subir ahora</button></div>';
+    else if(est==='err')aviso='<div class="fotoAv err">No se pudo revisar la nube (sin conexión). <button onclick="psmFotoReintentar(\''+r.id+'\')">Reintentar</button></div>';
+    else if(!n&&(r.fotos||0)>0)aviso='<div class="fotoAv warn">Esta RAN tiene '+r.fotos+' foto(s) registrada(s), pero no están en la nube. Ábrela en el equipo donde se tomaron las fotos y se subirán solas.</div>';
+    else if(est==='nube'&&n)aviso='<div class="fotoAv ok">☁ Fotos en la nube · se ven en todos los equipos</div>';
+    box.innerHTML=h+aviso;
+  });
+};
+// revisión general: fotos guardadas en este equipo que no están en la nube se suben solas
+var PSM_FOTO_SYNC=false;
+function psmIDBtodo(){
+  return psmIDB().then(function(db){return new Promise(function(ok){var out={};try{var c=db.transaction('f').objectStore('f').openCursor();
+    c.onsuccess=function(){var cur=c.result;if(cur){out[cur.key]=cur.value;cur.continue();}else ok(out);};c.onerror=function(){ok(out);};}catch(e){ok(out);}});}).catch(function(){return {};});
+}
+function psmFotosSincronizar(){
+  if(PSM_FOTO_SYNC)return Promise.resolve();
+  try{if(!session)return Promise.resolve();}catch(e){return Promise.resolve();}
+  if(!(psmCanEdit('plansman')||psmCanEdit('reporte')))return Promise.resolve();
+  if(!navigator.onLine)return Promise.resolve();
+  PSM_FOTO_SYNC=true;
+  return fetch(PSM_SUPA_URL+'/rest/v1/pie_data?id=like.psm_foto_*&select=id,updated_at',{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY}})
+    .then(function(r){if(!r.ok)throw new Error('error '+r.status);return r.json();})
+    .then(function(L){
+      var nube={};(L||[]).forEach(function(x){nube[String(x.id).replace(/^psm_foto_/,'')]=x.updated_at||'';});
+      return psmIDBtodo().then(function(loc){
+        var subir=Object.keys(loc).filter(function(id){var a=loc[id];if(!psmFotoHay(a))return false;if(!(id in nube))return true;return psmFotoTsMax(a)>nube[id];});
+        if(!subir.length)return;
+        var ok=0;
+        return subir.reduce(function(p,id){return p.then(function(){PSM_FOTOS[id]=PSM_FOTOS[id]||loc[id];return psmFotoSubir(id).then(function(x){if(x)ok++;});});},Promise.resolve())
+          .then(function(){if(ok)psmToast('📷 Se subieron a la nube las fotos de '+ok+' RAN que estaban solo en este equipo','#16a34a');});
+      });
+    }).catch(function(){}).then(function(){PSM_FOTO_SYNC=false;});
+}
+(function(){
+  var ini=setInterval(function(){try{if(session&&document.getElementById('psmSide')){clearInterval(ini);setTimeout(psmFotosSincronizar,4000);}}catch(e){}},1500);
+  setInterval(psmFotosSincronizar,10*60*1000);
+  window.addEventListener('online',function(){setTimeout(psmFotosSincronizar,5000);});
+})();
+
+// ══════════════════════════════════════════════════════════════
+// v21: todo lo que se hace en un equipo llega a los demás
+//  · todas las secciones se juntan por campo (no solo RAN, planta, carga, turnos)
+//  · el mismo usuario en dos equipos ya no se pisa
+//  · tiempos contractuales y lista de clientes viajan con los datos
+//  · fotos: se vuelven a leer de la nube y las que fallan quedan en cola
+// ══════════════════════════════════════════════════════════════
+
+// ── 1) Secciones de los datos y quién puede cambiarlas ──
+var PSM_NO_TOP=['rows','ms','log'];
+var PSM_AREA_KEY={planta:'planta',plantaHist:'planta',personal:'carga',turnos:'turnos',estados:'plansman'};
+function psmEsBandera(k){return /^_|Ver$|^legacyGen$|^imp$/.test(k);} // marcas de una sola vez: gana la de este equipo
+function psmTopKeys(o){return Object.keys(o||{}).filter(function(k){return PSM_NO_TOP.indexOf(k)<0;});}
+function psmTopPuede(k){
+  if(psmEsBandera(k))return false;
+  try{if(psmRol()==='admin'||!psmRol())return true;}catch(e){}
+  var a=PSM_AREA_KEY[k];if(!a)return false; // lo demás (notas, usuarios, tempario, tiempos…) solo lo cambia el administrador
+  try{return psmCanEdit(a);}catch(e){return false;}
+}
+psmDSnap=function(){
+  PSM_DS={};PSM_DSOBJ=PSM;if(!PSM)return;
+  (PSM.rows||[]).forEach(function(r){PSM_DS['r:'+r.id]=JSON.stringify(r);});
+  ((PSM.ms&&PSM.ms.items)||[]).forEach(function(i){PSM_DS['m:'+i.id]=JSON.stringify(i);});
+  psmTopKeys(PSM).forEach(function(k){PSM_DS['t:'+k]=JSON.stringify(PSM[k]);});
+};
+psmDMark=function(){
+  if(!PSM)return;if(!PSM_DS||PSM_DSOBJ!==PSM){psmDSnap();return;}
+  var d=psmDirtyGet(),b=null,ch=false,seen={};
+  var base=function(k){if(!b)b=psmDBaseGet();if(!(k in b))b[k]=(PSM_DS[k]===undefined||PSM_DS[k]==='__u')?null:PSM_DS[k];};
+  var chk=function(k,o){seen[k]=1;var j=o===undefined?'__u':JSON.stringify(o);if(PSM_DS[k]!==j){if(!d[k])base(k);d[k]=1;ch=true;PSM_DS[k]=j;}};
+  (PSM.rows||[]).forEach(function(r){chk('r:'+r.id,r);});
+  ((PSM.ms&&PSM.ms.items)||[]).forEach(function(i){chk('m:'+i.id,i);});
+  var tk={};psmTopKeys(PSM).forEach(function(k){tk[k]=1;});Object.keys(PSM_DS).forEach(function(x){if(x.indexOf('t:')===0)tk[x.slice(2)]=1;});
+  Object.keys(tk).forEach(function(k){
+    var key='t:'+k,j=PSM[k]===undefined?'__u':JSON.stringify(PSM[k]);seen[key]=1;
+    if(PSM_DS[key]===j||(PSM_DS[key]===undefined&&j==='__u'))return;
+    // ajustes automáticos (al abrir, al migrar) o secciones sin permiso: no se suben
+    if(!psmTopPuede(k)||Date.now()-PSM_ULT_ACCION>10000){PSM_DS[key]=j;return;}
+    if(!d[key])base(key);d[key]=1;ch=true;PSM_DS[key]=j;
+  });
+  Object.keys(PSM_DS).forEach(function(k){if(!seen[k]){if(!d[k])base(k);d[k]=1;ch=true;delete PSM_DS[k];}});
+  if(b)psmDBaseSet(b);
+  if(ch)psmDirtySet(d);
+};
+psmMergeCloud=function(cloud){
+  var d=psmDirtyGet(),B=psmDBaseGet(),loc=PSM;
+  var M=JSON.parse(JSON.stringify(cloud));
+  M.rows=psmMergeList(cloud.rows,loc.rows,'r:',d);
+  var cms=(cloud.ms&&cloud.ms.items)||null,lms=(loc.ms&&loc.ms.items)||[];
+  M.ms=JSON.parse(JSON.stringify(cloud.ms||loc.ms||{}));
+  if(cms||lms.length)M.ms.items=cms?psmMergeList(cms,lms,'m:',d):lms;
+  if(loc.ms&&loc.ms.imp&&(d.__msimp||!M.ms.imp))M.ms.imp=loc.ms.imp;
+  var ks={};psmTopKeys(cloud).forEach(function(k){ks[k]=1;});psmTopKeys(loc).forEach(function(k){ks[k]=1;});
+  Object.keys(ks).forEach(function(k){
+    var dk='t:'+k,cv=cloud[k],lv=loc[k];
+    if(psmEsBandera(k)){var v=lv!==undefined?lv:cv;if(v===undefined)delete M[k];else M[k]=JSON.parse(JSON.stringify(v));return;}
+    if(d[dk]||d.__todo){
+      var b=psmBaseDe(B,dk);
+      if(b!=null&&cv!==undefined&&!d.__todo){var r=psmJuntarCampos(cv,lv,b);if(r===undefined)delete M[k];else M[k]=r;}
+      else if(cv===undefined||d.__todo){if(lv===undefined)delete M[k];else M[k]=JSON.parse(JSON.stringify(lv));}
+      else M[k]=JSON.parse(JSON.stringify(cv));
+    }else if(cv===undefined&&lv!==undefined)M[k]=JSON.parse(JSON.stringify(lv)); // solo existe aquí: se conserva
+  });
+  var seen={},lg=[];(cloud.log||[]).concat(loc.log||[]).forEach(function(e){var kk=e.t+'|'+e.u+'|'+e.ran+'|'+(e.c||[]).join('/');if(seen[kk])return;seen[kk]=1;lg.push(e);});
+  lg.sort(function(a,b){return a.t<b.t?-1:a.t>b.t?1:0;});if(lg.length>2500)lg=lg.slice(lg.length-2500);M.log=lg;
+  return M;
+};
+
+// ── 2) Tiempos contractuales y lista de clientes dentro de los datos que se juntan ──
+PSM_AREA_KEY.tiempos='__admin';PSM_AREA_KEY.clientes='__admin';
+function psmLegacyDesdePSM(){
+  if(!PSM)return;
+  try{if(Array.isArray(PSM.tiempos))localStorage.setItem('tiempos_v1',JSON.stringify(PSM.tiempos));}catch(e){}
+  try{if(Array.isArray(PSM.clientes)&&typeof CLIENTES!=='undefined'){CLIENTES.length=0;PSM.clientes.forEach(function(c){CLIENTES.push(c);});try{localStorage.setItem('clientes_v1',JSON.stringify(PSM.clientes));}catch(e){}}}catch(e){}
+}
+function psmTiemposInit(){
+  if(!PSM)return;var ch=false;
+  if(!Array.isArray(PSM.tiempos)){var t=[];try{t=JSON.parse(localStorage.getItem('tiempos_v1')||'[]')||[];}catch(e){}PSM.tiempos=t;ch=true;}
+  if(!Array.isArray(PSM.clientes)){var c=[];try{c=(typeof CLIENTES!=='undefined'&&CLIENTES.slice())||[];}catch(e){}PSM.clientes=c;ch=true;}
+  if(ch){var prev=PSM_MERGING;PSM_MERGING=true;try{psmSave(true);}finally{PSM_MERGING=prev;}}
+  psmLegacyDesdePSM();
+}
+(function(){var lb=psmLoad;psmLoad=function(){lb();try{psmTiemposInit();}catch(e){}};})();
+psmTiL=function(){psmLoad();return JSON.parse(JSON.stringify(PSM.tiempos||[]));};
+psmTiW=function(L){L.forEach(function(t){t.total=(parseInt(t.desarme)||0)+(parseInt(t.armado)||0);});PSM_ULT_ACCION=Date.now();PSM.tiempos=L;psmSave(true);psmLegacyDesdePSM();};
+psmCliAdd=function(){var i=document.getElementById('tiCliNew');var n=i&&i.value.trim();if(!n)return;psmLoad();var L=(PSM.clientes||[]).slice();
+  if(!L.some(function(c){return psmNorm(c)===psmNorm(n);})){L.push(n);PSM_ULT_ACCION=Date.now();PSM.clientes=L;psmSave(true);psmLegacyDesdePSM();}window._cliOpen=true;psmTiRe();};
+psmCliDel=function(i){psmLoad();var L=(PSM.clientes||[]).slice();if(!L[i]||!confirm('¿Quitar "'+L[i]+'" de la lista de clientes?'))return;L.splice(i,1);PSM_ULT_ACCION=Date.now();PSM.clientes=L;psmSave(true);psmLegacyDesdePSM();window._cliOpen=true;psmTiRe();};
+
+// ── 3) Fotos: se vuelven a leer de la nube cada minuto y lo que falla queda en cola ──
+var PSM_FOTOS_T={};
+function psmFotoPendGet(){try{return JSON.parse(localStorage.getItem('psm_fotos_pend')||'{}')||{};}catch(e){return {};}}
+function psmFotoPendSet(p){try{localStorage.setItem('psm_fotos_pend',JSON.stringify(p));}catch(e){}}
+(function(){
+  var bg=psmFotosGet;psmFotosGet=function(id){
+    if(PSM_FOTOS[id]&&PSM_FOTOS_T[id]&&Date.now()-PSM_FOTOS_T[id]>60000&&!psmFotoPendGet()[id]){delete PSM_FOTOS[id];delete PSM_FOTOS_T[id];}
+    return bg(id).then(function(a){if(PSM_FOTOS[id])PSM_FOTOS_T[id]=PSM_FOTOS_T[id]||Date.now();return a;});
+  };
+  var bs=psmFotoCloudSet;psmFotoCloudSet=function(id,arr){
+    return bs(id,arr).then(function(ok){var p=psmFotoPendGet();if(ok)delete p[id];else p[id]=Date.now();psmFotoPendSet(p);PSM_FOTOS_T[id]=Date.now();return ok;});
+  };
+  // la revisión general también sube la cola (incluye fotos borradas)
+  var bsync=psmFotosSincronizar;psmFotosSincronizar=function(){
+    var p=psmFotoPendGet(),ids=Object.keys(p);
+    var cola=ids.reduce(function(pr,id){return pr.then(function(){return psmIDBget(id).then(function(a){if(!a)return;return psmFotoCloudSet2(id,a).then(function(x){if(x.ok){var q=psmFotoPendGet();delete q[id];psmFotoPendSet(q);PSM_FOTO_EST[id]='nube';PSM_FOTOS[id]=a;PSM_FOTOS_T[id]=Date.now();}});});});},Promise.resolve());
+    return cola.then(function(){return bsync();});
+  };
+  setInterval(function(){if(Object.keys(psmFotoPendGet()).length)psmFotosSincronizar();},60000);
 })();
 
 </script>
