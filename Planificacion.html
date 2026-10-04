@@ -2196,6 +2196,33 @@ html.psmMovil .pmExpOps{grid-template-columns:1fr}
 .phC1 em,.phC1 b,.phC1 i{flex-shrink:0}
 html.psmMovil #tbCrumb{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 html.psmMovil #psmTopbar .tbL{overflow:hidden}
+/* v19: Status por cliente editable y con filtros */
+.stTop2{flex-wrap:wrap;gap:10px;align-items:flex-end}
+.stTop2 label{display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:700;color:#64748b}
+.stTop2 select{min-width:150px}
+.stChk{flex-direction:row!important;align-items:center;gap:6px!important;font-size:12.5px!important;color:#334155!important;padding-bottom:6px}
+.stCnt{margin-left:auto;font-size:12.5px;color:#475569;padding-bottom:6px}
+.stCnt b{color:#0f172a}
+.stR.v19{grid-template-columns:48px 34px minmax(0,1.3fr) 190px minmax(0,1.1fr) 70px 38px 130px minmax(0,1fr) 30px}
+.stR .stEs{min-width:0}.stR .stEs .psmChip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stR .stEs .psmChip[onclick]{cursor:pointer}
+.stR .stEs .psmChip[onclick]:hover{filter:brightness(.95);box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 30%,transparent)}
+.stEd{border:0;background:#f1f5f9;border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:13px}
+.stEd:hover{background:#dbeafe}
+.stM .psmFlag{font-size:9.5px}
+html.psmMovil .stR.v19{grid-template-columns:44px 30px 1fr 50px 30px}
+html.psmMovil .stR.v19 .stM{grid-column:3/5}html.psmMovil .stR.v19 .stEd{grid-column:5;grid-row:1}
+html.psmMovil .stR.v19 .stEs{grid-column:1/3}html.psmMovil .stR.v19 .stP{grid-column:3/6}
+html.psmMovil .stR.v19 .hmBar{grid-column:1/3}html.psmMovil .stR.v19 .stD{grid-column:3/6}html.psmMovil .stR.v19 .stE{grid-column:1/-1}
+html.psmMovil .stTop2 label,html.psmMovil .stTop2 select{width:100%;min-width:0}
+html.psmMovil .stTop2{display:grid;grid-template-columns:1fr 1fr}
+html.psmMovil .stCnt{margin-left:0}
+/* editor de estados */
+.edHd{display:grid;grid-template-columns:36px 1fr 64px 28px;gap:6px;font-size:10px;font-weight:800;color:#64748b;text-transform:uppercase;padding:0 0 4px}
+.psmEdRow.v19{display:grid;grid-template-columns:36px 1fr 64px 28px;gap:6px;align-items:center}
+.edFin{display:flex;justify-content:center}
+.edFin input{width:18px;height:18px}
+#saveBar{display:none!important}
 
 </style>
 </head>
@@ -16241,7 +16268,7 @@ function renderPlanta(){
   var pool=PSM.rows.filter(function(r){
     if(ub[r.id])return false;
     if(PM_POOL.a&&r.a!==PM_POOL.a)return false;
-    if(!PM_POOL.fin){var e=psmEstado(r);if(psmAv(r)>=100||e==='Facturado'||e==='Despachado'||e==='Costeo enviado')return false;}
+    if(!PM_POOL.fin&&psmFinal(r))return false;
     if(q&&(r.ran+' '+(r.cli||'')+' '+(r.mod||'')).toLowerCase().indexOf(q)<0)return false;
     return true;
   }).sort(function(x,y){if(x.a!==y.a)return x.a==='en'?-1:1;return (+x.ran||0)-(+y.ran||0);});
@@ -19938,7 +19965,7 @@ function psmFinBtn(m,n){
           if(el.classList.contains('mbSep')){g={sep:el,fin:[],last:el};grupos.push(g);return;}
           if(!g)return;g.last=el;
           var m=(el.getAttribute('onclick')||'').match(/psmOpen\('([^']+)'/),r=m&&psmRow(m[1]);
-          if(r&&psmAv(r)>=100)g.fin.push({el:el,r:r});
+          if(r&&psmFinal(r))g.fin.push({el:el,r:r});
         });
         grupos.forEach(function(g){
           if(!g.fin.length)return;var mes=psmMes(g.fin[0].r);
@@ -19952,7 +19979,7 @@ function psmFinBtn(m,n){
       var tb=body.querySelector('#psmTb');if(!tb)return res;
       var ncol=(tb.closest('table').querySelectorAll('thead th')||[]).length||14;
       var by={},orden=[];
-      tb.querySelectorAll('tr.psmRow').forEach(function(tr){var m=tr.dataset.mes;if(!by[m]){by[m]={last:null,fin:[]};orden.push(m);}by[m].last=tr;var r=psmRow(tr.dataset.id);if(r&&psmAv(r)>=100)by[m].fin.push(tr);});
+      tb.querySelectorAll('tr.psmRow').forEach(function(tr){var m=tr.dataset.mes;if(!by[m]){by[m]={last:null,fin:[]};orden.push(m);}by[m].last=tr;var r=psmRow(tr.dataset.id);if(r&&psmFinal(r))by[m].fin.push(tr);});
       orden.forEach(function(m){
         var G=by[m];if(!G.fin.length)return;
         // el último visible del mes (si todos están terminados, el separador)
@@ -20500,7 +20527,7 @@ function pmHojaHTML(conPool){
   var P=pmData(),ub=pmUbicadas(),W=1680,COL=W/PM_COLS,ROW=64;
   var maxY=P.zonas.reduce(function(mx,z){return Math.max(mx,z.y+z.h);},0);
   var nE=0,nD=0;P.zonas.forEach(function(z){z.rans.forEach(function(id){var r=psmRow(id);if(!r)return;if(r.a==='en')nE++;else nD++;});});
-  var pool=PSM.rows.filter(function(r){if(ub[r.id])return false;var e=psmEstado(r);return !(psmAv(r)>=100||e==='Facturado'||e==='Despachado'||e==='Costeo enviado');})
+  var pool=PSM.rows.filter(function(r){if(ub[r.id])return false;return !psmFinal(r);})
     .sort(function(x,y){if(x.a!==y.a)return x.a==='en'?-1:1;return (+x.ran||0)-(+y.ran||0);});
   var ahora=new Date(),fecha=ahora.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),hora=ahora.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
   var quien='';try{quien=presNom(session.nombre||session.usuario);}catch(e){}
@@ -20584,6 +20611,164 @@ function pmExportar(tipo){
     },'image/png');
   }).catch(function(e){fin();if(win)try{win.close();}catch(x){}psmToast('No se pudo crear el mapa: '+(e&&e.message||e),'#d03b3b');});
 }
+
+// ══════════════════════════════════════════════════════════════
+// v19: estados editables al tiro y en todas partes, estados de devolución,
+//      Status por cliente editable y con filtros
+// ══════════════════════════════════════════════════════════════
+
+// ── 1) Estados de devolución y estados que cuentan como terminados ──
+var PSM_DEVOL=[{n:'Equipo para devolución',c:'#9333ea'},{n:'Devolución a cliente',c:'#334155',fin:true}];
+if(PSM_FINAL_EST.indexOf('Devolución a cliente')<0)PSM_FINAL_EST.push('Devolución a cliente');
+PSM_ESTADOS_DEF.en.push(JSON.parse(JSON.stringify(PSM_DEVOL[0])),JSON.parse(JSON.stringify(PSM_DEVOL[1])));
+PSM_ESTADOS_DEF.de.push(JSON.parse(JSON.stringify(PSM_DEVOL[0])),JSON.parse(JSON.stringify(PSM_DEVOL[1])));
+function psmEstObj(a,n){var l=(PSM&&PSM.estados&&PSM.estados[a])||[];for(var i=0;i<l.length;i++)if(l[i].n===n)return l[i];return null;}
+psmFinal=function(r){
+  if(psmAv(r)>=100)return true;var e=psmEstado(r);
+  if(PSM_FINAL_EST.indexOf(e)>=0){var o=psmEstObj(r.a,e);return !(o&&o.fin===false);}
+  var o2=psmEstObj(r.a,e);return !!(o2&&o2.fin);
+};
+// se agregan solos a las listas guardadas (salvo que el administrador los haya quitado)
+function psmEstadosDevol(){
+  if(!PSM||!PSM.estados)return;var ch=false,B=PSM.estados._borrados||[];
+  ['en','de'].forEach(function(a){var L=PSM.estados[a];if(!Array.isArray(L))return;
+    PSM_DEVOL.forEach(function(d){if(B.indexOf(a+'|'+d.n)>=0)return;if(!L.some(function(e){return e.n===d.n;})){L.push(JSON.parse(JSON.stringify(d)));ch=true;}});});
+  if(ch){var prev=PSM_MERGING;PSM_MERGING=true;try{psmSave(true);}finally{PSM_MERGING=prev;}}
+}
+(function(){var lb=psmLoad;psmLoad=function(){lb();try{psmEstadosDevol();}catch(e){}};})();
+// los estados también se juntan por persona al guardar (los puede cambiar quien edita la planificación)
+if(PSM_TOP_SYNC.indexOf('estados')<0){PSM_TOP_SYNC.push('estados');PSM_TOP_AREA.estados='plansman';}
+
+// ── 2) Volver a dibujar la pestaña en que estoy (y no saltar a otra) ──
+psmShowOwnKeep=function(){
+  var y=window.scrollY,v='';try{v=currentView;}catch(e){}
+  if(PSM_OWN[v])psmShowOwn(v);else if(v==='plansman'){try{psmRender();}catch(e){}}else psmShowOwn('reporte');
+  window.scrollTo(0,y);
+};
+function psmRefrescar(){
+  var v='';try{v=currentView;}catch(e){}
+  if(PSM_OWN[v]){psmShowOwnKeep();return;}
+  if(v==='plansman'){try{psmRender();}catch(e){}return;}
+  try{if(typeof renderCurrent==='function')renderCurrent();}catch(e){}
+}
+(function(){
+  var envolver=function(nom){var f=window[nom];if(typeof f!=='function')return;window[nom]=function(){var r=f.apply(this,arguments);try{var v=currentView;if(v!=='plansman'&&PSM_OWN[v])psmShowOwnKeep();}catch(e){}return r;};};
+  ['psmSetEstado','psmFormSave','psmPopSave','psmDelRAN','psmSetReal'].forEach(envolver);
+})();
+
+// ── 3) Editor de estados: borrador, "cuenta como terminado" y efecto inmediato ──
+var PSM_ED=null;
+psmEstadosEditor=function(){
+  if(!PSM_ED)PSM_ED=JSON.parse(JSON.stringify({en:PSM.estados.en,de:PSM.estados.de}));
+  ['en','de'].forEach(function(a){PSM_ED[a].forEach(function(e){if(e.fin===undefined)e.fin=PSM_FINAL_EST.indexOf(e.n)>=0;if(e._o===undefined)e._o=e.n;});});
+  psmClose();
+  var m=document.createElement('div');m.id='psmModal';m.className='psmModal';m.onclick=function(ev){if(ev.target===m){PSM_ED=null;psmClose();}};
+  var col=function(a,t){return '<div class="psmEdCol"><h4>'+t+'</h4><div class="edHd"><span>Color</span><span>Nombre</span><span title="La RAN pasa a Finalizadas">Terminada</span><span></span></div><div id="psmEd_'+a+'">'+PSM_ED[a].map(function(e,i){
+      return '<div class="psmEdRow v19"><input type="color" value="'+e.c+'" onchange="psmEdV(\''+a+'\','+i+',\'c\',this.value)"/><input value="'+psmEsc(e.n)+'" oninput="psmEdV(\''+a+'\','+i+',\'n\',this.value)"/>'+
+        '<label class="edFin" title="Si la marcas, las RAN con este estado pasan a Finalizadas"><input type="checkbox"'+(e.fin?' checked':'')+' onchange="psmEdV(\''+a+'\','+i+',\'fin\',this.checked)"/></label>'+
+        '<button onclick="psmEdQuitar(\''+a+'\','+i+')" title="Quitar">✕</button></div>';}).join('')+
+    '</div><button class="psmBtn ghost sm" onclick="psmEdNuevo(\''+a+'\')">＋ Agregar estado</button></div>';};
+  m.innerHTML='<div class="psmMBox narrow" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">Estados de cada RAN</div><div class="psmMCli">Nombre, color y si cuenta como terminada. Al guardar, el cambio se ve al tiro en todas las pestañas.</div></div><button class="psmMX" onclick="PSM_ED=null;psmClose()">✕</button></div>'+
+    '<div class="psmMBody"><div class="psmEd">'+col('en','Ensamble')+col('de','Desarme y evaluación')+'</div></div>'+
+    '<div class="psmMFoot"><button class="psmBtn ghost" onclick="psmEdDefecto()">Restablecer</button><span style="flex:1"></span><button class="psmBtn ghost" onclick="PSM_ED=null;psmClose()">Cancelar</button><button class="psmBtn" onclick="psmEdGuardar()">Guardar</button></div></div>';
+  document.body.appendChild(m);
+};
+function psmEdV(a,i,f,v){var e=PSM_ED&&PSM_ED[a][i];if(!e)return;e[f]=f==='n'?String(v):v;}
+function psmEdNuevo(a){PSM_ED[a].push({n:'Nuevo estado',c:'#64748b',fin:false,_o:''});psmEstadosEditor();setTimeout(function(){var L=document.querySelectorAll('#psmEd_'+a+' .psmEdRow input:not([type])');var x=L[L.length-1];if(x){x.focus();x.select();}},30);}
+function psmEdQuitar(a,i){PSM_ED[a].splice(i,1);psmEstadosEditor();}
+function psmEdDefecto(){if(!confirm('¿Volver a los estados por defecto?'))return;PSM_ED=JSON.parse(JSON.stringify({en:PSM_ESTADOS_DEF.en,de:PSM_ESTADOS_DEF.de}));psmEstadosEditor();}
+function psmEdGuardar(){
+  if(!PSM_ED)return;var err='';
+  ['en','de'].forEach(function(a){var vis={};PSM_ED[a].forEach(function(e){e.n=(e.n||'').trim();if(!e.n)err='Hay un estado sin nombre.';else if(vis[e.n])err='El estado "'+e.n+'" está repetido.';vis[e.n]=1;});});
+  if(err){psmToast(err,'#d03b3b');return;}
+  PSM_ULT_ACCION=Date.now();
+  var borr=(PSM.estados._borrados||[]).slice();
+  ['en','de'].forEach(function(a){
+    var antes=PSM.estados[a].map(function(e){return e.n;});
+    // renombrados: las RAN que lo tenían quedan con el nombre nuevo
+    PSM_ED[a].forEach(function(e){if(e._o&&e._o!==e.n)PSM.rows.forEach(function(r){if(r.a===a&&r.est===e._o)r.est=e.n;});});
+    var ok={},orig={};PSM_ED[a].forEach(function(e){ok[e.n]=1;if(e._o)orig[e._o]=1;});
+    antes.forEach(function(n){if(!ok[n]&&!orig[n]&&borr.indexOf(a+'|'+n)<0)borr.push(a+'|'+n);});
+    PSM.rows.forEach(function(r){if(r.a===a&&r.est&&!ok[r.est])delete r.est;});
+    PSM.estados[a]=PSM_ED[a].map(function(e){var o={n:e.n,c:e.c};if(e.fin)o.fin=true;else if(PSM_FINAL_EST.indexOf(e.n)>=0)o.fin=false;return o;});
+  });
+  PSM.estados._borrados=borr.filter(function(k){var p=k.split('|');return !PSM.estados[p[0]].some(function(e){return e.n===p[1];});});
+  PSM_ED=null;psmSave();psmClose();psmRefrescar();
+  psmToast('✅ Estados guardados · ya se pueden usar en todas las pestañas','#16a34a');
+}
+
+// ── 4) Status por cliente: editar, cambiar estado y filtros ──
+PSM_S.est='';PSM_S.pri='';PSM_S.atr=false;PSM_S.mec='';PSM_S.ord='ent';
+function psmCliFiltrosAct(){var n=0;['est','pri','mec'].forEach(function(k){if(PSM_S[k])n++;});if(PSM_S.atr)n++;if(PSM_S.ord!=='ent')n++;return n;}
+function psmCliLimpiar(){PSM_S.est='';PSM_S.pri='';PSM_S.atr=false;PSM_S.mec='';PSM_S.ord='ent';PSM_S.q='';PSM_S.cli='';psmShowOwn('cliente');}
+psmRenderCli=function(el){
+  psmLoad();var hoy=psmToday(),q=psmNorm(PSM_S.q),ed=psmCanEdit('plansman');
+  var pasa=function(r){
+    if(PSM_S.a&&r.a!==PSM_S.a)return false;
+    var fin=psmFinal(r);if(PSM_S.tab==='cur'&&fin)return false;if(PSM_S.tab==='fin'&&!fin)return false;
+    if(q&&psmNorm(r.ran+' '+(r.mod||'')+' '+(r.cli||'')+' '+(r.mec||'')+' '+(r.obs||'')).indexOf(q)<0)return false;
+    if(PSM_S.est&&psmEstado(r)!==PSM_S.est)return false;
+    if(PSM_S.pri){var f=psmFlag(r);if(PSM_S.pri==='alguna'?!f:(!f||f.t!==PSM_S.pri))return false;}
+    if(PSM_S.atr){var t=psmEntrega(r);if(!(t&&t<hoy&&!fin))return false;}
+    if(PSM_S.mec&&!psmPersonMatch(PSM_S.mec,r.mec))return false;
+    return true;
+  };
+  var base=PSM.rows.filter(pasa);
+  var clis={};PSM.rows.forEach(function(r){if(r.cli)clis[r.cli]=1;});
+  var ests={};['en','de'].forEach(function(a){if(PSM_S.a&&a!==PSM_S.a)return;(PSM.estados[a]||[]).forEach(function(e){ests[e.n]=e.c;});});
+  var mecs=[];try{mecs=psmRoster().map(function(p){return p.n;});}catch(e){}
+  var g={};base.forEach(function(r){var c=r.cli||'Sin cliente';if(PSM_S.cli&&c!==PSM_S.cli)return;(g[c]=g[c]||[]).push(r);});
+  var keys=Object.keys(g).sort(function(a,b){return g[b].length-g[a].length||a.localeCompare(b);});
+  var nTot=keys.reduce(function(s,k){return s+g[k].length;},0),nf=psmCliFiltrosAct();
+  var sel=function(k,ops,ph){return '<select onchange="PSM_S.'+k+'=this.value;psmShowOwn(\'cliente\')">'+(ph!=null?'<option value="">'+ph+'</option>':'')+ops.map(function(o){var v=Array.isArray(o)?o[0]:o,t=Array.isArray(o)?o[1]:o;return '<option value="'+psmEsc(v)+'"'+(String(PSM_S[k])===String(v)?' selected':'')+'>'+psmEsc(t)+'</option>';}).join('')+'</select>';};
+  var h='<div class="stWrap"><div class="rpTop stTop">'+
+    '<label>Cliente'+sel('cli',Object.keys(clis).sort(),'Todos')+'</label>'+
+    '<span class="psmSeg big">'+[['cur','En curso'],['fin','Finalizadas'],['all','Todas']].map(function(o){return '<button class="'+(PSM_S.tab===o[0]?'on':'')+'" onclick="PSM_S.tab=\''+o[0]+'\';psmShowOwn(\'cliente\')">'+o[1]+'</button>';}).join('')+'</span>'+
+    '<span class="psmSeg big">'+[['','Todas'],['en','Ensamble'],['de','Desarme']].map(function(o){return '<button class="'+(PSM_S.a===o[0]?'on':'')+'" onclick="PSM_S.a=\''+o[0]+'\';PSM_S.est=\'\';psmShowOwn(\'cliente\')">'+o[1]+'</button>';}).join('')+'</span>'+
+    '<input class="psmQ" placeholder="🔍 RAN, modelo, encargado…" value="'+psmEsc(PSM_S.q)+'" oninput="PSM_S.q=this.value;clearTimeout(window._sQ);window._sQ=setTimeout(function(){psmShowOwn(\'cliente\');var i=document.querySelector(\'.stWrap .psmQ\');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}},300)"/>'+
+    '</div><div class="rpTop stTop2">'+
+    '<label>Estado'+sel('est',Object.keys(ests),'Todos')+'</label>'+
+    '<label>Prioridad'+sel('pri',[['alguna','Con prioridad'],['Emergencia','Emergencia'],['Urgencia','Urgencia'],['Alerta','Alerta']],'Todas')+'</label>'+
+    '<label>Encargado'+sel('mec',mecs,'Todos')+'</label>'+
+    '<label>Ordenar por'+sel('ord',[['ent','Fecha de entrega'],['av','Menor avance'],['ran','Número de RAN'],['est','Estado']],null)+'</label>'+
+    '<label class="stChk"><input type="checkbox"'+(PSM_S.atr?' checked':'')+' onchange="PSM_S.atr=this.checked;psmShowOwn(\'cliente\')"/> Solo atrasadas</label>'+
+    '<span class="stCnt"><b>'+nTot+'</b> RAN · '+keys.length+' cliente'+(keys.length===1?'':'s')+'</span>'+
+    (nf||PSM_S.q||PSM_S.cli?'<button class="psmBtn ghost sm" onclick="psmCliLimpiar()">✕ Quitar filtros</button>':'')+
+    (psmIsAdmin()?'<button class="psmBtn ghost sm" onclick="psmEstadosEditor()">🏷 Estados</button>':'')+
+    '</div>';
+  if(!keys.length)h+='<div class="psmEmpty">No hay RAN para este filtro.</div>';
+  var ordF={
+    ent:function(a,b){var x=psmEntrega(a)||'9',y=psmEntrega(b)||'9';return x<y?-1:x>y?1:0;},
+    av:function(a,b){return psmAv(a)-psmAv(b);},
+    ran:function(a,b){return (+a.ran||0)-(+b.ran||0);},
+    est:function(a,b){return psmEstado(a).localeCompare(psmEstado(b))||((+a.ran||0)-(+b.ran||0));}
+  };
+  keys.forEach(function(c){
+    var L=g[c].sort(ordF[PSM_S.ord]||ordF.ent);
+    var plan=0,done=0,atr=0,por=0;L.forEach(function(r){var x=psmHH(r);plan+=x.plan;done+=x.done;var t=psmEntrega(r);if(t&&t<hoy&&!psmFinal(r))atr++;if(r.a==='en'&&!psmInv(r).inv)por+=r.monto||0;});
+    var av=plan?Math.round(done/plan*100):0;
+    h+='<section class="stC"><header><div><h3>🏢 '+psmEsc(c)+'</h3><span>'+L.length+' RAN · '+L.filter(function(r){return r.a==='en';}).length+' ensamble · '+L.filter(function(r){return r.a==='de';}).length+' desarme'+(atr?' · <b class="late">'+atr+' atrasada'+(atr>1?'s':'')+'</b>':'')+(por?' · por facturar '+psmUSDc(por):'')+'</span></div>'+
+      '<div class="stAv">'+psmRing(av,'#2563eb')+'</div><button class="psmBtn ghost sm" onclick="psmCliPDF(\''+psmEsc(c).replace(/'/g,'\\\'')+'\')">🖨 Informe cliente</button></header>'+
+      '<div class="stL">'+L.map(function(r){var av2=psmAv(r),t=psmEntrega(r),re=psmReal(r),fl=psmFlag(r),e=psmEstado(r);
+        return '<div class="stR v19" data-pres-id="'+r.id+'" onclick="psmOpen(\''+r.id+'\')"><b>'+psmEsc(r.ran)+'</b><span class="pmTag '+r.a+'">'+(r.a==='en'?'ENS':'DES')+'</span>'+
+          '<span class="stM">'+psmEsc(r.mod||'')+(fl&&fl.t!==e?' <span class="psmFlag" style="--c:'+fl.c+'">'+fl.t+'</span>':'')+'</span>'+
+          '<span class="stEs">'+psmChip(r.a,e,ed?r.id:null)+'</span>'+
+          '<span class="stP">'+psmEsc(psmProcActualTxt(r))+'</span><span class="hmBar"><i style="width:'+av2+'%"></i></span><b class="stPc">'+av2+'%</b>'+
+          '<span class="stD '+(t&&t<hoy&&!psmFinal(r)?'late':'')+'">'+(t?psmFd(t):'—')+(re?' · ✔ '+psmFd(re):'')+'</span><span class="stE">'+psmChips(r.mec)+'</span>'+
+          (ed?'<button class="stEd" title="Editar RAN" onclick="event.stopPropagation();psmForm(\''+r.id+'\')">✏️</button>':'<span></span>')+'</div>';}).join('')+'</div></section>';
+  });
+  el.innerHTML=h+'</div>';
+};
+PSM_OWN.cliente[1]=psmRenderCli;
+// ── 5) La barra "Cambios sin guardar" ya no hace falta: lo que cambias queda guardado
+//       en el equipo al tiro y se sube solo a la nube en menos de un minuto ──
+(function(){
+  window.markDirty=function(){
+    try{isDirty=true;pendingChanges=(pendingChanges||0)+1;}catch(e){}
+    try{sv(SK.en,ensamble);sv(SK.de,desarme);}catch(e){}
+    try{if(psmPuedeEditarAlgo())psmAutoChip('Por subir','off','Tu cambio ya quedó guardado en este equipo y se sube solo a la nube en menos de un minuto.');}catch(e){}
+  };
+})();
 
 </script>
 </body>
