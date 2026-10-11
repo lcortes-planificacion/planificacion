@@ -3077,6 +3077,9 @@ html.psmMovil .g2W.c{--lw:118px}
 .segUno .psmBtn.big{font-size:15px;padding:10px 18px}.segUno div{flex:1;min-width:240px;font-size:12.5px;color:#065f46}
 .segMas{margin-top:6px}.segMas summary{cursor:pointer;font-size:12px;color:#64748b;font-weight:700}
 .ciL li button{margin-left:8px}
+.peNoC{font-style:normal;font-size:10px;background:#fff7ed;color:#9a3412;border-radius:999px;padding:1px 7px;margin-left:4px}
+.usVer{border:0;background:#eef2f7;border-radius:6px;margin-left:4px;cursor:pointer;padding:3px 6px}.usCv{display:inline-block;margin-left:6px;font-family:monospace;font-size:12.5px;background:#fef9c3;border-radius:4px;padding:2px 6px;color:#713f12}
+.rpEnv{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:#065f46;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:5px 10px}
 
 </style>
 </head>
@@ -24109,7 +24112,7 @@ async function psmMigrarClaves(uAdm,pAdm){
 (function(){
   var br=psmUserRowHTML;psmUserRowHTML=function(u,i){var h=br.apply(this,arguments);
     if(psmEsHash(u.clave)){h=h.replace('data-f="clave" value="'+psmEsc(u.clave)+'"','data-f="clave" value="" data-h="'+u.clave+'" placeholder="•••• (sin cambio)" type="password" autocomplete="new-password"');}
-    if(PSM_DEF_H[u.u]&&u.clave===PSM_DEF_H[u.u])h=h.replace('<td><input data-f="n"','<td><small class="usDef" title="Esta clave estuvo publicada en el código anterior">⚠ clave por defecto: cámbiala</small><input data-f="n"');
+    if(PSM_DEF_H[u.u]&&u.clave===PSM_DEF_H[u.u]&&!(PSM.config||{}).clavesOk)h=h.replace('<td><input data-f="n"','<td><small class="usDef" title="Esta clave estuvo publicada en el código anterior">⚠ clave por defecto: cámbiala</small><input data-f="n"');
     return h;};
   var bs=psmUsersSave;psmUsersSave=async function(){
     if(!psmIsAdmin())return;var rows=document.querySelectorAll('#usBody tr'),tks={};
@@ -24265,23 +24268,28 @@ function psmRenderPersonal(el){
       '<div class="peSeg">'+[['','Ambos turnos'],['A','Turno A'],['B','Turno B']].map(function(x){return '<button class="'+(PSM_PE.t===x[0]?'on':'')+'" onclick="PSM_PE.t=\''+x[0]+'\';psmRenderPersonal()">'+x[1]+'</button>';}).join('')+'</div></div>';
   h+='<div class="peList"><div class="peRow peTh"><span>Nombre</span><span>Cargo</span><span>Turno</span><span>Área</span><span>RAN asignadas (en curso)</span><span>Turnos</span><span></span></div>'+
     (L.length?L.map(function(x){var p=x.p;return '<div class="peRow'+(p.on===false?' off':'')+'"><span class="nm"><i>'+psmEsc((p.n.split(' ')[0]||'?').charAt(0)+(p.n.split(' ')[1]||'').charAt(0))+'</i><b>'+psmEsc(p.n)+'</b>'+(p.on===false?'<em>Inactivo</em>':'')+'</span>'+
-      '<span data-l="Cargo">'+psmEsc(p.c||'—')+'</span><span data-l="Turno"><u class="tu'+(p.t==='B'?'B':'A')+'">'+(p.t==='B'?'B':'A')+'</u></span><span data-l="Área">'+(ar[p.ar]||'Automática')+'</span>'+
+      '<span data-l="Cargo">'+psmEsc(p.c||'—')+'</span><span data-l="Turno"><u class="tu'+(p.t==='B'?'B':'A')+'">'+(p.t==='B'?'B':'A')+'</u></span><span data-l="Área">'+psmEsc(psmPersAreaTxt(p))+(p.cp===false?' <em class="peNoC">no cuenta en carga</em>':'')+'</span>'+
       '<span data-l="RAN" class="rs">'+(x.rans.length?x.rans.slice(0,6).map(function(r){return '<button onclick="psmOpen&&psmOpen(\''+r.id+'\')" title="'+psmEsc((r.cli||'')+' · '+(r.mod||''))+'">'+psmEsc(r.ran)+'</button>';}).join('')+(x.rans.length>6?'<small>+'+(x.rans.length-6)+'</small>':''):'<small>—</small>')+'</span>'+
       '<span data-l="Turnos">'+(x.tu?'✓':'<small class="peNo">no está</small>')+'</span>'+
       '<span class="ac">'+(ed?'<button class="psmBtn ghost sm" onclick="psmPersForm('+x.i+')">✎ Editar</button><button class="psmBtn ghost sm danger" onclick="psmPersQuitar('+x.i+')">Quitar</button>':'')+'</span></div>';}).join(''):'<p class="psmEmpty">No hay personas con ese filtro.</p>')+'</div>'+
     '<p class="peNota">Las personas inactivas no aparecen en los selectores de encargados ni en Carga en planta, pero se conservan en el historial.</p></div>';
   el.innerHTML=h;
 }
+var PSM_AR_COD={'ensamble':'en','desarme':'de','ambas':'ambos','desarme y ensamble':'ambos','ensamble y desarme':'ambos'};
+function psmPersAreaTxt(p){if(p.arT)return p.arT;return p.ar==='en'?'Ensamble':p.ar==='de'?'Desarme':p.ar==='ambos'?'Ambas':'Automática';}
+function psmPersAreas(){var s={'Automática':1,'Ensamble':1,'Desarme':1,'Ambas':1,'Administración':1,'Calidad':1,'Machine Shop':1,'Bodega':1,'Supervisión':1,'Planificación':1};psmRoster().forEach(function(p){if(p.arT)s[p.arT]=1;});return Object.keys(s);}
+function psmPersAreaSet(o,txt){txt=String(txt||'').trim();var k=psmNorm(txt);delete o.ar;delete o.arT;if(!k||k==='automatica')return;var c=PSM_AR_COD[k];if(c)o.ar=c;else o.arT=txt;}
 function psmPersForm(i){
-  if(!psmPersEd())return;var R=psmRoster(),p=i>=0?R[i]:{n:'',c:'Mecánico',t:'A',on:true};
+  if(!psmPersEd())return;var R=psmRoster(),p=i>=0?R[i]:{n:'',c:'',t:'A',on:true};
   var cargos={};R.forEach(function(x){if(x.c)cargos[x.c]=1;});['Mecánico','Supervisor','Ayudante','Soldador','Eléctrico','Inspector'].forEach(function(c){cargos[c]=1;});
   var m=document.createElement('div');m.id='psmModal';m.className='psmModal';m.onclick=psmClose;
   m.innerHTML='<div class="psmMBox narrow" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">'+(i>=0?'Editar persona':'Agregar persona')+'</div><div class="psmMCli">El cambio se aplica en toda la app.</div></div><button class="psmMX" onclick="psmClose()">✕</button></div>'+
     '<div class="msForm"><label class="w3">Nombre y apellidos<input id="peN" value="'+psmEsc(p.n)+'" placeholder="Ej: Jose Cortes Rojas"/></label>'+
     '<label>Cargo<input id="peC" list="peCL" value="'+psmEsc(p.c||'')+'"/><datalist id="peCL">'+Object.keys(cargos).map(function(c){return '<option value="'+psmEsc(c)+'">';}).join('')+'</datalist></label>'+
     '<label>Turno<select id="peT"><option'+(p.t!=='B'?' selected':'')+'>A</option><option'+(p.t==='B'?' selected':'')+'>B</option></select></label>'+
-    '<label>Área<select id="peA"><option value="">Automática</option><option value="en"'+(p.ar==='en'?' selected':'')+'>Ensamble</option><option value="de"'+(p.ar==='de'?' selected':'')+'>Desarme</option><option value="ambos"'+(p.ar==='ambos'?' selected':'')+'>Ambas</option></select></label>'+
-    '<label class="w3 peChk"><input type="checkbox" id="peOn"'+(p.on!==false?' checked':'')+'/> Activo (aparece en encargados, Carga en planta y Turnos)</label></div>'+
+    '<label>Área<input id="peA" list="peAL" placeholder="Escribe o elige" value="'+psmEsc(psmPersAreaTxt(p))+'"/><datalist id="peAL">'+psmPersAreas().map(function(a){return '<option value="'+psmEsc(a)+'">';}).join('')+'</datalist></label>'+
+    '<label class="w3 peChk"><input type="checkbox" id="peCp"'+(p.cp!==false?' checked':'')+'/> Cuenta en la Carga en planta (desmárcalo para personal administrativo, supervisión, calidad, etc.)</label>'+
+    '<label class="w3 peChk"><input type="checkbox" id="peOn"'+(p.on!==false?' checked':'')+'/> Activo (aparece en encargados y Turnos)</label></div>'+
     '<div class="psmMFoot"><span style="flex:1"></span><button class="psmBtn ghost" onclick="psmClose()">Cancelar</button><button class="psmBtn" onclick="psmPersGuardar('+i+')">Guardar</button></div></div>';
   document.body.appendChild(m);document.getElementById('peN').focus();
 }
@@ -24298,7 +24306,7 @@ function psmPersGuardar(i){
   var dup=R.filter(function(x,j){return j!==i&&(psmNorm(x.n)===psmNorm(n)||psmMismaPersona(x.n,n));})[0];
   if(dup){psmToast('Ya existe: '+dup.n,'#d03b3b');return;}
   var o=i>=0?R[i]:{};var viejo=o.n;
-  o.n=n;o.c=$('peC').value.trim()||'Mecánico';o.t=$('peT').value;var a=$('peA').value;if(a)o.ar=a;else delete o.ar;o.on=$('peOn').checked;
+  o.n=n;o.c=$('peC').value.trim()||'Mecánico';o.t=$('peT').value;psmPersAreaSet(o,$('peA').value);o.cp=$('peCp').checked;if(o.cp)delete o.cp;o.on=$('peOn').checked;
   if(i<0)R.push(o);else psmPersRenombrar(viejo,n);
   PSM.personal=R;PSM_ULT_ACCION=Date.now();psmPersReconciliar();psmSave();psmClose();psmRenderPersonal();
   psmToast(i<0?n+' agregado en toda la app':'Cambios guardados en toda la app','#16a34a');
@@ -24876,6 +24884,81 @@ setInterval(psmPlantaFotoAuto,60000);
       h+='<div class="psmGEs'+(o.es.late?' late':'')+'" style="left:'+l+'px;width:'+Math.max(W,rr-l)+'px;--c:'+PSM_PCOL[ix]+'" title="'+psmEsc(o.p.es+' · estimado '+psmFd(o.es.s)+' → '+psmFd(o.es.e)+(o.es.late?' · pasa la fecha comprometida':''))+'"></div>';});
     if(h){gt.insertAdjacentHTML('beforeend',h);var ad=gt.querySelector('.psmGAdd');if(ad)ad.classList.add('chico');}});
 }catch(e){}};})();
+
+// ══════════════════════════════════════════════════════════════
+// v33: bóveda de claves (solo administrador) · accesos a la nube que no se pierden
+//      · Informe enviado desde el Reporte · personal administrativo fuera de la carga
+// ══════════════════════════════════════════════════════════════
+var PSM_BOV_DEF={"iv":"YBZI7oCjDSsg6J2Q","ct":"QSTNah1adsDNDZQDwP10aTh3JQCYoYNja+S8N/wcQ5+YVdYnbgjdM5j77H664n5pl+XFFHCaRC3kbq27HHhvWNBkrRnOHQFPEZSIox4Od58q+0QkUMx8r5DwIeM5eJjvBRIQrXRMEkdb5STgAuNbWfS+Oqk1piZrGJAArEF5AWf35Gx41OMZWsPgcOEAS0uFZePKRbBUlEKztXWhxioIkHq2KbL8CJo1pJ0KNa49z3CX8oT6p6IQvvLiOGU9jD9jYT5GWrJUFTc67e2TehMArvY9ogW9D1vSgd4A4YB1KNVIGCI6y2FZHCMXQjrolW7vdA=="};
+var PSM_BOV_KEY=null,PSM_BOV={};
+function psmB64(u8){var s='';u8.forEach(function(b){s+=String.fromCharCode(b);});return btoa(s);}
+function psmUnB64(t){var s=atob(t),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;}
+async function psmBovKey(pass){var S=crypto.subtle,base=await S.importKey('raw',new TextEncoder().encode('sman-boveda|admin|'+pass),'PBKDF2',false,['deriveKey']);
+  return S.deriveKey({name:'PBKDF2',salt:new TextEncoder().encode('sman-boveda-v1'),iterations:150000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+async function psmBovAbrir(key,o){if(!o||!o.ct)return null;try{var b=await crypto.subtle.decrypt({name:'AES-GCM',iv:psmUnB64(o.iv)},key,psmUnB64(o.ct));return JSON.parse(new TextDecoder().decode(b));}catch(e){return null;}}
+async function psmBovCerrar(key,obj){var iv=crypto.getRandomValues(new Uint8Array(12));var ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,new TextEncoder().encode(JSON.stringify(obj))));return {v:1,iv:psmB64(iv),ct:psmB64(ct)};}
+// al entrar el administrador: abre la bóveda, completa claves conocidas y repone los accesos a la nube que falten
+async function psmBovSync(pass){
+  try{PSM_BOV_KEY=await psmBovKey(pass);}catch(e){return;}
+  var V=(await psmBovAbrir(PSM_BOV_KEY,PSM.boveda))||{},D=(await psmBovAbrir(PSM_BOV_KEY,PSM_BOV_DEF))||{},cambio=false;
+  var L=psmUsers();
+  for(var i=0;i<L.length;i++){var x=L[i];
+    if(x.adm&&V[x.u]!==pass){V[x.u]=pass;cambio=true;}
+    if(!V[x.u]&&D[x.u]&&x.clave===await psmLoginHash(x.u,D[x.u])){V[x.u]=D[x.u];cambio=true;}
+    if(V[x.u]&&x.clave!==await psmLoginHash(x.u,V[x.u])){delete V[x.u];cambio=true;} // la clave cambió por otro lado: ya no sirve
+    if(V[x.u]){var tk=await psmTokenDe(x.u,V[x.u]);if(x.tk!==tk){x.tk=tk;cambio=true;}}
+  }
+  PSM_BOV=V;
+  if(cambio||!PSM.boveda){PSM.boveda=await psmBovCerrar(PSM_BOV_KEY,V);PSM_ULT_ACCION=Date.now();psmSave();psmUsersSync&&psmUsersSync();}
+  try{if(typeof currentView!=='undefined'&&(currentView==='notas'||currentView==='calidad'))psmShowOwn(currentView);}catch(e){}
+}
+(function(){var dl=window.doLogin;if(typeof dl!=='function')return;window.doLogin=async function(){
+  var uI=document.getElementById('lUser'),pI=document.getElementById('lPass'),u=uI?uI.value.trim():'',p=pI?pI.value:'';
+  var r=await dl.apply(this,arguments);
+  try{if(p&&!psmEsHash(p)&&typeof session!=='undefined'&&session&&psmIsAdmin())setTimeout(function(){psmBovSync(p);},400);}catch(e){}
+  return r;};})();
+// ── editor de usuarios: ver la clave (solo administrador con la bóveda abierta) y no perder accesos al guardar ──
+(function(){
+  var br=psmUserRowHTML;psmUserRowHTML=function(u,i){var h=br.apply(this,arguments);
+    if(PSM_BOV_KEY&&PSM_BOV[u.u])h=h.replace('placeholder="•••• (sin cambio)"','placeholder="•••• (sin cambio)" data-cv="1"').replace(/(<input data-f="clave"[^>]*>)/,'$1<button type="button" class="usVer" onclick="psmUsVer(this,\''+psmEsc(u.u)+'\')" title="Ver la clave">👁</button>');
+    return h;};
+  var bs=psmUsersSave;psmUsersSave=async function(){
+    var antes={};psmUsers().forEach(function(x){antes[x.u]={tk:x.tk,clave:x.clave};});
+    var nuevas={};document.querySelectorAll('#usBody tr').forEach(function(tr){var u=tr.querySelector('[data-f=u]'),c=tr.querySelector('[data-f=clave]');if(u&&c&&c.value&&!psmEsHash(c.value))nuevas[u.value.trim()]=c.value;});
+    var r=await bs.apply(this,arguments);
+    try{var L=PSM.usuarios||[],cambio=false;
+      for(var i=0;i<L.length;i++){var x=L[i],a=antes[x.u];
+        if(!x.tk&&a&&a.tk&&a.clave===x.clave){x.tk=a.tk;cambio=true;} // el guardado no borra accesos que ya existían
+        if(nuevas[x.u]&&x.clave===await psmLoginHash(x.u,nuevas[x.u])){PSM_BOV[x.u]=nuevas[x.u];if(!x.tk){x.tk=await psmTokenDe(x.u,nuevas[x.u]);}cambio=true;if(x.adm&&PSM_BOV_KEY)PSM_BOV_KEY=await psmBovKey(nuevas[x.u]);}}
+      if(PSM_BOV_KEY&&Object.keys(nuevas).length){PSM.boveda=await psmBovCerrar(PSM_BOV_KEY,PSM_BOV);cambio=true;}
+      if(cambio){PSM_ULT_ACCION=Date.now();psmSave();psmUsersSync&&psmUsersSync();}
+    }catch(e){}
+    return r;};
+})();
+function psmUsVer(b,u){var c=PSM_BOV[u];if(!c)return;var s=b.nextElementSibling;if(s&&s.classList.contains('usCv')){s.remove();return;}b.insertAdjacentHTML('afterend','<span class="usCv">'+psmEsc(c)+'</span>');}
+// el SQL de seguridad nunca sale sin accesos (eso bloquearía la nube)
+(function(){
+  var chk=function(){var L=psmUsers(),con=L.filter(function(x){return x.tk;}),adm=L.filter(function(x){return x.adm&&x.tk;});
+    if(!con.length||!adm.length){alert('Todavía no hay accesos de usuarios para la nube. Si se corre así, nadie podría entrar.\n\nSal de la app y vuelve a entrar como administrador: la app recupera los accesos sola. Luego intenta de nuevo.');return false;}return true;};
+  ['psmSegActivar','psmSqlDescargar','psmSqlCopiar'].forEach(function(n){var f=window[n];if(typeof f!=='function')return;window[n]=function(){if(!chk())return;return f.apply(this,arguments);};});
+})();
+// ── Informe enviado: se marca desde el Reporte diario cuando el informe está al 100% ──
+function psmInfEnviar(id){
+  var r=psmRow(id);if(!r)return;if(!(psmCanEdit('reporte')||psmPuedeAprobar())){psmToast('Sin permiso','#d03b3b');return;}
+  var f=prompt('Fecha en que se envió el informe al cliente (dd-mm-aaaa):',psmFd(psmToday()).replace(/-(\d\d)$/,'-20$1'));if(f===null)return;
+  var m=f.trim().match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/),iso=psmToday();if(m){var y=m[3].length===2?'20'+m[3]:m[3];iso=y+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2);}
+  if(!r.infApr)r.infApr={t:new Date().toISOString(),u:psmUser(),o:'Aprobado al marcar el envío'};
+  psmSet(r,'p_rs',100);psmSet(r,'ff_rs',iso);if(!r.fi_rs)psmSet(r,'fi_rs',iso);
+  psmLogRan(r,'Informe de evaluación enviado al cliente el '+psmFd(iso));PSM_ULT_ACCION=Date.now();psmSave();try{psmRepRefresh();}catch(e){}
+  psmToast('✔ RAN '+r.ran+': informe enviado. Pasa a Costeo.','#16a34a');
+}
+(function(){var bC=psmRepCard;psmRepCard=function(r,ed){var h=bC.apply(this,arguments);try{
+  if(r.a==='de'&&!psmFinal(r)){var G=psmGData(r),pct=function(k){var o=G.filter(function(x){return x.p.k===k;})[0];return o?o.pct:0;};
+    if(pct('re')>=100&&pct('rs')<100)h=h.replace('<div class="rpTur">','<div class="rpEnv">📨 Informe de evaluación al 100%. Falta registrar el envío al cliente'+(pct('rs')>0?' (hoy dice '+pct('rs')+'%)':'')+'.'+((psmCanEdit('reporte')||psmPuedeAprobar())?'<button class="psmBtn green sm" onclick="event.stopPropagation();psmInfEnviar(\''+r.id+'\')">✔ Informe enviado</button>':'')+'</div><div class="rpTur">');}
+}catch(e){}return h;};})();
+// ── personal administrativo: no cuenta en la Carga en planta ──
+function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
+psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 
 </script>
 </body>
