@@ -3048,6 +3048,19 @@ html.psmMovil .g2W.c{--lw:118px}
 .tv2P .tv2F>span{display:none}
 @media (max-width:1400px){.tv2P .tv2F{padding:5px 10px;gap:6px}.tv2P .tv2F em{display:none}}
 .tv2P h2{min-height:calc(2.3em + 24px);box-sizing:border-box}
+.tv2K.clic{cursor:pointer}.tv2K.clic:hover{outline:2px solid #fff3}
+.tvMsBox{width:min(980px,96vw)!important}.tvMsBox td.late{color:#c2410c;font-weight:700;white-space:nowrap}
+.calBtns .psmBtn.segDl{background:#1d4ed8!important;color:#fff!important;border:0}
+.segPasos{margin:8px 0 4px 18px;padding:0;font-size:12.5px;color:#334155}.segPasos li{margin:3px 0}
+/* v34 TV: 4 paneles (con costeo) y 7 indicadores */
+.tv2Ks{grid-template-columns:repeat(7,minmax(0,1fr))!important}
+.tv2P.cs h2{box-shadow:inset 0 3px 0 #8b5cf6}
+.tv2G[style*="--n:4"] .tv2C .c1 b{font-size:clamp(16px,1.3vw,26px)}
+.tv2G[style*="--n:4"] .tv2C .c3{grid-template-columns:minmax(0,1fr) minmax(50px,28%) auto}
+@media (max-width:1400px){.tv2Ks{grid-template-columns:repeat(4,minmax(0,1fr))!important}.tv2G[style*="--n:4"]{grid-template-columns:repeat(2,minmax(0,1fr))}.tv2G[style*="--n:4"] .tv2P{min-height:360px}}
+@media (max-width:1400px){.tv2:has(.tv2G[style*="--n:4"]){height:auto}.tv2G[style*="--n:4"] .tv2P{height:440px}}
+.tvMsH{margin:16px 0 6px;font-size:14px;color:#334155}.tvMsH small{display:block;font-weight:500;color:#64748b;font-size:12px;margin-top:2px}
+.calBtns .psmBtn.segDl.cp{background:#0f2742!important}
 
 </style>
 </head>
@@ -23977,7 +23990,7 @@ msDashHTML=function(){
   var tile=function(t,v,d,c){return '<div class="moTile'+(c?' '+c:'')+'"><span class="tt">'+t+'</span><b>'+v+'</b><span class="ds">'+d+'</span></div>';};
   var h='<div class="psmDash msDash msV2"><div class="moSub">'+rango+(MS_F.cli?' · '+psmEsc(MS_F.cli):'')+' · '+Object.keys(rans).length+' RAN con trabajos de Machine Shop</div>';
   h+='<div class="moTiles">'+tile('Trabajos abiertos',ab.length,'Pendientes, solicitados, en evaluación, en proceso o detenidos')+
-    tile('Vencidos',venc.length,'Sin terminar y con la fecha requerida pasada',venc.length?'bad':'ok')+
+    tile('Vencidos',venc.length,'Fecha requerida o comprometida ya pasada'+(function(){var n=ab.filter(function(i){return typeof msSinPedida==='function'&&msSinPedida(i);}).length;return n?' · '+n+' sin fecha pedida (no se cuentan)':'';})(),venc.length?'bad':'ok')+
     tile('Por validar',porVal.length,'Machine Shop los terminó; el taller debe recibirlos y validarlos',porVal.length?'med':'ok')+
     tile('Cumplimiento de fecha',cum==null?'—':cum+'%',cf.length?ok.length+' de '+cf.length+' terminados en o antes de la fecha requerida. Meta 90%':'Sin trabajos terminados con fecha',cum==null?'':cum>=90?'ok':cum>=75?'med':'bad')+
     tile('Tiempo de ciclo',cicP==null?'—':String(cicP).replace('.',',')+' d',cic.length?'Promedio en días hábiles de solicitud (o inicio) a término · mediana '+cicM+' d · '+cic.length+' trabajos':'Faltan fechas de inicio y término')+
@@ -24113,7 +24126,9 @@ function psmSqlSeguridad(){
   "create or replace function public.sman_tok() returns text language sql stable as $$ select coalesce(nullif(current_setting('request.headers', true),'')::json->>'x-sman-token','') $$;",
   'create or replace function public.sman_token_ok() returns boolean language sql stable security definer set search_path = public as $$ select exists(select 1 from public.sman_tokens t where t.token = public.sman_tok()) $$;',
   'create or replace function public.sman_token_admin() returns boolean language sql stable security definer set search_path = public as $$ select exists(select 1 from public.sman_tokens t where t.token = public.sman_tok() and t.admin) $$;',
-  'drop policy if exists "sman_leer" on public.pie_data;','drop policy if exists "sman_insertar" on public.pie_data;','drop policy if exists "sman_actualizar" on public.pie_data;',
+  'alter table public.pie_data enable row level security;',
+  '-- se borran TODAS las reglas de pie_data, también las que tengan otro nombre, para que ninguna deje la nube abierta',
+  "do $$ declare p record; begin for p in select policyname from pg_policies where schemaname='public' and tablename='pie_data' loop execute format('drop policy %I on public.pie_data', p.policyname); end loop; end $$;",
   'create policy "sman_leer" on public.pie_data for select to anon, authenticated using (public.sman_token_ok());',
   'create policy "sman_insertar" on public.pie_data for insert to anon, authenticated with check (public.sman_token_ok() and '+ids+');',
   'create policy "sman_actualizar" on public.pie_data for update to anon, authenticated using (public.sman_token_ok() and '+ids+') with check (public.sman_token_ok() and '+ids+');',
@@ -24124,8 +24139,12 @@ function psmSqlSeguridad(){
   'create policy "tok_borrar" on public.sman_tokens for delete to anon, authenticated using (public.sman_token_admin());',
   '-- accesos de los usuarios ('+L.length+')',
   L.map(function(x){return 'insert into public.sman_tokens(usuario, token, admin) values ('+q(x.u)+', '+q(x.tk)+', '+(x.adm?'true':'false')+') on conflict (usuario) do update set token = excluded.token, admin = excluded.admin, actualizado = now();';}).join('\n')
+  ,
+  '-- revisión: deben aparecer solo sman_leer, sman_insertar y sman_actualizar, todas con sman_token_ok()',
+  "select policyname, cmd, qual from pg_policies where schemaname='public' and tablename='pie_data' order by policyname;"
   ].join('\n')+'\n';
 }
+function psmSqlCopiar(){var t=psmSqlSeguridad();var ok=function(){psmToast('SQL copiado: pégalo en Supabase → SQL Editor → Run','#16a34a');};try{navigator.clipboard.writeText(t).then(ok,function(){psmSqlDescargar();});}catch(e){psmSqlDescargar();}}
 function psmSqlDescargar(){
   var sin=psmUsers().filter(function(x){return !x.tk;}).map(function(x){return x.u;});
   if(sin.length&&!confirm('Estos usuarios todavía no tienen acceso a la nube y no podrán entrar con la seguridad activa: '+sin.join(', ')+'.\nPara crearlo, cambia su clave en Notas → Usuarios.\n\n¿Descargar igual?'))return;
@@ -24140,7 +24159,7 @@ async function psmSegProbar(){
   var msg,ok=false;
   if(!out.hdr)msg='La nube no aceptó el encabezado de seguridad. No se activa nada; la app sigue funcionando como antes.';
   else if(!out.con)msg='Tu token no está registrado en la nube. Descarga el SQL y ejecútalo en Supabase.';
-  else if(out.sin)msg='La nube todavía responde sin token: falta ejecutar seguridad_supabase.sql. Mientras tanto la app ya envía el token.';
+  else if(out.sin)msg='La nube todavía responde sin token. Descarga el SQL de nuevo (Descargar SQL) y córrelo en Supabase como el ÚLTIMO script. Si después corres un permiso_supabase.sql antiguo, la nube se vuelve a abrir. Al final del script aparece la lista de reglas: deben ser solo 3 y todas con sman_token_ok().';
   else{msg='✅ Seguridad activa: la nube solo responde a usuarios de la app.';ok=true;}
   if(out.hdr&&out.con){PSM.config=PSM.config||{};if(!PSM.config.seg){PSM.config.seg=true;PSM_ULT_ACCION=Date.now();psmSave();}try{localStorage.setItem('psm_seg','1');}catch(e){}PSM_HDR_OK=true;}
   PSM_SEG_EST={t:new Date().toISOString(),msg:msg,ok:ok,res:out};try{localStorage.setItem('psm_seg_est',JSON.stringify(PSM_SEG_EST));}catch(e){}
@@ -24159,7 +24178,7 @@ function psmSegHTML(){
     li(!sinTk.length,'Todos los usuarios tienen acceso a la nube',sinTk.length?'Sin acceso: '+sinTk.join(', ')+' — cambia su clave en Notas → Usuarios':'')+
     li(E&&E.ok,'Nube protegida (solo responde con token)',E?psmFh2(E.t)+' · '+E.msg:'Todavía no se ha probado')+
     li(true,'Permisos por área','Cada perfil ve y edita solo lo marcado; la nube exige usuario válido, el detalle por área lo controla la app')+'</ul>'+
-    (psmIsAdmin()?'<div class="calBtns"><button class="psmBtn" onclick="psmSqlDescargar()">⬇ Descargar SQL de seguridad</button><button class="psmBtn green" onclick="psmSegProbar()">Probar y activar</button></div><p class="calN">Pasos: 1) Descarga el SQL. 2) Supabase → SQL Editor → pega y Run. 3) Presiona “Probar y activar”. Si algo falla, seguridad_desactivar.sql deja todo como antes.</p>':'')+'</section>';
+    (psmIsAdmin()?'<div class="calBtns"><button class="psmBtn segDl" onclick="psmSqlDescargar()">⬇ Descargar SQL de seguridad</button><button class="psmBtn segDl cp" onclick="psmSqlCopiar()">📋 Copiar SQL</button><button class="psmBtn green" onclick="psmSegProbar()">Probar y activar</button></div><ol class="segPasos"><li>Cambia las claves por defecto en Notas → Usuarios, presiona Guardar usuarios y luego Guardar nube.</li><li>Presiona <b>⬇ Descargar SQL de seguridad</b> (bájalo de nuevo cada vez que cambies claves o usuarios).</li><li>Supabase → SQL Editor → New query → pega todo el archivo → Run. Al final muestra 3 reglas, todas con sman_token_ok().</li><li>Vuelve aquí y presiona <b>Probar y activar</b>.</li></ol><p class="calN">Ese archivo debe ser el último que corras. Si algo falla, seguridad_desactivar.sql deja todo como antes. No lo subas a GitHub: tiene los accesos.</p>':'')+'</section>';
 }
 (function(){var br=psmRenderCal;psmRenderCal=function(el){br(el);el=el||document.getElementById('psmCalView');if(!el)return;try{var w=el.querySelector('.calWrap');var rows=w&&w.querySelectorAll('.calRow');if(rows&&rows.length)rows[rows.length-1].insertAdjacentHTML('afterend',psmSegHTML());}catch(e){}};})();
 // la configuración "seg" llega por la nube: cada equipo la recuerda
@@ -24394,7 +24413,7 @@ setInterval(function(){try{if(PSM&&PSM_MSK.o!==PSM&&!PSM_MERGING)psmMsNuevos();}
 // ════════════════════════════════════════
 // 3) PANEL DE TV
 // ════════════════════════════════════════
-function psmTvCfg2(){var c=(PSM&&PSM.config&&PSM.config.tv2)||{};return {en:c.en!==false,de:c.de!==false,inf:c.inf!==false,vel:c.vel||1};}
+function psmTvCfg2(){var c=(PSM&&PSM.config&&PSM.config.tv2)||{};return {en:c.en!==false,de:c.de!==false,inf:c.inf!==false,cs:c.cs!==false,vel:c.vel||1};}
 function psmTvTog2(k,v){if(!psmIsAdmin())return;var c=Object.assign({},(PSM.config&&PSM.config.tv2)||{});c[k]=v===undefined?!psmTvCfg2()[k]:v;psmCfgSet('tv2',c,'panel TV: '+k);var el=document.getElementById('psmTvView');if(el)el.dataset.sig='';psmRenderTV();}
 function psmTvDatos(){
   var hoy=psmToday(),act=PSM.rows.filter(function(r){return !psmFinal(r);}),C=psmCfg();
@@ -24406,21 +24425,36 @@ function psmTvDatos(){
       atr:S.col==='rojo'&&ref?psmHabEntre(ref,hoy):0,ms:ms,esp:esp,bloq:bloq?est:''};};
   var orden={rojo:0,amarillo:1,verde:2,gris:3};
   var srt=function(a,b){return (orden[a.col]-orden[b.col])||(b.atr-a.atr)||((a.comp||a.meta||'9')<(b.comp||b.meta||'9')?-1:1);};
-  var en=act.filter(function(r){return r.a==='en';}).map(fila).sort(srt),de=act.filter(function(r){return r.a==='de';}).map(fila).sort(srt);
-  var inf=[];act.forEach(function(r){if(r.a!=='de')return;var o=psmInfMeta(r);if(!o||o.fin||!o.hab||o.est==='No calculable'||o.est==='Aún no habilitado')return;
-    inf.push({id:r.id,ran:r.ran,cli:psmCliG(r.cli)||r.cli||'',mod:r.mod||'',dias:o.dias||0,meta:o.meta,est:o.est,cls:o.cls,hab:o.hab,late:o.est==='Atrasado'});});
+  // cada RAN de desarme está en una sola etapa: desarme → informe → costeo → sale del panel
+  var et={};act.forEach(function(r){et[r.id]=psmTvEtapa(r);});
+  var en=act.filter(function(r){return r.a==='en'&&et[r.id]==='en';}).map(fila).sort(srt),de=act.filter(function(r){return et[r.id]==='de';}).map(fila).sort(srt);
+  var inf=[];act.forEach(function(r){if(et[r.id]!=='inf')return;var o=psmInfMeta(r)||{},S=psmSemaforo(r),med=['No calculable','Aún no habilitado'].indexOf(o.est)>=0;
+    inf.push({id:r.id,ran:r.ran,cli:psmCliG(r.cli)||r.cli||'',mod:r.mod||'',dias:o.dias||0,meta:o.meta,est:med||!o.est?'En proceso':o.est,col:S.col,cls:med?'gris':(o.cls||'gris'),hab:o.hab||'',late:o.est==='Atrasado',pct:psmTvPct(r,'re'),env:psmTvPct(r,'rs')});});
   var oi={bad:0,med:1,ok:2,gris:3};inf.sort(function(a,b){return (oi[a.cls]-oi[b.cls])||(b.dias-a.dias);});
+  var cs=[];act.forEach(function(r){if(et[r.id]!=='cs')return;var x=fila(r),f=psmTvFechaProc(r,'rs');x.envio=f;x.dEsp=f?psmHabEntre(f,hoy):null;x.pct=psmTvPct(r,'cs');cs.push(x);});
+  cs.sort(function(a,b){return (b.dEsp||0)-(a.dEsp||0);});
   // filtro de meses (desde / hasta) por fecha comprometida o meta; informes por fecha en que se habilitó
-  var F={en:psmTvMes('en'),de:psmTvMes('de'),inf:psmTvMes('inf')},M={},mes=function(f){return (f||'').slice(0,7);};
-  en.concat(de).forEach(function(x){var m=mes(x.comp||x.meta||x.est);if(m)M[m]=1;});inf.forEach(function(x){var m=mes(x.hab);if(m)M[m]=1;});M[hoy.slice(0,7)]=1;
+  var F={en:psmTvMes('en'),de:psmTvMes('de'),inf:psmTvMes('inf'),cs:psmTvMes('cs')},M={},mes=function(f){return (f||'').slice(0,7);};
+  en.concat(de).forEach(function(x){var m=mes(x.comp||x.meta||x.est);if(m)M[m]=1;});inf.forEach(function(x){var m=mes(x.hab);if(m)M[m]=1;});cs.forEach(function(x){var m=mes(x.envio||x.comp||x.meta);if(m)M[m]=1;});M[hoy.slice(0,7)]=1;
   var pasa=function(k,f){var G=F[k];if(!G.d&&!G.h)return true;var m=mes(f);if(!m)return false;return (!G.d||m>=G.d)&&(!G.h||m<=G.h);};
-  var n0={en:en.length,de:de.length,inf:inf.length};
-  en=en.filter(function(x){return pasa('en',x.comp||x.meta||x.est);});de=de.filter(function(x){return pasa('de',x.comp||x.meta||x.est);});inf=inf.filter(function(x){return pasa('inf',x.hab);});
-  var vis={};en.concat(de).forEach(function(x){vis[x.id]=1;});
+  var n0={en:en.length,de:de.length,inf:inf.length,cs:cs.length};
+  en=en.filter(function(x){return pasa('en',x.comp||x.meta||x.est);});de=de.filter(function(x){return pasa('de',x.comp||x.meta||x.est);});inf=inf.filter(function(x){return pasa('inf',x.hab);});cs=cs.filter(function(x){return pasa('cs',x.envio||x.comp||x.meta);});
+  var vis={};en.concat(de,cs,inf).forEach(function(x){vis[x.id]=1;});
   var msv=0;act.forEach(function(r){if(!vis[r.id])return;try{msv+=psmMSdeRAN(r).filter(function(i){return msAtraso(i);}).length;}catch(e){}});
   act=act.filter(function(r){return vis[r.id];});
-  return {F:F,meses:Object.keys(M).sort(),ocultas:{en:n0.en-en.length,de:n0.de-de.length,inf:n0.inf-inf.length},en:en,de:de,inf:inf,atr:en.concat(de).filter(function(x){return x.col==='rojo';}).length,ries:en.concat(de).filter(function(x){return x.col==='amarillo';}).length,
+  return {F:F,meses:Object.keys(M).sort(),ocultas:{en:n0.en-en.length,de:n0.de-de.length,inf:n0.inf-inf.length,cs:n0.cs-cs.length},en:en,de:de,inf:inf,cs:cs,atr:en.concat(de,cs,inf).filter(function(x){return x.col==='rojo';}).length,ries:en.concat(de,cs).filter(function(x){return x.col==='amarillo';}).length,
     infAtr:inf.filter(function(x){return x.late;}).length,msv:msv,act:act.length,metaInf:C.metaInf,hoy:hoy};
+}
+function psmTvPct(r,k){try{var G=psmGData(r);for(var i=0;i<G.length;i++)if(G[i].p.k===k)return G[i].pct;}catch(e){}return +(r['p_'+k]||0);}
+function psmTvFechaProc(r,k){try{var T=psmTiemposRAN(r).filter(function(x){return x.k===k;})[0];if(T&&T.fin)return T.fin;}catch(e){}return r['ff_'+k]||'';}
+function psmTvEtapa(r){
+  if(psmFinal(r))return '';
+  if(r.a==='en')return psmAv(r)>=100?'':'en';
+  var p=function(k){return psmTvPct(r,k);};
+  if(['sd','di','cl','me'].some(function(k){return p(k)<100;}))return 'de';
+  if(p('re')<100||p('rs')<100)return 'inf';
+  if(p('cs')<100)return 'cs';
+  return '';
 }
 function psmTvMesAll(){try{var o=JSON.parse(localStorage.getItem('psm_tv_mes2')||'{}');return o&&typeof o==='object'?o:{};}catch(e){return {};}}
 function psmTvMes(p){var o=psmTvMesAll()[p]||{};return {d:o.d||'',h:o.h||''};}
@@ -24443,12 +24477,19 @@ function psmTvCard(x){
     '<div class="c4"><span>'+(x.comp?'Compromiso':'Meta')+' <b>'+(f?psmFd(f):'—')+'</b></span><span>Estimada <b>'+(x.est?psmFd(x.est):'—')+'</b></span></div>'+
     (flags.length?'<div class="c5">'+flags.join('')+'</div>':'')+'</div>';
 }
+function psmTvCardCs(x){
+  var late=x.col==='rojo';
+  return '<div class="tv2C '+(late?'late':x.col==='amarillo'?'risk':x.col==='verde'?'ok':'na')+'"><div class="c1"><b>RAN '+psmEsc(x.ran)+'</b><span class="tag">'+(x.dEsp!=null?'ESPERA '+x.dEsp+' d':'POR COSTEAR')+'</span></div>'+
+    '<div class="c2">'+psmEsc(x.cli)+(x.mod?' · '+psmEsc(x.mod):'')+'</div>'+
+    '<div class="c3"><span>Costeo</span><em><u style="width:'+Math.max(0,Math.min(100,x.pct||0))+'%"></u></em><strong>'+(x.pct||0)+'%</strong></div>'+
+    '<div class="c4"><span>Informe enviado <b>'+(x.envio?psmFd(x.envio):'—')+'</b></span><span>'+(x.comp?'Compromiso':'Meta')+' <b>'+((x.comp||x.meta)?psmFd(x.comp||x.meta):'—')+'</b></span></div></div>';
+}
 function psmTvCardInf(x){
   var m=x.meta,p=m?Math.min(100,x.dias/m*100):0,cls=x.late?'late':x.cls==='med'?'risk':x.cls==='ok'?'ok':'na';
   return '<div class="tv2C '+cls+'"><div class="c1"><b>RAN '+psmEsc(x.ran)+'</b><span class="tag">'+psmEsc(x.est.toUpperCase())+'</span></div>'+
     '<div class="c2">'+psmEsc(x.cli)+(x.mod?' · '+psmEsc(x.mod):'')+'</div>'+
-    '<div class="c3"><span>Día hábil '+x.dias+(m!=null?' de '+m:'')+'</span><em><u style="width:'+p+'%"></u></em><strong>'+x.dias+(m!=null?'/'+m:'')+' d</strong></div>'+
-    '<div class="c4"><span>Habilitado desde <b>'+psmFd(x.hab)+'</b></span>'+(m!=null?'<span>'+(x.dias>m?'Excede <b>'+(x.dias-m)+' d</b>':'Quedan <b>'+(m-x.dias)+' d</b>')+'</span>':'')+'</div></div>';
+    '<div class="c3"><span>'+(x.hab?'Día hábil '+x.dias+(m!=null?' de '+m:''):'Sin fecha de término de END')+'</span><em><u style="width:'+p+'%"></u></em><strong>'+x.dias+(m!=null?'/'+m:'')+' d</strong></div>'+
+    '<div class="c4"><span>'+(x.hab?'Habilitado desde <b>'+psmFd(x.hab)+'</b>':'Informe <b>'+(x.pct||0)+'%</b> · envío <b>'+(x.env||0)+'%</b>')+'</span>'+(m!=null&&x.hab?'<span>'+(x.dias>m?'Excede <b>'+(x.dias-m)+' d</b>':'Quedan <b>'+(m-x.dias)+' d</b>')+'</span>':'')+'</div></div>';
 }
 function psmTvPanel(cls,tit,ic,L,cardFn,vacio,fil){
   var nl=L.filter(function(x){return x.late||x.col==='rojo';}).length;
@@ -24472,7 +24513,7 @@ function psmTvReloj(){
 psmRenderTV=function(el){
   el=el||document.getElementById('psmTvView');if(!el)return;
   var D=psmTvDatos(),T=psmTvCfg2(),adm=false;try{adm=psmIsAdmin();}catch(e){}
-  var sig=JSON.stringify([D.en,D.de,D.inf,D.msv,D.hoy,T,adm,D.F,D.meses]);
+  var sig=JSON.stringify([D.en,D.de,D.inf,D.cs,D.msv,D.hoy,T,adm,D.F,D.meses]);
   if(el.dataset.sig===sig&&el.querySelector('.tv2')){psmTvReloj();return;}
   el.dataset.sig=sig;
   var fe=new Date().toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});fe=fe.charAt(0).toUpperCase()+fe.slice(1);
@@ -24480,14 +24521,15 @@ psmRenderTV=function(el){
   var h='<div class="tv2"><div class="tv2Head"><div class="tt"><h1>Planificación SMAN</h1><span>Taller Antofagasta · '+fe+'</span></div>'+
     '<div class="tv2Clock"><div class="tv2HH"><b id="tvHora"></b></div><span id="tvChk"></span></div>'+
     '<div class="tv2Btns"><button onclick="psmTvFull()" title="Pantalla completa">⛶</button><button onclick="document.body.classList.toggle(\'tvModo\');var e=document.getElementById(\'psmTvView\');e.dataset.sig=\'\';psmRenderTV()" title="Solo panel">▣</button>'+(adm?'<button onclick="document.getElementById(\'tvCfg2\').classList.toggle(\'on\')" title="Configurar">⚙</button>':'')+'</div></div>';
-  if(adm)h+='<div class="tvCfg" id="tvCfg2">'+[['en','Ensamble'],['de','Desarme'],['inf','Informes de evaluación']].map(function(x){return '<label><input type="checkbox"'+(T[x[0]]?' checked':'')+' onchange="psmTvTog2(\''+x[0]+'\')"/> '+x[1]+'</label>';}).join('')+
+  if(adm)h+='<div class="tvCfg" id="tvCfg2">'+[['en','Ensamble'],['de','Desarme'],['inf','Informes de evaluación'],['cs','Costeo']].map(function(x){return '<label><input type="checkbox"'+(T[x[0]]?' checked':'')+' onchange="psmTvTog2(\''+x[0]+'\')"/> '+x[1]+'</label>';}).join('')+
     '<label>Velocidad <select onchange="psmTvTog2(\'vel\',+this.value)">'+[[0.6,'Lenta'],[1,'Normal'],[1.6,'Rápida']].map(function(v){return '<option value="'+v[0]+'"'+(T.vel===v[0]?' selected':'')+'>'+v[1]+'</option>';}).join('')+'</select></label></div>';
-  h+='<div class="tv2Ks">'+k(D.act,'RAN activas','#2a78d6')+k(D.en.length,'Ensamble en proceso','#1baf7a')+k(D.de.length,'Desarme en proceso','#eb6834')+
-    k(D.atr,'RAN atrasadas','#e34948',D.atr>0)+k(D.metaInf==null?'—':D.infAtr,'Informes atrasados','#e34948',D.infAtr>0)+k(D.msv,'Machine Shop vencido','#e34948',D.msv>0)+'</div>';
+  h+='<div class="tv2Ks">'+k(D.en.length,'Ensamble','#1baf7a')+k(D.de.length,'Desarme','#eb6834')+k(D.inf.length,'Informes','#2a78d6')+k(D.cs.length,'Costeo','#8b5cf6')+
+    k(D.atr,'RAN atrasadas','#e34948',D.atr>0)+k(D.metaInf==null?'—':D.infAtr,'Informes atrasados','#e34948',D.infAtr>0)+k(D.msv,'Machine Shop vencido','#e34948',D.msv>0).replace('<div class="tv2K','<div onclick="psmTvMsLista()" title="Ver cuáles son" class="tv2K clic')+'</div>';
   var P=[];
   if(T.en)P.push(psmTvPanel('en','Ensamble','🔧',D.en,psmTvCard,'Sin RAN de ensamble en proceso',psmTvFiltroHTML(D,'en')));
   if(T.de)P.push(psmTvPanel('de','Desarme','🧩',D.de,psmTvCard,'Sin RAN de desarme en proceso',psmTvFiltroHTML(D,'de')));
-  if(T.inf)P.push(psmTvPanel('inf','Informes de evaluación','📝',D.inf,psmTvCardInf,'Sin informes abiertos',psmTvFiltroHTML(D,'inf')));
+  if(T.inf)P.push(psmTvPanel('inf','Informes de evaluación','📝',D.inf,psmTvCardInf,'Sin informes en proceso',psmTvFiltroHTML(D,'inf')));
+  if(T.cs)P.push(psmTvPanel('cs','Costeo','💲',D.cs,psmTvCardCs,'Sin RAN esperando costeo',psmTvFiltroHTML(D,'cs')));
   h+='<div class="tv2G" style="--n:'+Math.max(1,P.length)+'">'+P.join('')+'</div>'+
     '<div class="tv2Pie"><span><i class="late"></i>Atrasada (parpadea)</span><span><i style="background:#eda100"></i>En riesgo</span><span><i style="background:#1baf7a"></i>Al día</span><span><i style="background:#64748b"></i>Sin fecha</span><em>Las listas avanzan solas · se actualiza cuando cambian los datos</em></div></div>';
   el.innerHTML=h;psmTvReloj();
@@ -24631,6 +24673,27 @@ function moTrend(){
 (function(){var bg=moGraficos;moGraficos=function(){if(typeof Chart!=='undefined'){try{var D=Chart.defaults;D.font.family="'Segoe UI',system-ui,-apple-system,sans-serif";D.color='#475569';
   var T=D.plugins.tooltip;T.backgroundColor='#0f2742';T.titleColor='#fff';T.bodyColor='#e2e8f0';T.padding=10;T.cornerRadius=8;T.titleFont={weight:'700',size:12};T.bodyFont={size:12};T.boxPadding=4;T.displayColors=false;}catch(e){}}
   return bg.apply(this,arguments);};})();
+
+// ── Machine Shop: “vencido” solo cuenta trabajos con fecha pedida (requerida o comprometida) ──
+function msFPedida(i){return i.freq||i.fcom||'';}
+msAtraso=function(i){var f=msFPedida(i);return !msFinal(i)&&!!f&&f<psmToday();};
+msPorVencer=function(i){var f=msFPedida(i);if(msFinal(i)||!f||f<psmToday())return false;return psmHabEntre(psmToday(),f)<=2;};
+function msSinPedida(i){return !msFinal(i)&&!i.freq&&!i.fcom&&!!i.fd&&i.fd<psmToday();}
+// lista de trabajos de Machine Shop vencidos (los mismos que cuenta el panel) y aparte los que no tienen fecha pedida
+function psmTvMsLista(){
+  var D=psmTvDatos(),vis={};D.en.concat(D.de,D.inf,D.cs).forEach(function(x){vis[x.id]=1;});var L=[],S=[];
+  PSM.rows.forEach(function(r){if(!vis[r.id])return;psmMSdeRAN(r).forEach(function(i){if(msAtraso(i))L.push([r,i]);else if(msSinPedida(i))S.push([r,i]);});});
+  var ord=function(a,b){return msFReq(a[1])<msFReq(b[1])?-1:1;};L.sort(ord);S.sort(ord);
+  var src=function(i){return i.freq?'fecha requerida':'fecha comprometida por Machine Shop';};
+  var fila=function(x,conSrc){var i=x[1],f=conSrc?msFPedida(i):i.fd;return '<tr><td><b>'+psmEsc(x[0].ran)+'</b></td><td>'+psmEsc(i.act)+'</td><td>'+psmEsc(i.est)+'</td><td>'+psmFd(f)+'</td><td>'+(conSrc?src(i):(i.t==='de'?'término desarme (Excel MS)':'despacho del equipo (Excel MS)'))+'</td><td class="'+(conSrc?'late':'')+'">'+psmHabEntre(f,psmToday())+' d háb.</td></tr>';};
+  var tabla=function(A,c){return '<table class="psmTbl mini"><thead><tr><th>RAN</th><th>Actividad</th><th>Estado</th><th>Fecha</th><th>Fecha usada</th><th>'+(c?'Atraso':'Desde')+'</th></tr></thead><tbody>'+A.map(function(x){return fila(x,c);}).join('')+'</tbody></table>';};
+  var old=document.getElementById('tvMsL');if(old)old.remove();
+  var m=document.createElement('div');m.id='tvMsL';m.className='psmModal';m.onclick=function(e){if(e.target===m)m.remove();};
+  m.innerHTML='<div class="psmMBox tvMsBox" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">Machine Shop vencido · '+L.length+'</div><div class="psmMCli">Cuenta solo trabajos sin terminar ni validar con fecha requerida o comprometida ya pasada.</div></div><button class="psmMX" onclick="document.getElementById(\'tvMsL\').remove()">✕</button></div>'+
+    '<div class="psmMBody">'+(L.length?tabla(L,true):'<p class="psmEmpty">Ningún trabajo con fecha pedida está vencido.</p>')+
+    (S.length?'<h4 class="tvMsH">Sin fecha pedida · '+S.length+' <small>no se cuentan como vencidos. Ya pasó la fecha del equipo que trae el Excel. Para medirlos, anota la solicitud (📋) con la fecha requerida en Machine Shop.</small></h4>'+tabla(S,false):'')+'</div></div>';
+  document.body.appendChild(m);
+}
 
 // ══════════════════════════════════════════════════════════════
 // v32: Gantt rehecho en toda la app (plan, real, estimado, compromiso, hoy)
