@@ -3057,10 +3057,26 @@ html.psmMovil .g2W.c{--lw:118px}
 .tv2P.cs h2{box-shadow:inset 0 3px 0 #8b5cf6}
 .tv2G[style*="--n:4"] .tv2C .c1 b{font-size:clamp(16px,1.3vw,26px)}
 .tv2G[style*="--n:4"] .tv2C .c3{grid-template-columns:minmax(0,1fr) minmax(50px,28%) auto}
-@media (max-width:1400px){.tv2Ks{grid-template-columns:repeat(4,minmax(0,1fr))!important}.tv2G[style*="--n:4"]{grid-template-columns:repeat(2,minmax(0,1fr))}.tv2G[style*="--n:4"] .tv2P{min-height:360px}}
-@media (max-width:1400px){.tv2:has(.tv2G[style*="--n:4"]){height:auto}.tv2G[style*="--n:4"] .tv2P{height:440px}}
+
+
 .tvMsH{margin:16px 0 6px;font-size:14px;color:#334155}.tvMsH small{display:block;font-weight:500;color:#64748b;font-size:12px;margin-top:2px}
 .calBtns .psmBtn.segDl.cp{background:#0f2742!important}
+
+/* v35 TV: todo en una sola vista, 4 paneles en una fila a cualquier ancho */
+.tv2G[style*="--n:4"]{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+@media (max-width:1400px){
+ .tv2Ks{gap:8px!important;margin-bottom:8px}.tv2K{padding:6px 10px;gap:8px}.tv2K b{font-size:clamp(20px,2.4vw,40px)}.tv2K span{font-size:11px}
+ .tv2Head h1{font-size:22px}.tv2Clock b{font-size:30px}
+ .tv2G{gap:8px}.tv2P h2{font-size:15px;padding:8px 10px;min-height:52px}
+ .tv2Box{padding:6px 6px 0}.tv2C{padding:7px 9px;margin-bottom:7px;gap:3px;border-left-width:4px}
+ .tv2C .c1 b{font-size:15px!important}.tv2C .tag{font-size:9px;padding:1px 5px}.tv2C .c2,.tv2C .c3 span,.tv2C .c4{font-size:10.5px}.tv2C .c3 strong{font-size:13px}.tv2C .fl{font-size:9px}
+ .tv2P .tv2F{padding:4px 6px}.tv2P .tv2F select{min-width:0;font-size:10.5px;padding:2px 3px}
+}
+@media (max-width:900px){.tv2G[style*="--n:4"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}.tv2{height:auto}}
+.segUno{display:flex;gap:14px;align-items:center;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:12px;padding:12px 14px;margin:10px 0;flex-wrap:wrap}
+.segUno .psmBtn.big{font-size:15px;padding:10px 18px}.segUno div{flex:1;min-width:240px;font-size:12.5px;color:#065f46}
+.segMas{margin-top:6px}.segMas summary{cursor:pointer;font-size:12px;color:#64748b;font-weight:700}
+.ciL li button{margin-left:8px}
 
 </style>
 </head>
@@ -24099,7 +24115,7 @@ async function psmMigrarClaves(uAdm,pAdm){
     if(!psmIsAdmin())return;var rows=document.querySelectorAll('#usBody tr'),tks={};
     for(var i=0;i<rows.length;i++){var tr=rows[i],ui=tr.querySelector('[data-f=u]'),ci=tr.querySelector('[data-f=clave]');if(!ui||!ci)continue;var u=ui.value.trim(),c=ci.value;
       if(!c&&ci.dataset.h){ci.value=ci.dataset.h;continue;}
-      if(c&&!psmEsHash(c)){if(c.length<8||!/\d/.test(c)||!/[a-zA-Z]/.test(c)){psmToast('La clave de "'+u+'" debe tener al menos 8 caracteres, con letras y números','#d03b3b');return;}
+      if(c&&!psmEsHash(c)){var hh=await psmLoginHash(u,c);if(ci.dataset.h&&hh===ci.dataset.h){tks[u]={tk:await psmTokenDe(u,c)};ci.value=hh;continue;}if(c.length<8||!/\d/.test(c)||!/[a-zA-Z]/.test(c)){psmToast('La clave de "'+u+'" debe tener al menos 8 caracteres, con letras y números','#d03b3b');return;}
         tks[u]={tk:await psmTokenDe(u,c)};ci.value=await psmLoginHash(u,c);}
     }
     var r=bs.apply(this,arguments);
@@ -24144,6 +24160,15 @@ function psmSqlSeguridad(){
   "select policyname, cmd, qual from pg_policies where schemaname='public' and tablename='pie_data' order by policyname;"
   ].join('\n')+'\n';
 }
+var PSM_SEG_ESPERA=false;
+function psmSegActivar(){
+  var sin=psmUsers().filter(function(x){return !x.tk;}).map(function(x){return x.u;});
+  if(sin.length&&!confirm('Estos usuarios todavía no tienen acceso a la nube y no podrán entrar con la seguridad activa: '+sin.join(', ')+'.\nSe crea solo cuando ese usuario entra una vez a la app (o cuando se cambia su clave).\n\n¿Activar igual?'))return;
+  var t=psmSqlSeguridad(),url='https://supabase.com/dashboard/project/'+(PSM_SUPA_URL.match(/https:\/\/([^.]+)/)||[])[1]+'/sql/new';
+  var abrir=function(ok){PSM_SEG_ESPERA=true;psmToast(ok?'SQL copiado. En Supabase: Ctrl + V y Run. Luego vuelve a esta pestaña.':'No se pudo copiar: se descargó el archivo. En Supabase pégalo y presiona Run.','#16a34a');window.open(url,'_blank');};
+  try{navigator.clipboard.writeText(t).then(function(){abrir(true);},function(){psmSqlDescargar();abrir(false);});}catch(e){psmSqlDescargar();abrir(false);}
+}
+window.addEventListener('focus',function(){if(!PSM_SEG_ESPERA)return;setTimeout(function(){psmSegProbar().then(function(){try{if(PSM_SEG_EST&&PSM_SEG_EST.ok)PSM_SEG_ESPERA=false;if(currentView==='calidad')psmShowOwn('calidad');}catch(e){}});},1200);});
 function psmSqlCopiar(){var t=psmSqlSeguridad();var ok=function(){psmToast('SQL copiado: pégalo en Supabase → SQL Editor → Run','#16a34a');};try{navigator.clipboard.writeText(t).then(ok,function(){psmSqlDescargar();});}catch(e){psmSqlDescargar();}}
 function psmSqlDescargar(){
   var sin=psmUsers().filter(function(x){return !x.tk;}).map(function(x){return x.u;});
@@ -24174,11 +24199,11 @@ function psmSegHTML(){
   return '<section class="calC"><h3>🔐 Seguridad</h3><p class="calN">La llave pública de Supabase está en la página (es normal); la protección real la da la nube cuando solo responde a usuarios con token.</p><ul class="ciL">'+
     li(true,'Claves fuera del código','El código publicado solo tiene huellas SHA-256, no claves')+
     li(!plain,'Claves guardadas como huella en la nube',plain?plain+' usuario(s) todavía con clave en texto: se convierten solas cuando el administrador ingresa':'')+
-    li(!def.length,'Sin claves por defecto',def.length?'Cambiar la clave de: '+def.join(', ')+' (estuvieron publicadas en versiones anteriores)':'')+
-    li(!sinTk.length,'Todos los usuarios tienen acceso a la nube',sinTk.length?'Sin acceso: '+sinTk.join(', ')+' — cambia su clave en Notas → Usuarios':'')+
+    (def.length&&(PSM.config||{}).clavesOk?li(true,'Claves actuales mantenidas','Decisión del administrador ('+def.join(', ')+'). Estas claves estuvieron en el código de versiones anteriores: si alguna vez quieres cambiarlas, hazlo en Notas → Usuarios y vuelve a activar la seguridad.'):li(!def.length,'Sin claves por defecto',def.length?'Usan la clave de versiones anteriores: '+def.join(', ')+'. Puedes cambiarlas en Notas → Usuarios o mantenerlas.'+(psmIsAdmin()?' <button class="psmBtn ghost sm" onclick="psmCfgSet(\'clavesOk\',true,\'mantener claves actuales\');psmShowOwn(\'calidad\')">Mantener las claves actuales</button>':''):''))+
+    li(!sinTk.length,'Todos los usuarios tienen acceso a la nube',sinTk.length?'Sin acceso: '+sinTk.join(', ')+' — en Notas → Usuarios escribe su clave (puede ser la misma de siempre) y guarda':'')+
     li(E&&E.ok,'Nube protegida (solo responde con token)',E?psmFh2(E.t)+' · '+E.msg:'Todavía no se ha probado')+
     li(true,'Permisos por área','Cada perfil ve y edita solo lo marcado; la nube exige usuario válido, el detalle por área lo controla la app')+'</ul>'+
-    (psmIsAdmin()?'<div class="calBtns"><button class="psmBtn segDl" onclick="psmSqlDescargar()">⬇ Descargar SQL de seguridad</button><button class="psmBtn segDl cp" onclick="psmSqlCopiar()">📋 Copiar SQL</button><button class="psmBtn green" onclick="psmSegProbar()">Probar y activar</button></div><ol class="segPasos"><li>Cambia las claves por defecto en Notas → Usuarios, presiona Guardar usuarios y luego Guardar nube.</li><li>Presiona <b>⬇ Descargar SQL de seguridad</b> (bájalo de nuevo cada vez que cambies claves o usuarios).</li><li>Supabase → SQL Editor → New query → pega todo el archivo → Run. Al final muestra 3 reglas, todas con sman_token_ok().</li><li>Vuelve aquí y presiona <b>Probar y activar</b>.</li></ol><p class="calN">Ese archivo debe ser el último que corras. Si algo falla, seguridad_desactivar.sql deja todo como antes. No lo subas a GitHub: tiene los accesos.</p>':'')+'</section>';
+    (psmIsAdmin()&&!(E&&E.ok)?'<div class="segUno"><button class="psmBtn green big" onclick="psmSegActivar()">🔐 Activar seguridad</button><div><b>Hazlo así:</b> 1) presiona el botón: se copia el SQL y se abre Supabase. 2) En Supabase presiona <b>Ctrl + V</b> y luego <b>Run</b>. 3) Vuelve a esta pestaña: la app lo prueba sola. No hay que cambiar claves.</div></div>':'')+(psmIsAdmin()?'<details class="segMas"><summary>Otras opciones</summary><div class="calBtns"><button class="psmBtn segDl" onclick="psmSqlDescargar()">⬇ Descargar SQL de seguridad</button><button class="psmBtn segDl cp" onclick="psmSqlCopiar()">📋 Copiar SQL</button><button class="psmBtn green" onclick="psmSegProbar()">Probar y activar</button></div><ol class="segPasos"><li>Cambia las claves por defecto en Notas → Usuarios, presiona Guardar usuarios y luego Guardar nube.</li><li>Presiona <b>⬇ Descargar SQL de seguridad</b> (bájalo de nuevo cada vez que cambies claves o usuarios).</li><li>Supabase → SQL Editor → New query → pega todo el archivo → Run. Al final muestra 3 reglas, todas con sman_token_ok().</li><li>Vuelve aquí y presiona <b>Probar y activar</b>.</li></ol><p class="calN">Ese archivo debe ser el último que corras. Si algo falla, seguridad_desactivar.sql deja todo como antes. No lo subas a GitHub: tiene los accesos.</p></details>':'')+'</section>';
 }
 (function(){var br=psmRenderCal;psmRenderCal=function(el){br(el);el=el||document.getElementById('psmCalView');if(!el)return;try{var w=el.querySelector('.calWrap');var rows=w&&w.querySelectorAll('.calRow');if(rows&&rows.length)rows[rows.length-1].insertAdjacentHTML('afterend',psmSegHTML());}catch(e){}};})();
 // la configuración "seg" llega por la nube: cada equipo la recuerda
@@ -24521,15 +24546,15 @@ psmRenderTV=function(el){
   var h='<div class="tv2"><div class="tv2Head"><div class="tt"><h1>Planificación SMAN</h1><span>Taller Antofagasta · '+fe+'</span></div>'+
     '<div class="tv2Clock"><div class="tv2HH"><b id="tvHora"></b></div><span id="tvChk"></span></div>'+
     '<div class="tv2Btns"><button onclick="psmTvFull()" title="Pantalla completa">⛶</button><button onclick="document.body.classList.toggle(\'tvModo\');var e=document.getElementById(\'psmTvView\');e.dataset.sig=\'\';psmRenderTV()" title="Solo panel">▣</button>'+(adm?'<button onclick="document.getElementById(\'tvCfg2\').classList.toggle(\'on\')" title="Configurar">⚙</button>':'')+'</div></div>';
-  if(adm)h+='<div class="tvCfg" id="tvCfg2">'+[['en','Ensamble'],['de','Desarme'],['inf','Informes de evaluación'],['cs','Costeo']].map(function(x){return '<label><input type="checkbox"'+(T[x[0]]?' checked':'')+' onchange="psmTvTog2(\''+x[0]+'\')"/> '+x[1]+'</label>';}).join('')+
+  if(adm)h+='<div class="tvCfg" id="tvCfg2">'+[['de','Desarme y evaluación'],['inf','Informe de evaluación'],['cs','Costeo'],['en','Ensamble']].map(function(x){return '<label><input type="checkbox"'+(T[x[0]]?' checked':'')+' onchange="psmTvTog2(\''+x[0]+'\')"/> '+x[1]+'</label>';}).join('')+
     '<label>Velocidad <select onchange="psmTvTog2(\'vel\',+this.value)">'+[[0.6,'Lenta'],[1,'Normal'],[1.6,'Rápida']].map(function(v){return '<option value="'+v[0]+'"'+(T.vel===v[0]?' selected':'')+'>'+v[1]+'</option>';}).join('')+'</select></label></div>';
-  h+='<div class="tv2Ks">'+k(D.en.length,'Ensamble','#1baf7a')+k(D.de.length,'Desarme','#eb6834')+k(D.inf.length,'Informes','#2a78d6')+k(D.cs.length,'Costeo','#8b5cf6')+
+  h+='<div class="tv2Ks">'+k(D.de.length,'Desarme y evaluación','#eb6834')+k(D.inf.length,'Informes','#2a78d6')+k(D.cs.length,'Costeo','#8b5cf6')+k(D.en.length,'Ensamble','#1baf7a')+
     k(D.atr,'RAN atrasadas','#e34948',D.atr>0)+k(D.metaInf==null?'—':D.infAtr,'Informes atrasados','#e34948',D.infAtr>0)+k(D.msv,'Machine Shop vencido','#e34948',D.msv>0).replace('<div class="tv2K','<div onclick="psmTvMsLista()" title="Ver cuáles son" class="tv2K clic')+'</div>';
   var P=[];
-  if(T.en)P.push(psmTvPanel('en','Ensamble','🔧',D.en,psmTvCard,'Sin RAN de ensamble en proceso',psmTvFiltroHTML(D,'en')));
-  if(T.de)P.push(psmTvPanel('de','Desarme','🧩',D.de,psmTvCard,'Sin RAN de desarme en proceso',psmTvFiltroHTML(D,'de')));
-  if(T.inf)P.push(psmTvPanel('inf','Informes de evaluación','📝',D.inf,psmTvCardInf,'Sin informes en proceso',psmTvFiltroHTML(D,'inf')));
+  if(T.de)P.push(psmTvPanel('de','Desarme y evaluación','🧩',D.de,psmTvCard,'Sin RAN en desarme',psmTvFiltroHTML(D,'de')));
+  if(T.inf)P.push(psmTvPanel('inf','Informe de evaluación','📝',D.inf,psmTvCardInf,'Sin informes en proceso',psmTvFiltroHTML(D,'inf')));
   if(T.cs)P.push(psmTvPanel('cs','Costeo','💲',D.cs,psmTvCardCs,'Sin RAN esperando costeo',psmTvFiltroHTML(D,'cs')));
+  if(T.en)P.push(psmTvPanel('en','Ensamble','🔧',D.en,psmTvCard,'Sin RAN de ensamble en proceso',psmTvFiltroHTML(D,'en')));
   h+='<div class="tv2G" style="--n:'+Math.max(1,P.length)+'">'+P.join('')+'</div>'+
     '<div class="tv2Pie"><span><i class="late"></i>Atrasada (parpadea)</span><span><i style="background:#eda100"></i>En riesgo</span><span><i style="background:#1baf7a"></i>Al día</span><span><i style="background:#64748b"></i>Sin fecha</span><em>Las listas avanzan solas · se actualiza cuando cambian los datos</em></div></div>';
   el.innerHTML=h;psmTvReloj();
