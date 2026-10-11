@@ -3083,6 +3083,25 @@ html.psmMovil .g2W.c{--lw:118px}
 .segRec{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:10px 14px;margin:10px 0;font-size:12.5px;color:#9a3412}
 .segRec .psmBtn{background:#ea580c!important;color:#fff!important;border:0}.segRec span{flex-basis:100%;color:#9a3412;opacity:.85}
 .segVer{font-size:11px;font-weight:600;color:#64748b;background:#f1f5f9;border-radius:999px;padding:1px 8px;margin-left:6px}
+/* v34: la app se adapta al ancho de la ventana (no hay que achicar con zoom) */
+html.modo-escritorio:not(.psmMovil) body,html.modo-escritorio:not(.psmMovil) #topNav,html.modo-escritorio:not(.psmMovil) #mainContent{min-width:0!important}
+html:not(.psmMovil) .psmTblWrap{overflow-x:auto}
+html:not(.psmMovil) .psmTbl.fit{min-width:960px}
+#psmView .psmTbl .psmChip{white-space:normal;line-height:1.15;text-align:left;max-width:100%;height:auto;min-height:22px;padding-top:3px;padding-bottom:3px;overflow:visible}
+#psmView .psmTbl .psmChip *{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+.calSave{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}.calSave span{font-size:11.5px;color:#64748b;flex:1;min-width:200px}
+.calSave .psmBtn:disabled{opacity:.45;cursor:default}
+.rpGh:has(.rpGAc){grid-template-columns:1fr auto 110px 180px 44px}.rpGAc{display:inline-flex;gap:6px;margin:0}.rpGAc .psmBtn{padding:3px 9px;font-size:11.5px}
+.hrEq{border:1px dashed #93c5fd;background:#eff6ff;color:#1d4ed8;border-radius:6px;font-size:10.5px;font-weight:800;padding:2px 5px;margin-right:4px;cursor:pointer}
+.rpT td.hr .hrEq{display:block;margin:0 0 3px auto}
+.hmHoy{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:10px 12px;margin:0 0 12px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.hmHoy>b{align-self:center;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-right:4px}
+.hmHoy button{flex:1;min-width:130px;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:8px;align-items:center;text-align:left;border:1px solid #e2e8f0;border-left:4px solid #1baf7a;background:#f8fafc;border-radius:10px;padding:6px 10px;cursor:pointer}
+.hmHoy button i{grid-row:1/3;font-style:normal;font-size:18px}.hmHoy button strong{font-size:20px;line-height:1;color:#0f172a}.hmHoy button span{font-size:11px;color:#64748b;font-weight:600}
+.hmHoy button.rojo{border-left-color:#e34948;background:#fff5f5}.hmHoy button.rojo strong{color:#c2410c}.hmHoy button.amarillo{border-left-color:#eda100;background:#fffbeb}
+html.psmMovil .hmHoy button{min-width:calc(50% - 8px)}
+
+html.psmMovil .rpGh:has(.rpGAc){grid-template-columns:1fr 90px}html.psmMovil .rpGAc{grid-column:1/-1;order:9}
 
 </style>
 </head>
@@ -16534,7 +16553,7 @@ function psmFiltrosHTML(){
 function psmRenderTabla(body,a){
   var rows=psmFiltered(a);var L=PSM_PROC[a];
   var ncol=5+L.length+(a==='en'?3:3);
-  var cg=a==='en'?['2.2%','6.3%','19%','10%'].concat(L.map(function(){return '5.7%';}),['4.6%','7.4%','8.8%','2.2%']):['2.2%','6.3%','20.5%','11.5%'].concat(L.map(function(){return '5.7%';}),['4.6%','7.4%','5.4%','2.2%']);
+  var cg=a==='en'?['2%','5.5%','17%','13%'].concat(L.map(function(){return '5.6%';}),['4.6%','7.4%','9.3%','2.4%']):['2%','5.5%','18%','14%'].concat(L.map(function(){return '5.4%';}),['4.6%','8%','7.7%','2.4%']);
   var h='<div class="psmCount"><span>'+rows.length+' RAN</span><span>· arrastra <b>⋮⋮</b> para ordenar o para pasar una RAN a otro mes · clic en el RAN para ver la ficha</span></div>'+
     '<div class="psmTblWrap big"><table class="psmTbl fit"><colgroup>'+cg.map(function(w){return '<col style="width:'+w+'">';}).join('')+'</colgroup><thead><tr>'+
     '<th></th><th>RAN</th><th>Cliente · modelo · mecánico</th><th>Estado</th>'+
@@ -24963,7 +24982,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='33 · caché v33';var PSM_BOV_PASS='';
+var PSM_APP_VER='34 · caché v34';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -24982,6 +25001,77 @@ setInterval(function(){try{if(PSM_BOV_PASS&&psmIsAdmin()&&psmUsers().some(functi
   if(psmIsAdmin()&&sin)h=h.replace('<div class="segUno">','<div class="segRec"><b>Paso previo:</b> '+sin+' usuario(s) sin acceso a la nube. <button class="psmBtn" onclick="psmAccRecuperar()">🔑 Recuperar accesos</button><span>Pide tu clave de administrador y repone los accesos con las claves que ya tienen.</span></div><div class="segUno">');
   h=h.replace('<h3>🔐 Seguridad</h3>','<h3>🔐 Seguridad <small class="segVer">versión '+PSM_APP_VER+'</small></h3>');
 }catch(e){}return h;};})();
+
+// ══════════════════════════════════════════════════════════════
+// v34: ancho adaptable · calendario con botón Guardar · Reporte más directo
+// ══════════════════════════════════════════════════════════════
+// menú lateral angosto automático en ventanas chicas (no en celular)
+(function(){var auto=false;function aj(){try{if(document.documentElement.classList.contains('psmMovil'))return;var b=document.body;if(!b.classList.contains('sbOn'))return;
+  if(innerWidth<1200&&!b.classList.contains('sbMin')){b.classList.add('sbMin');auto=true;}else if(innerWidth>=1200&&auto){b.classList.remove('sbMin');auto=false;}}catch(e){}}
+  window.addEventListener('resize',function(){clearTimeout(window._sbAj);window._sbAj=setTimeout(aj,150);});setInterval(aj,2000);setTimeout(aj,800);})();
+// ════════ Calendario laboral: se edita tranquilo y se guarda con un botón ════════
+var PSM_CAL_PEND={};
+psmCalSet=function(t,k,i,v){if(!psmIsAdmin())return;PSM_CAL_PEND[t+'|'+k+'|'+i]=v;var b=document.getElementById('calGuardar');if(b){b.disabled=false;b.textContent='💾 Guardar horario ('+Object.keys(PSM_CAL_PEND).length+' cambio'+(Object.keys(PSM_CAL_PEND).length>1?'s':'')+')';}
+  // muestra las horas netas al tiro sin guardar
+  try{var C=psmCalCfg(),row=[C[t][k][0],C[t][k][1]];Object.keys(PSM_CAL_PEND).forEach(function(q){var p=q.split('|');if(p[0]===t&&p[1]===k)row[+p[2]]=PSM_CAL_PEND[q];});var em=document.querySelector('[data-cal="'+t+k+'"]');if(em)em.textContent=psmFh(psmHorasTurno(row,C.col))+' h netas';}catch(e){}};
+function psmCalGuardar(){if(!psmIsAdmin()||!Object.keys(PSM_CAL_PEND).length)return;
+  var c=JSON.parse(JSON.stringify((PSM.config&&PSM.config.cal)||{})),C=psmCalCfg();
+  Object.keys(PSM_CAL_PEND).forEach(function(q){var p=q.split('|'),t=p[0],k=p[1];c[t]=c[t]||{};c[t][k]=(c[t][k]||C[t][k]).slice();c[t][k][+p[2]]=PSM_CAL_PEND[q];});
+  PSM_CAL_PEND={};PSM_ULT_ACCION=Date.now();psmCfgSet('cal',c,'calendario laboral (horario de turnos)');psmToast('✔ Horario guardado. Presiona Guardar nube para que llegue a todos.','#16a34a');try{psmShowOwn('calidad');}catch(e){}}
+function psmCalDeshacer(){PSM_CAL_PEND={};psmShowOwn('calidad');}
+(function(){var br=psmRenderCal;psmRenderCal=function(el){PSM_CAL_PEND={};br.apply(this,arguments);try{el=el||document.getElementById('psmCalView');
+  var tb=el.querySelector('.calTu');if(!tb)return;
+  tb.querySelectorAll('tr').forEach(function(tr){var i=tr.querySelectorAll('input[type=time]');if(i.length===2){var m=(i[0].getAttribute('onchange')||'').match(/psmCalSet\('(\w)','(\w+)'/);var em=tr.querySelector('em');if(m&&em)em.dataset.cal=m[1]+m[2];}});
+  if(psmIsAdmin())tb.insertAdjacentHTML('afterend','<div class="calSave"><button id="calGuardar" class="psmBtn green" disabled onclick="psmCalGuardar()">💾 Guardar horario</button><button class="psmBtn ghost sm" onclick="psmCalDeshacer()">Deshacer</button><span>Cambia las horas y presiona Guardar. Si el turno termina después de medianoche, escribe la hora tal cual (ej. 01:00).</span></div>');
+  else tb.insertAdjacentHTML('afterend','<p class="calN">Solo el administrador puede cambiar el horario.</p>');
+}catch(e){}};})();
+
+// ════════ Reporte diario más directo ════════
+// 1) sin borrador: lo que se registra cuenta al tiro (el administrador puede volver a pedir confirmación)
+function psmBorradorOn(){return !!(PSM&&PSM.config&&PSM.config.borrador);}
+(function(){var bA=psmActSet;psmActSet=function(id,u,k,f,v){
+  var r0=psmRow(id),a0=r0&&r0.act&&r0.act[u]?JSON.parse(JSON.stringify(r0.act[u])):null;
+  var res=bA.apply(this,arguments);
+  try{var r=psmRow(id),a=r&&r.act&&r.act[u];
+    // 2) al cambiar el estado se completan solos: responsables (encargados de la RAN) y horas del tempario al finalizar
+    if(a&&f==='e'&&psmCanEdit('reporte')){
+      if(v!=='No iniciado'&&!a.t)a.t=PSM_R.turno||psmTurnoAhora();
+      if(v!=='No iniciado'&&!a.r){var enc=psmSplitNames(r.mec).filter(function(n){return psmPersBuscar?!!psmPersBuscar(n):true;});if(!enc.length)enc=psmSplitNames(r.mec);if(enc.length)a.r=enc.slice(0,4).join(' / ');}
+      if(v==='Finalizado'&&(a.hr==null||a.hr==='')){var it=psmTItems(r.a,k).filter(function(x){return x.u===u;})[0];var h=it?+it.h[psmTamI(r)]||0:0;if(h)a.hr=h;}
+    }
+    if(!psmBorradorOn()&&a&&a.bor){psmConfirmarRAN(id,true);}
+  }catch(e){}
+  return res;};})();
+// los borradores que quedaron de antes se confirman solos al abrir el Reporte (si no se pide confirmación)
+(function(){var bv=psmRenderRep;psmRenderRep=function(el){try{if(!psmBorradorOn()&&psmCanEdit('reporte')){var n=0;PSM.rows.forEach(function(r){if(psmBorrRAN(r).length){psmConfirmarRAN(r.id,true);n++;}});if(n){PSM_ULT_ACCION=Date.now();psmSave();}}}catch(e){}return bv.apply(this,arguments);};})();
+// 3) en cada proceso: responsables para todas las pendientes y "finalizar todas"
+function psmRepPend(r,k){var x=psmHH(r),g=x.por[k];if(!g)return [];return g.its.filter(function(it){return !psmADone(r,it.u);});}
+function psmRepRespTodas(id,k,ev){var r=psmRow(id);if(!r||!psmCanEdit('reporte'))return;var L=psmRepPend(r,k);if(!L.length)return;
+  psmPickNames(ev,psmSplitNames(r.mec),'Responsables para '+L.length+' actividad(es) pendientes',function(sel){var t=PSM_R.turno||psmTurnoAhora();r.act=r.act||{};
+    L.forEach(function(it){var a=r.act[it.u]=r.act[it.u]||{e:'No iniciado'};a.r=sel.join(' / ');if(!a.t)a.t=t;});
+    psmLogRan(r,'Responsables asignados a '+L.length+' actividades de '+psmPropDe(r,k)+': '+sel.join(', '));PSM_ULT_ACCION=Date.now();psmSave();psmRepRefresh();psmToast('Responsables asignados a '+L.length+' actividades','#16a34a');});}
+function psmRepFinTodas(id,k){var r=psmRow(id);if(!r||!psmCanEdit('reporte'))return;var L=psmRepPend(r,k).filter(function(it){var a=r.act&&r.act[it.u];return !a||['Cancelado'].indexOf(a.e)<0;});if(!L.length)return;
+  if(!confirm('¿Marcar como Finalizadas las '+L.length+' actividades pendientes de '+psmPropDe(r,k)+'?\nSe usan los encargados de la RAN y las horas del tempario donde falten.'))return;
+  L.forEach(function(it){psmActSet(id,it.u,k,'e','Finalizado');});psmRepRefresh();psmToast('✔ '+psmPropDe(r,k)+': '+L.length+' actividades finalizadas','#16a34a');}
+(function(){var bC=psmRepCard;psmRepCard=function(r,ed){var h=bC.apply(this,arguments);try{
+  if(!ed||!PSM_R.open[r.id]||psmFinal(r))return h;
+  PSM_PROC[r.a].forEach(function(p){var n=psmRepPend(r,p.k).length;if(!n)return;
+    var rx=new RegExp('(<div class="rpGh"><b>(?:✅ )?'+psmEsc(p.es).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</b>)');
+    h=h.replace(rx,'$1<span class="rpGAc"><button class="psmBtn ghost sm" onclick="psmRepRespTodas(\''+r.id+'\',\''+p.k+'\',event)" title="Asignar responsables a las '+n+' pendientes">👷 Responsables a todas</button><button class="psmBtn ghost sm" onclick="psmRepFinTodas(\''+r.id+'\',\''+p.k+'\')" title="Finalizar las '+n+' pendientes">✔ Finalizar todas</button></span>');});
+}catch(e){}return h;};})();
+// las horas reales: botón “= tempario” al lado de la casilla
+(function(){var bR=psmRepRow;psmRepRow=function(r,it,i,p,g,ed,ti){var h=bR.apply(this,arguments);try{if(!ed)return h;var a=r.act&&r.act[it.u];var pl=+it.h[ti]||0;if(!pl||(a&&a.hr!=null&&a.hr!==''))return h;
+  return h.replace(/(<td class="hr[^"]*">)/,'$1<button class="hrEq" title="Usar las horas del tempario ('+psmFh(pl)+' h)" onclick="psmActSet(\''+r.id+'\',\''+it.u+'\',\''+p.k+'\',\'hr\','+pl+');psmRepRefresh()">='+psmFh(pl)+'</button>');}catch(e){}return h;};})();
+
+// ════════ Inicio: “para hoy” con lo que necesita atención ════════
+(function(){var bh=psmRenderHome;psmRenderHome=function(el){bh.apply(this,arguments);try{
+  el=el||document.getElementById('psmHomeView');var hero=el.querySelector('.hmHero, .hmTop, [class*=hmHero]');
+  var act=PSM.rows.filter(function(r){return !psmFinal(r);}),atr=act.filter(function(r){return psmSemaforo(r).col==='rojo';}).length;
+  var A=psmAlertas().A,g=function(k){var x=A.filter(function(a){return a.k===k;})[0];return x?x.l.length:0;};
+  var it=[['⏰','RAN atrasadas',atr,'rojo',"setView('gantt');PSM_G.ord='sem';psmShowOwn('gantt')"],['📝','Informes atrasados',g('inf'),'rojo',"setView('tv')"],['🛠️','Machine Shop vencido',g('msv'),'rojo',"setView('ms')"],['🕒','Esperas abiertas',g('espAb'),'amarillo',"setView('oper')"],['📅','Vencen en 5 días',g('prox'),'amarillo',"setView('calidad')"]];
+  var h='<div class="hmHoy"><b>Para hoy</b>'+it.map(function(x){return '<button class="'+(x[2]?x[3]:'ok')+'" onclick="'+x[4]+'"><i>'+x[0]+'</i><strong>'+x[2]+'</strong><span>'+x[1]+'</span></button>';}).join('')+'</div>';
+  var tgt=el.querySelector('.hmKs')||el.firstElementChild&&el.firstElementChild.children[1];if(tgt&&!el.querySelector('.hmHoy'))tgt.insertAdjacentHTML('beforebegin',h);
+}catch(e){}};})();
 
 </script>
 </body>
