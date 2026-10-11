@@ -3102,6 +3102,29 @@ html:not(.psmMovil) .psmTbl.fit{min-width:960px}
 html.psmMovil .hmHoy button{min-width:calc(50% - 8px)}
 
 html.psmMovil .rpGh:has(.rpGAc){grid-template-columns:1fr 90px}html.psmMovil .rpGAc{grid-column:1/-1;order:9}
+/* v37 TV: tarjetas sin cortes */
+.tv2C{min-width:0;overflow:hidden}
+.tv2C .c1{min-width:0}.tv2C .c1 b{flex:0 0 auto}
+.tv2C .tag{flex:0 1 auto;min-width:0;max-width:62%;overflow:hidden;text-overflow:ellipsis}
+.tv2C .c2{white-space:normal!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}
+.tv2C .c3{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-areas:"t p" "b b";gap:3px 10px!important;align-items:end}
+.tv2C .c3>span{grid-area:t;white-space:normal!important;overflow:visible!important;line-height:1.2}
+.tv2C .c3>strong{grid-area:p;white-space:nowrap}
+.tv2C .c3>em{grid-area:b;width:100%}
+.tv2C .c4{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;white-space:normal!important}
+.tv2C .c4>span{white-space:nowrap}
+.tv2P h2 .nl{border:0;color:#fff;cursor:pointer;font-weight:800;font-family:inherit}
+.tv2P h2 .nl:hover{filter:brightness(1.15)}
+.tvMsBox td.late{white-space:normal}
+.tv2C .c1{flex-wrap:wrap;row-gap:4px}
+.tv2C .tag{max-width:none!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap}
+.tv2P h2{font-size:clamp(14px,1.15vw,24px)!important;gap:8px!important}
+.tv2P h2 .tl{line-height:1.12}
+.tv2P h2 .n,.tv2P h2 .nl{font-size:12px!important;padding:2px 9px!important}
+.tv2K{min-width:0}.tv2K span{white-space:normal;overflow:visible;line-height:1.15;font-size:clamp(11px,.85vw,16px)!important;word-break:normal}
+.tv2K b{font-size:clamp(24px,2.4vw,52px)!important}
+.tv2P .tv2F select{font-size:clamp(10.5px,.75vw,14px)!important;text-overflow:clip}
+.tv2P .tv2F em{display:none}
 
 </style>
 </head>
@@ -3161,7 +3184,7 @@ html body #loginScreen{background:radial-gradient(1200px 600px at 85% -10%,rgba(
         <div><h1>Planificación <span>SMAN</span></h1><p>Control de producción</p></div></div>
       <div class="lgChips"><span>Operaciones</span></div>
       <ul class="lgFeat"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h6M7 17h9"/></svg></i><div><b>Planificación y Gantt</b><small>Ensamble, desarme y evaluación con fecha estimada</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="M9 12l2 2 4-4"/></svg></i><div><b>Reporte diario</b><small>Avance por actividad, turno y responsables</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></i><div><b>Panel de TV</b><small>Desarme, informe, costeo y ensamble en vivo</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></i><div><b>Machine Shop</b><small>Solicitudes, avisos y control de plazos</small></div></li></ul>
-      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v36</span></div>
+      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v37</span></div>
     </div>
     <div class="lBox" id="lBox">
       <h2>Bienvenido</h2>
@@ -24529,7 +24552,7 @@ function psmMesTxt(m){return m?PSM_MES_C[+m.slice(5,7)-1]+' '+m.slice(0,4):'';}
 function psmTvFiltroHTML(D,p){
   var G=D.F[p],op=function(sel,vacio){return '<option value="">'+vacio+'</option>'+D.meses.map(function(m){return '<option value="'+m+'"'+(m===sel?' selected':'')+'>'+psmMesTxt(m)+'</option>';}).join('');};
   var on=G.d||G.h,oc=D.ocultas[p];
-  return '<div class="tv2F'+(on?' on':'')+'"><span>Meses</span><select title="Desde" onchange="psmTvMesSet(\''+p+'\',\'d\',this.value)">'+op(G.d,'Desde inicio')+'</select><i>→</i><select title="Hasta" onchange="psmTvMesSet(\''+p+'\',\'h\',this.value)">'+op(G.h,'Hasta el final')+'</select>'+
+  return '<div class="tv2F'+(on?' on':'')+'"><span>Meses</span><select title="Desde" onchange="psmTvMesSet(\''+p+'\',\'d\',this.value)">'+op(G.d,'Inicio')+'</select><i>→</i><select title="Hasta" onchange="psmTvMesSet(\''+p+'\',\'h\',this.value)">'+op(G.h,'Fin')+'</select>'+
     (on?'<button onclick="psmTvMesSet(\''+p+'\',\'todo\')" title="Ver todos los meses">✕</button><em>'+(oc?oc+' fuera':'')+'</em>':'')+'</div>';
 }
 function psmTvCard(x){
@@ -24992,7 +25015,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='36 · caché v36';var PSM_BOV_PASS='';
+var PSM_APP_VER='37 · caché v37';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -25132,6 +25155,63 @@ function psmProcReajustar(){try{if(!PSM||!psmCanEdit('reporte'))return;var n=0;P
 // recordar el último usuario en este equipo (no la clave)
 (function(){var dl=window.doLogin;if(typeof dl==='function')window.doLogin=async function(){var u=(document.getElementById('lUser')||{}).value;var r=await dl.apply(this,arguments);try{if(typeof session!=='undefined'&&session&&u)localStorage.setItem('psm_ult_usuario',u.trim());}catch(e){}return r;};})();
 setTimeout(function(){try{var ui=document.getElementById('lUser'),p=document.getElementById('lPass');if(ui&&ui.value&&p&&!document.getElementById('loginScreen').classList.contains('hidden'))p.focus();}catch(e){}},300);
+
+// ══════════════════════════════════════════════════════════════
+// v37: Panel de TV ordenado · una sola regla de “atrasada” para tarjeta, ⚠ y contadores
+//      · los contadores abren la lista de RAN que cuentan
+// ══════════════════════════════════════════════════════════════
+function psmTvLate(x,tipo){if(tipo==='inf')return !!(x.late||x.col==='rojo');return x.col==='rojo';}
+function psmTvCls(x,tipo){return psmTvLate(x,tipo)?'late':(tipo==='inf'?(x.cls==='med'?'risk':x.cls==='ok'?'ok':x.col==='amarillo'?'risk':'na'):(x.col==='amarillo'?'risk':x.col==='verde'?'ok':'na'));}
+function psmTvF(f){return f&&typeof f==='string'?psmFd(f):'—';}
+function psmTvPie(a,b){return '<div class="c4"><span>'+a+'</span><span>'+b+'</span></div>';}
+function psmTvBarra(txt,pct,der){return '<div class="c3"><span>'+psmEsc(txt)+'</span><strong>'+der+'</strong><em><u style="width:'+Math.max(0,Math.min(100,pct||0))+'%"></u></em></div>';}
+function psmTvMotivo(x){ // por qué está atrasada, en palabras cortas
+  if(x.col!=='rojo')return '';var mt=typeof x.meta==='string'?x.meta:(x.meta2||'');var f=x.comp||mt;return (x.comp?'Compromiso':'Meta')+' '+psmTvF(f)+' vencida'+(x.atr?' hace '+x.atr+' d háb.':'');}
+psmTvCard=function(x){
+  var late=psmTvLate(x),tag=late?'ATRASADA'+(x.atr?' '+x.atr+' d':''):x.col==='amarillo'?'EN RIESGO':x.col==='verde'?'AL DÍA':'SIN FECHA';
+  var fl=[];if(x.ms)fl.push('<span class="fl rojo">⛔ Machine Shop vencido'+(x.ms>1?' ('+x.ms+')':'')+'</span>');if(x.esp)fl.push('<span class="fl">⏸ En espera</span>');if(x.bloq)fl.push('<span class="fl">⚠ '+psmEsc(x.bloq)+'</span>');
+  return '<div class="tv2C '+psmTvCls(x)+'"><div class="c1"><b>RAN '+psmEsc(x.ran)+'</b><span class="tag">'+tag+'</span></div>'+
+    '<div class="c2">'+psmEsc(x.cli)+(x.mod?' · '+psmEsc(x.mod):'')+'</div>'+psmTvBarra(x.proc||'—',x.av,x.av+'%')+
+    psmTvPie((x.comp?'Compromiso':'Meta')+' <b>'+psmTvF(x.comp||x.meta)+'</b>','Estimada <b>'+psmTvF(x.est)+'</b>')+(fl.length?'<div class="c5">'+fl.join('')+'</div>':'')+'</div>';
+};
+psmTvCardInf=function(x){
+  var m=x.meta,listo=(x.pct||0)>=100,late=psmTvLate(x,'inf');
+  var tag=x.late?'ATRASADO':x.col==='rojo'?'ATRASADA':listo?'POR ENVIAR':x.cls==='med'?'POR VENCER':x.hab?'EN PLAZO':'EN PROCESO';
+  var barra=listo?psmTvBarra('Envío del informe',x.env,(x.env||0)+'%'):x.hab?psmTvBarra('Día hábil '+x.dias+(m!=null?' de '+m:''),m?x.dias/m*100:0,x.dias+(m!=null?'/'+m:'')+' d'):psmTvBarra('Informe',x.pct,(x.pct||0)+'%');
+  var der=m!=null&&x.hab?(x.dias>m?'Excede <b>'+(x.dias-m)+' d</b>':'Quedan <b>'+(m-x.dias)+' d</b>'):'Envío <b>'+(x.env||0)+'%</b>';
+  return '<div class="tv2C '+psmTvCls(x,'inf')+'"><div class="c1"><b>RAN '+psmEsc(x.ran)+'</b><span class="tag">'+tag+'</span></div>'+
+    '<div class="c2">'+psmEsc(x.cli)+(x.mod?' · '+psmEsc(x.mod):'')+'</div>'+barra+
+    psmTvPie(x.hab?'Desde END <b>'+psmTvF(x.hab)+'</b>':'END sin fecha de término',der)+'</div>';
+};
+psmTvCardCs=function(x){
+  var late=psmTvLate(x),tag=late?'ATRASADA'+(x.atr?' '+x.atr+' d':''):x.dEsp!=null?'ESPERA '+x.dEsp+' d':'POR COSTEAR';
+  return '<div class="tv2C '+psmTvCls(x)+'"><div class="c1"><b>RAN '+psmEsc(x.ran)+'</b><span class="tag">'+tag+'</span></div>'+
+    '<div class="c2">'+psmEsc(x.cli)+(x.mod?' · '+psmEsc(x.mod):'')+'</div>'+psmTvBarra('Costeo',x.pct,(x.pct||0)+'%')+
+    psmTvPie('Enviado <b>'+psmTvF(x.envio)+'</b>',(x.comp?'Compr.':'Meta')+' <b>'+psmTvF(x.comp||x.meta)+'</b>')+'</div>';
+};
+psmTvPanel=function(cls,tit,ic,L,cardFn,vacio,fil){
+  var nl=L.filter(function(x){return psmTvLate(x,cls);}).length;
+  return '<section class="tv2P '+cls+'"><h2><span class="ic">'+ic+'</span><span class="tl">'+tit+'</span><span class="n">'+L.length+'</span>'+(nl?'<button class="nl" onclick="psmTvLista(\''+cls+'\')" title="Ver las '+nl+' atrasadas">⚠ '+nl+'</button>':'')+'</h2>'+
+    (fil||'')+'<div class="tv2Box">'+(L.length?'<div class="tv2Track"><div class="tv2Set">'+L.map(cardFn).join('')+'</div></div>':'<p class="tv2Vacio">'+vacio+'</p>')+'</div></section>';
+};
+// lista de lo que cuenta cada contador / cada ⚠
+function psmTvLista(tipo){
+  var D=psmTvDatos(),fil=[],tit='',nom={de:'Desarme y evaluación',inf:'Informe de evaluación',cs:'Costeo',en:'Ensamble'};
+  if(tipo==='atr'){tit='RAN atrasadas';['de','inf','cs','en'].forEach(function(p){D[p].forEach(function(x){if(x.col==='rojo')fil.push([x,nom[p],psmTvMotivo(x)]);});});}
+  else if(tipo==='infAtr'){tit='Informes atrasados';D.inf.forEach(function(x){if(x.late)fil.push([x,'Informe','Día hábil '+x.dias+' de '+x.meta+' desde END '+psmTvF(x.hab)]);});}
+  else{tit=nom[tipo]+' · atrasadas';D[tipo].forEach(function(x){if(psmTvLate(x,tipo))fil.push([x,nom[tipo],tipo==='inf'&&x.late?'Informe: día hábil '+x.dias+' de '+x.meta:psmTvMotivo(x)]);});}
+  var old=document.getElementById('tvMsL');if(old)old.remove();
+  var m=document.createElement('div');m.id='tvMsL';m.className='psmModal';m.onclick=function(e){if(e.target===m)m.remove();};
+  m.innerHTML='<div class="psmMBox tvMsBox" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">'+tit+' · '+fil.length+'</div><div class="psmMCli">Las mismas que cuenta el panel con los filtros actuales. Clic en una RAN para abrir su ficha.</div></div><button class="psmMX" onclick="document.getElementById(\'tvMsL\').remove()">✕</button></div>'+
+    '<div class="psmMBody">'+(fil.length?'<table class="psmTbl mini"><thead><tr><th>RAN</th><th>Panel</th><th>Cliente · equipo</th><th>Proceso actual</th><th>Avance</th><th>Motivo</th></tr></thead><tbody>'+fil.map(function(f){var x=f[0];return '<tr style="cursor:pointer" onclick="document.getElementById(\'tvMsL\').remove();psmOpen(\''+x.id+'\')"><td><b>'+psmEsc(x.ran)+'</b></td><td>'+f[1]+'</td><td>'+psmEsc(x.cli)+(x.mod?' · '+psmEsc(x.mod):'')+'</td><td>'+psmEsc(x.proc||'—')+'</td><td>'+(x.av!=null?x.av+'%':'—')+'</td><td class="late">'+psmEsc(f[2])+'</td></tr>';}).join('')+'</tbody></table>':'<p class="psmEmpty">No hay.</p>')+'</div></div>';
+  document.body.appendChild(m);
+}
+// contadores con clic
+(function(){var br=psmRenderTV;psmRenderTV=function(el){var r=br.apply(this,arguments);try{el=el||document.getElementById('psmTvView');var ks=el.querySelectorAll('.tv2Ks .tv2K');
+  var map={'RAN atrasadas':'atr','Informes atrasados':'infAtr'};ks.forEach(function(k){var t=(k.querySelector('span')||{}).textContent||'';if(map[t]&&!k.onclick){k.classList.add('clic');k.title='Ver cuáles son';k.onclick=function(){psmTvLista(map[t]);};}});}catch(e){}return r;};})();
+// datos: el proceso de informe trae proceso actual y avance para la lista
+(function(){var bd=psmTvDatos;psmTvDatos=function(){var D=bd.apply(this,arguments);try{D.inf.forEach(function(x){var r=psmRow(x.id);if(r){x.proc=psmProcActualTxt(r);x.av=psmAv(r);x.comp=x.comp||'';var S=psmSemaforo(r);x.comp=S.comp||'';x.meta2=S.meta||'';x.atr=S.col==='rojo'&&(S.comp||S.meta)?psmHabEntre(S.comp||S.meta,psmToday()):0;}});
+  D.atr=['de','inf','cs','en'].reduce(function(s,p){return s+D[p].filter(function(x){return x.col==='rojo';}).length;},0);}catch(e){}return D;};})();
 
 </script>
 </body>
