@@ -24982,7 +24982,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='34 · caché v34';var PSM_BOV_PASS='';
+var PSM_APP_VER='35 · caché v35';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -25072,6 +25072,31 @@ function psmRepFinTodas(id,k){var r=psmRow(id);if(!r||!psmCanEdit('reporte'))ret
   var h='<div class="hmHoy"><b>Para hoy</b>'+it.map(function(x){return '<button class="'+(x[2]?x[3]:'ok')+'" onclick="'+x[4]+'"><i>'+x[0]+'</i><strong>'+x[2]+'</strong><span>'+x[1]+'</span></button>';}).join('')+'</div>';
   var tgt=el.querySelector('.hmKs')||el.firstElementChild&&el.firstElementChild.children[1];if(tgt&&!el.querySelector('.hmHoy'))tgt.insertAdjacentHTML('beforebegin',h);
 }catch(e){}};})();
+
+// ══════════════════════════════════════════════════════════════
+// v35: Desarme · el Reporte manda en Informe de evaluación e Informe enviado
+//  · “Recepción de carpeta e inicio de informe” finalizada → Informe de evaluación 100%
+//  · “Elaboración de Informe de Evaluación” finalizada  → Informe enviado 100%
+// ══════════════════════════════════════════════════════════════
+var PSM_ACT_PROC={de:[[/elaboraci[oó]n\s+de(l)?\s+informe/i,'rs'],[/recepci[oó]n\s+de\s+carpeta\s+e\s+inicio\s+de\s+informe/i,'re']]};
+function psmActProc(a,it){var L=PSM_ACT_PROC[a]||[];for(var i=0;i<L.length;i++)if(L[i][0].test(it.act||''))return L[i][1];return PSM_TMAP[a][it.g];}
+psmTItems=function(a,k){return (PSM.temp[a]||[]).filter(function(it){return psmActProc(a,it)===k;});};
+// al llegar Informe enviado al 100% desde el Reporte, el informe queda aprobado y con su fecha
+(function(){var br=psmRecalcProc;psmRecalcProc=function(r,k){
+  if(r&&r.a==='de'&&k==='rs'){var its=psmTItems('de','rs');var fin=its.length&&its.every(function(i){return psmADone(r,i.u)||psmACancel(r,i.u);});
+    if(fin&&!r.infApr)r.infApr={t:new Date().toISOString(),u:psmUser(),o:'Aprobado al finalizar la elaboración del informe en el Reporte diario'};
+    var res=br.apply(this,arguments);
+    if(fin&&(+r.p_re||0)<100&&!psmTItems('de','re').some(function(i){return r.act&&r.act[i.u]&&!psmADone(r,i.u)&&!psmACancel(r,i.u);}))psmSet(r,'p_re',100); // si el informe se envió, el informe está hecho
+    if(fin){var f='';its.forEach(function(i){var a=r.act&&r.act[i.u];if(a&&a.f&&a.f>f)f=a.f;});if(f&&r.ff_rs!==f)psmSet(r,'ff_rs',f);}
+    return res;}
+  return br.apply(this,arguments);};})();
+// las RAN que ya tenían esas actividades registradas se ponen al día una vez
+function psmInfReajustar(){try{if(!PSM||!psmCanEdit('reporte'))return 0;var n=0;
+  PSM.rows.forEach(function(r){if(r.a!=='de'||psmFinal(r))return;var antes=[r.p_re,r.p_rs].join();['re','rs'].forEach(function(k){psmRecalcProc(r,k);});if([r.p_re,r.p_rs].join()!==antes)n++;});
+  if(n){PSM_ULT_ACCION=Date.now();psmSave();}return n;}catch(e){return 0;}}
+(function(){var dl=window.doLogin;if(typeof dl==='function')window.doLogin=async function(){var r=await dl.apply(this,arguments);setTimeout(psmInfReajustar,3500);return r;};})();
+// el aviso “falta registrar el envío” solo cuando no hay actividad de elaboración en el tempario
+(function(){var bC=psmRepCard;psmRepCard=function(r,ed){var h=bC.apply(this,arguments);try{if(r.a==='de'&&psmTItems('de','rs').length)h=h.replace(/<div class="rpEnv">[\s\S]*?<\/div>(?=<div class="rpTur">)/,'');}catch(e){}return h;};})();
 
 </script>
 </body>
