@@ -4,7 +4,7 @@
    Permite trabajar en zonas del taller sin señal.
    Sube este archivo a la raíz del repositorio "planificacion".
    ══════════════════════════════════════════════════════════════ */
-const CACHE = 'planificacion-sman-v27';
+const CACHE = 'planificacion-sman-v28';
 const SHELL = [
   './Planificacion.html',
   './manifest.json',

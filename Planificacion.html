@@ -2921,7 +2921,7 @@ html.psmMovil body .rpCh{grid-template-columns:minmax(0,1fr) 120px 18px;grid-tem
 .tv2P h2{font-size:clamp(16px,1.3vw,25px);flex-wrap:nowrap}
 .tv2P h2 .tl{white-space:normal;line-height:1.1;overflow:visible;text-overflow:clip;flex:1 1 auto}
 .tv2P h2 .n{margin-left:auto}.tv2P h2 .nl{margin-left:0}
-@media (max-width:1400px){.tv2Head{flex-wrap:wrap}.tv2F{order:3;flex-basis:100%}}
+@media (max-width:1400px){.tv2Head{flex-wrap:wrap}}
 .usAv{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:#1d4ed8;margin-top:6px;white-space:nowrap}.usFull .usAv{display:inline-flex;margin:0 0 0 14px}
 /* v32 MS Orders Control */
 .moCH{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:2px}
@@ -3041,6 +3041,13 @@ html.psmMovil .g2W.c{--lw:118px}
 .psmGEs.late{box-shadow:inset 0 0 0 1px #e34948}
 .psmGAdd.chico{font-size:0!important;padding:0!important;width:20px;height:20px;border-radius:50%!important}.psmGAdd.chico::before{content:'+';font-size:12px}
 .psmLeg .pgEst i{border:1.5px dashed #64748b;background:transparent!important;box-sizing:border-box}
+/* v33b: el filtro de cada panel ocupa solo su línea; la lista usa todo el resto */
+.tv2P>.tv2F{flex:0 0 auto!important;flex-basis:auto!important;order:0!important;height:auto;min-height:0}
+.tv2P>.tv2Box{flex:1 1 auto!important;min-height:120px}
+.tv2P .tv2F select{min-width:96px}
+.tv2P .tv2F>span{display:none}
+@media (max-width:1400px){.tv2P .tv2F{padding:5px 10px;gap:6px}.tv2P .tv2F em{display:none}}
+.tv2P h2{min-height:calc(2.3em + 24px);box-sizing:border-box}
 
 </style>
 </head>
