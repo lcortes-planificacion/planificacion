@@ -3184,7 +3184,7 @@ html body #loginScreen{background:radial-gradient(1200px 600px at 85% -10%,rgba(
         <div><h1>Planificación <span>SMAN</span></h1><p>Control de producción</p></div></div>
       <div class="lgChips"><span>Operaciones</span></div>
       <ul class="lgFeat"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h6M7 17h9"/></svg></i><div><b>Planificación y Gantt</b><small>Ensamble, desarme y evaluación con fecha estimada</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="M9 12l2 2 4-4"/></svg></i><div><b>Reporte diario</b><small>Avance por actividad, turno y responsables</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></i><div><b>Panel de TV</b><small>Desarme, informe, costeo y ensamble en vivo</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></i><div><b>Machine Shop</b><small>Solicitudes, avisos y control de plazos</small></div></li></ul>
-      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v37</span></div>
+      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v39</span></div>
     </div>
     <div class="lBox" id="lBox">
       <h2>Bienvenido</h2>
@@ -25015,7 +25015,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='37 · caché v37';var PSM_BOV_PASS='';
+var PSM_APP_VER='39 · caché v39';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -25198,7 +25198,7 @@ psmTvPanel=function(cls,tit,ic,L,cardFn,vacio,fil){
 function psmTvLista(tipo){
   var D=psmTvDatos(),fil=[],tit='',nom={de:'Desarme y evaluación',inf:'Informe de evaluación',cs:'Costeo',en:'Ensamble'};
   if(tipo==='atr'){tit='RAN atrasadas';['de','inf','cs','en'].forEach(function(p){D[p].forEach(function(x){if(x.col==='rojo')fil.push([x,nom[p],psmTvMotivo(x)]);});});}
-  else if(tipo==='infAtr'){tit='Informes atrasados';D.inf.forEach(function(x){if(x.late)fil.push([x,'Informe','Día hábil '+x.dias+' de '+x.meta+' desde END '+psmTvF(x.hab)]);});}
+  else if(tipo==='infAtr'){tit='Informes atrasados';D.inf.forEach(function(x){if(psmTvLate(x,'inf'))fil.push([x,'Informe de evaluación',x.late?'Informe: día hábil '+x.dias+' de '+x.meta+' desde END '+psmTvF(x.hab):psmTvMotivo(x)+' (el informe aún no se envía)']);});}
   else{tit=nom[tipo]+' · atrasadas';D[tipo].forEach(function(x){if(psmTvLate(x,tipo))fil.push([x,nom[tipo],tipo==='inf'&&x.late?'Informe: día hábil '+x.dias+' de '+x.meta:psmTvMotivo(x)]);});}
   var old=document.getElementById('tvMsL');if(old)old.remove();
   var m=document.createElement('div');m.id='tvMsL';m.className='psmModal';m.onclick=function(e){if(e.target===m)m.remove();};
@@ -25211,7 +25211,11 @@ function psmTvLista(tipo){
   var map={'RAN atrasadas':'atr','Informes atrasados':'infAtr'};ks.forEach(function(k){var t=(k.querySelector('span')||{}).textContent||'';if(map[t]&&!k.onclick){k.classList.add('clic');k.title='Ver cuáles son';k.onclick=function(){psmTvLista(map[t]);};}});}catch(e){}return r;};})();
 // datos: el proceso de informe trae proceso actual y avance para la lista
 (function(){var bd=psmTvDatos;psmTvDatos=function(){var D=bd.apply(this,arguments);try{D.inf.forEach(function(x){var r=psmRow(x.id);if(r){x.proc=psmProcActualTxt(r);x.av=psmAv(r);x.comp=x.comp||'';var S=psmSemaforo(r);x.comp=S.comp||'';x.meta2=S.meta||'';x.atr=S.col==='rojo'&&(S.comp||S.meta)?psmHabEntre(S.comp||S.meta,psmToday()):0;}});
+  D.infAtr=D.inf.filter(function(x){return psmTvLate(x,'inf');}).length;
   D.atr=['de','inf','cs','en'].reduce(function(s,p){return s+D[p].filter(function(x){return x.col==='rojo';}).length;},0);}catch(e){}return D;};})();
+// “Informes atrasados” usa en toda la app la misma regla del Panel de TV
+function psmInfAtrasados(){var bm=psmTvMes;psmTvMes=function(){return {d:'',h:''};};try{var D=psmTvDatos();return D.inf.filter(function(x){return psmTvLate(x,'inf');}).map(function(x){return [psmRow(x.id),x.late?'Informe: día hábil '+x.dias+' de '+x.meta+' desde END '+psmTvF(x.hab):psmTvMotivo(x)+' (el informe aún no se envía)'];}).filter(function(z){return z[0];});}catch(e){return [];}finally{psmTvMes=bm;}}
+(function(){var ba=psmAlertas;psmAlertas=function(){var Z=ba.apply(this,arguments);try{var a=Z.A.filter(function(x){return x.k==='inf';})[0];if(a){var ack=a.ack;a.l=psmInfAtrasados();a.t='Informes atrasados';a.desc='Pasaron la meta de '+(psmCfg().metaInf||2)+' días hábiles desde END y metrología, o la fecha de compromiso de la RAN venció y el informe aún no se envía';if(typeof ack==='function'){}}}catch(e){}return Z;};})();
 
 </script>
 </body>
