@@ -3186,6 +3186,51 @@ html.psmMovil .rpGh:has(.rpGAc){grid-template-columns:1fr 90px}html.psmMovil .rp
 @media print{.auBtns,.auF{display:none}}
 body:has(#psmAuditView:not(.hidden)) #sortBar,body:has(#psmAuditView:not(.hidden)) #periodBar{display:none!important}
 .auVm{font-size:11px;font-style:normal;color:#64748b;font-weight:600;margin-left:6px}
+/* ═══ v39 Responsable QA/QC ═══ */
+.qaC{--q:#2a78d6;display:inline-flex;align-items:center;gap:4px;max-width:100%;vertical-align:middle;font-size:10.5px;font-weight:700;line-height:1.2;color:#0f172a;background:color-mix(in srgb,var(--q) 12%,#fff);border:1px solid color-mix(in srgb,var(--q) 45%,#fff);border-radius:999px;padding:1px 7px 1px 2px;margin:2px 0 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default}
+.qaC i{font-style:normal;flex:0 0 auto;display:inline-grid;place-items:center;min-width:16px;height:16px;border-radius:50%;background:var(--q);color:#fff;font-size:8.5px;font-weight:800;padding:0 2px}
+.qaC[onclick]{cursor:pointer}.qaC[onclick]:hover{filter:brightness(.95)}
+.qaC.no{background:#fff1f1;border-color:#f3b6b6;color:#b42318;padding:1px 7px}
+td.psmCli .qaC{display:flex;width:max-content;max-width:100%;margin:3px 0 0}
+.qaC.big{font-size:13px;padding:3px 12px 3px 3px;margin:0}.qaC.big i{min-width:24px;height:24px;font-size:11px}
+.qaFicha{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+.qaFicha .l{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#475569}.qaFicha small{flex-basis:100%;color:#64748b;font-size:11px}
+.qaPick{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px}
+.qaPick button{--q:#2a78d6;display:inline-flex;align-items:center;gap:6px;border:2px solid color-mix(in srgb,var(--q) 40%,#fff);background:#fff;border-radius:999px;padding:4px 12px 4px 4px;font-weight:700;font-size:13px;cursor:pointer}
+.qaPick button i{font-style:normal;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--q);color:#fff;font-size:11px}
+.qaPick button.on{border-color:var(--q);background:color-mix(in srgb,var(--q) 14%,#fff)}
+label.qaReq{color:#0f172a}label.qaReq input{border-color:#f59e0b!important}input.qaErr{border-color:#e34948!important;box-shadow:0 0 0 3px rgba(227,73,72,.2)}
+.qaTopF{--q:#2a78d6;display:flex;align-items:center;gap:4px;margin-right:8px}
+.qaTopF label{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:4px 6px 4px 10px;color:#fff;font-size:12px;font-weight:700}
+.qaTopF select{background:transparent;color:#fff;border:0;font-weight:700;max-width:150px;font-size:12px;cursor:pointer}.qaTopF select option{color:#0f172a}
+.qaTopF.on label{background:var(--q);border-color:var(--q)}.qaTopF button{border:0;background:#fff;color:#0f172a;border-radius:7px;font-weight:800;cursor:pointer;padding:4px 8px}
+@media (max-width:760px){.qaTopF label span{display:none}.qaTopF select{max-width:90px}}
+.tv2C .c6{margin:2px 0 4px}.tvQa{--q:#2a78d6;display:inline-flex;align-items:center;gap:6px;max-width:100%;background:var(--q);color:#fff;border-radius:8px;padding:2px 10px 2px 3px;font-weight:800;font-size:.95em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tvQa i{font-style:normal;display:inline-grid;place-items:center;min-width:1.7em;height:1.7em;border-radius:50%;background:#fff;color:var(--q);font-size:.8em;flex:0 0 auto}
+.tvQa em{font-style:normal;font-size:.72em;opacity:.85;letter-spacing:.5px}.tvQa.no{background:#fde3e3;color:#b42318;padding:2px 10px}
+.tvQaLeg{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:inherit}.tvQaLeg>span{color:#94a3b8;font-weight:800;letter-spacing:.6px}
+.tvQaLeg b{--q:#2a78d6;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid var(--q);color:#fff;border-radius:999px;padding:2px 10px 2px 2px;white-space:nowrap}
+.tvQaLeg b i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--q);font-size:10px}.tvQaLeg b.f{background:#eda100;border-color:#eda100;color:#0f172a;padding:2px 10px}
+.qaCards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:12px}
+.qaCard{--q:#2a78d6;position:relative;text-align:left;background:#fff;border:1px solid #e2e8f0;border-left:6px solid var(--q);border-radius:12px;padding:10px 12px 10px 52px;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:1px;min-height:74px}
+.qaCard i{position:absolute;left:10px;top:12px;font-style:normal;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--q);color:#fff;font-weight:800;font-size:12px}
+.qaCard b{font-size:13px}.qaCard strong{font-size:22px;line-height:1.1}.qaCard small{font-size:11px;color:#64748b}.qaCard .late{color:#c62828;font-weight:700}
+.qaCard.on{box-shadow:0 0 0 3px color-mix(in srgb,var(--q) 35%,transparent)}.qaCard.off{opacity:.55}.qaCard.sin{--q:#e34948}.qaCard.sin i{background:#fde3e3;color:#b42318}
+.qaBulk{display:flex;align-items:center;gap:12px;margin:-2px 0 10px}.qaAdd{display:flex;gap:8px;margin-top:10px}.qaAdd input{flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:6px 10px}
+.qaSw{display:inline-block;width:18px;height:18px;border-radius:5px}.auTb input[type=color]{width:34px;height:24px;border:0;padding:0;background:none}
+.auRanB{border:0;background:none;padding:0;font:inherit;font-weight:800;color:#1d4ed8;cursor:pointer;text-decoration:underline dotted}
+.hmHoy button.qaHm.amarillo{border-left-color:#eda100;background:#fffbeb}
+@media print{.qaTopF{display:none}}
+.rpSub .qaC{margin-left:8px}
+.pmQa{--q:#2a78d6;display:flex;align-items:center;gap:3px;font-size:9px;font-weight:800;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:1px 0}
+.pmQa i{font-style:normal;display:inline-grid;place-items:center;min-width:13px;height:13px;border-radius:50%;background:var(--q);color:#fff;font-size:7px;flex:0 0 auto}.pmQa.no{color:#b42318}
+.qaC.no.fin{background:#f1f5f9;border-color:#cbd5e1;color:#64748b}
+.qaC{flex:0 0 auto;align-self:flex-start;width:max-content}
+.rpId .qaC{margin-left:6px;vertical-align:2px}
+.qaTopF select{max-width:118px}
+@media (max-width:1500px){.qaTopF label span{font-size:0}.qaTopF label span::before{content:'🛡️';font-size:13px}}
+.stR .stM .qaC{margin:0 6px 0 0}
+@media (max-width:760px){.qaTopF:not(.on){display:none}.qaTopF.on select{max-width:70px}}
 
 </style>
 </head>
@@ -3245,7 +3290,7 @@ html body #loginScreen{background:radial-gradient(1200px 600px at 85% -10%,rgba(
         <div><h1>Planificación <span>SMAN</span></h1><p>Control de producción</p></div></div>
       <div class="lgChips"><span>Operaciones</span></div>
       <ul class="lgFeat"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h6M7 17h9"/></svg></i><div><b>Planificación y Gantt</b><small>Ensamble, desarme y evaluación con fecha estimada</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="M9 12l2 2 4-4"/></svg></i><div><b>Reporte diario</b><small>Avance por actividad, turno y responsables</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></i><div><b>Panel de TV</b><small>Desarme, informe, costeo y ensamble en vivo</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></i><div><b>Machine Shop</b><small>Solicitudes, avisos y control de plazos</small></div></li></ul>
-      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v40</span></div>
+      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v41</span></div>
     </div>
     <div class="lBox" id="lBox">
       <h2>Bienvenido</h2>
@@ -25076,7 +25121,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='40 · caché v40';var PSM_BOV_PASS='';
+var PSM_APP_VER='41 · caché v41';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -25286,9 +25331,12 @@ function psmInfAtrasados(){var bm=psmTvMes;psmTvMes=function(){return {d:'',h:''
 // ══════════════════════════════════════════════════════════════
 ['reprog','avObs','audHist','calidad'].forEach(function(k){PSM_AREA_KEY[k]='plansman';});
 (function(){var tp=psmTopPuede;psmTopPuede=function(k){if(k==='reprog'||k==='audHist'||k==='avObs'){try{return !psmRol()||psmIsAdmin()||psmCanEdit('plansman')||psmCanEdit('reporte');}catch(e){return false;}}return tp.apply(this,arguments);};})();
+var PSM_AUDM={v:0,c:{}};
+function psmAudMemo(k,fn){var c=PSM_AUDM.c[k],now=Date.now();if(c&&c.v===PSM_AUDM.v&&now-c.t<90000)return c.r;var r=fn();PSM_AUDM.c[k]={v:PSM_AUDM.v,t:now,r:r};return r;}
+(function(){var bs=psmSave;psmSave=function(){PSM_AUDM.v++;return bs.apply(this,arguments);};var bm=psmMergeCloud;psmMergeCloud=function(){PSM_AUDM.v++;return bm.apply(this,arguments);};})();
 function psmAudEd(){try{return psmIsAdmin()||psmCanEdit('plansman');}catch(e){return false;}}
-function psmAudHist(){if(!PSM.audHist||typeof PSM.audHist!=='object')PSM.audHist={};['av','avr','cap','kpi','rep','pla'].forEach(function(k){PSM.audHist[k]=PSM.audHist[k]||{};});return PSM.audHist;}
-function psmCalCfgA(){if(!PSM.calidad||typeof PSM.calidad!=='object')PSM.calidad={};['metas','resp','evid'].forEach(function(k){PSM.calidad[k]=PSM.calidad[k]||{};});return PSM.calidad;}
+function psmAudHist(w){var H=PSM.audHist&&typeof PSM.audHist==='object'?PSM.audHist:{};if(w){PSM.audHist=H;['av','avr','cap','kpi','rep','pla'].forEach(function(k){H[k]=H[k]||{};});return H;}var o={};['av','avr','cap','kpi','rep','pla','exp'].forEach(function(k){o[k]=H[k]||(k==='exp'?[]:{});});return o;}
+function psmCalCfgA(w){var C=PSM.calidad&&typeof PSM.calidad==='object'?PSM.calidad:{};if(w){PSM.calidad=C;['metas','resp','evid'].forEach(function(k){C[k]=C[k]||{};});return C;}return {metas:C.metas||{},resp:C.resp||{},evid:C.evid||{},hist:C.hist||[]};}
 // ── datos comunes de cada RAN ──
 var PSM_TCOMP=[['Motorreductor',/MOTORRED/],['Acoplamiento',/ACOPL|COUPLING/],['Motor',/\bMOTOR\b/],['Bomba',/BOMBA|PUMP/],['Reductor',/REDUCT|HANSEN|FLENDER|FALK|SEW|SUMITOMO|PARAMAX|BONFIGLIOLI|KUMERA|ZOLLERN|SANTASALO|HYPONIC|CYCLO|PHD|PHM|QHP|QHR|B3S|T3S|SFC|SM70/]];
 function psmTComp(r){if(r.tcomp)return r.tcomp;var m=String(r.mod||'').toUpperCase();for(var i=0;i<PSM_TCOMP.length;i++)if(PSM_TCOMP[i][1].test(m))return PSM_TCOMP[i][0];return 'Otro';}
@@ -25328,7 +25376,7 @@ function psmAudPdf(nombre){var el=document.getElementById('psmAudView');if(!el)r
   var h='<!doctype html><html><head><meta charset="utf-8"><title>'+psmEsc(nombre)+'</title><style>body{font-family:Segoe UI,Arial,sans-serif;font-size:10pt;color:#0f172a;margin:14mm}h1{font-size:16pt;margin:0 0 2px}.meta{color:#64748b;font-size:9pt;margin-bottom:10px}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}'+css+'</style></head><body><h1>'+psmEsc(nombre)+'</h1><div class="meta">SM Cyclo de Chile · SMAN Antofagasta · generado el '+new Date().toLocaleString('es-CL')+' por '+psmEsc(psmUser())+' · período '+psmMesTxtC(PSM_AF.d)+' a '+psmMesTxtC(PSM_AF.h)+'</div>'+c.innerHTML+'</body></html>';
   var old=document.getElementById('psmPrintFrame');if(old)old.remove();var fr=document.createElement('iframe');fr.id='psmPrintFrame';fr.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';document.body.appendChild(fr);
   var d=fr.contentWindow.document;d.open();d.write(h);d.close();setTimeout(function(){try{fr.contentWindow.focus();fr.contentWindow.print();}catch(e){}},400);psmAudLogExp(nombre,'PDF');}
-function psmAudLogExp(n,f){try{var H=psmAudHist();H.exp=H.exp||[];H.exp.push({t:new Date().toISOString(),u:psmUser(),n:n,f:f});if(H.exp.length>300)H.exp.splice(0,H.exp.length-300);PSM_ULT_ACCION=Date.now();psmSave(true);}catch(e){}}
+function psmAudLogExp(n,f){try{var H=psmAudHist(true);H.exp=H.exp||[];H.exp.push({t:new Date().toISOString(),u:psmUser(),n:n,f:f});if(H.exp.length>300)H.exp.splice(0,H.exp.length-300);PSM_ULT_ACCION=Date.now();psmSave(true);}catch(e){}}
 function psmAudBtns(nombre,fx){return '<div class="auBtns"><button class="psmBtn ghost sm" onclick="'+fx+'">⬇ Excel</button><button class="psmBtn ghost sm" onclick="psmAudPdf(\''+psmEsc(nombre)+'\')">🖨 PDF</button></div>';}
 function psmSem(v,meta,dir){if(v==null||meta==null||meta==='')return 'gris';meta=+meta;var ok=dir==='max'?v<=meta:v>=meta;if(ok)return 'ok';var tol=Math.abs(meta)*0.1||5;return (dir==='max'?v<=meta+tol:v>=meta-tol)?'med':'bad';}
 function psmTile(t,v,sub,cls,on){return '<div class="auT '+(cls||'')+'"'+(on?' onclick="'+on+'"':'')+'><span>'+t+'</span><b>'+v+'</b><small>'+sub+'</small></div>';}
@@ -25338,7 +25386,7 @@ function psmLineMeta(meta,txt){return {id:'auMeta',afterDatasetsDraw:function(ch
 
 // ════════ 1) REPROGRAMACIONES ════════
 var PSM_REP_CAUSAS=['Falta de repuestos','Espera de cliente o inspección','Machine Shop / mecanizado','Capacidad o mano de obra','Cambio de alcance','Calidad / reproceso','Proveedor externo','Prioridad de otra RAN','Error de planificación','Otro'];
-function psmReprogs(){if(!Array.isArray(PSM.reprog))PSM.reprog=[];return PSM.reprog;}
+function psmReprogs(w){if(Array.isArray(PSM.reprog))return PSM.reprog;if(w){PSM.reprog=[];return PSM.reprog;}return [];}
 var PSM_REP_MOT=null,PSM_REP_SKIP=false;
 function psmReprogPedir(r,fo,fn){
   var t='Cambio de fecha comprometida · RAN '+r.ran+'\n'+psmFd(fo)+' → '+psmFd(fn)+'\n\nMotivo (obligatorio). Escribe el número o un texto:\n'+PSM_REP_CAUSAS.map(function(c,i){return (i+1)+') '+c;}).join('\n');
@@ -25346,7 +25394,7 @@ function psmReprogPedir(r,fo,fn){
   if(n>=1&&n<=PSM_REP_CAUSAS.length&&String(n)===m){var cat=PSM_REP_CAUSAS[n-1];var det=cat==='Otro'?(prompt('Describe el motivo:','')||'').trim():'';if(cat==='Otro'&&!det)return null;return {cat:cat,txt:det||cat};}
   var cat2='Otro';PSM_REP_CAUSAS.forEach(function(c){if(psmNorm(m).indexOf(psmNorm(c).split(' ')[0])>=0)cat2=c;});return {cat:cat2,txt:m};
 }
-function psmReprogAdd(r,fo,fn,mot,src){var L=psmReprogs();
+function psmReprogAdd(r,fo,fn,mot,src){var L=psmReprogs(true);
   L.push({id:'rp'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),rid:r.id,ran:r.ran,a:r.a,cli:psmCliG(r.cli)||r.cli||'',comp:psmTComp(r),con:psmContrato(r),sup:psmSupRAN(r),fo:fo,fn:fn,dias:psmHabEntre(fo<fn?fo:fn,fo<fn?fn:fo)*(fn>fo?1:-1),cat:mot.cat,mot:mot.txt,u:psmUser(),t:new Date().toISOString(),src:src||'app'});
   try{psmLogRan(r,'Reprogramación: '+psmFd(fo)+' → '+psmFd(fn)+' · '+mot.txt);}catch(e){}PSM_ULT_ACCION=Date.now();}
 (function(){var bs=psmSet;psmSet=function(r,f,v){
@@ -25371,7 +25419,7 @@ function psmAudRep(el){var D=psmRepDatos(),lim=psmCfgN('audLimRep',15);
     '<div class="auTs">'+psmTile('% Reprogramaciones',psmPctTxt(D.pct),D.L.length+' reprogramaciones ÷ '+D.sol.length+' solicitudes',D.pct==null?'':D.pct<=lim?'ok':D.pct<=lim*1.5?'med':'bad')+psmTile('Reprogramaciones',D.L.length,'en el período')+psmTile('RAN reprogramadas',D.ranRep,'al menos una vez')+psmTile('Días hábiles movidos',D.L.reduce(function(s,x){return s+Math.max(0,x.dias||0);},0),'suma de atrasos por reprogramación')+psmTile('Meta',psmPctTxt(lim),psmAudEd()?'<a href="#" onclick="psmCfgPedir(\'audLimRep\',\'Meta máxima de % reprogramaciones\');return false">cambiar</a>':'máximo aceptado')+'</div>'+
     '<div class="auRow"><section class="auC"><h4>Tendencia mensual</h4><div class="auCv"><canvas id="auRepC1"></canvas></div></section><section class="auC"><h4>Principales causas</h4>'+psmAudBarras(D.rk.map(function(x){return {l:x[0],v:x[1]};}),D.L.length)+'</section></div>'+
     '<section class="auC"><h4>Historial completo de reprogramaciones ('+D.L.length+')</h4><div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th>Fecha del cambio</th><th>RAN</th><th>Área</th><th>Cliente</th><th>Componente</th><th>Contrato</th><th>Supervisor</th><th>Fecha original</th><th>Fecha reprogramada</th><th>Días háb.</th><th>Causa</th><th>Motivo</th><th>Responsable</th><th>Origen</th></tr></thead><tbody>'+
-    D.L.slice().reverse().map(function(x){return '<tr><td>'+psmFh2(x.t)+'</td><td><b>'+psmEsc(x.ran)+'</b></td><td>'+(x.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(x.cli)+'</td><td>'+psmEsc(x.comp)+'</td><td>'+psmEsc(x.con||'—')+'</td><td>'+psmEsc(x.sup||'—')+'</td><td>'+psmFd(x.fo)+'</td><td>'+psmFd(x.fn)+'</td><td class="'+(x.dias>0?'late':'')+'">'+(x.dias>0?'+':'')+x.dias+'</td><td>'+psmEsc(x.cat)+'</td><td>'+psmEsc(x.mot)+'</td><td>'+psmEsc(x.u)+'</td><td>'+(x.src==='excel'?'Planilla':'App')+'</td></tr>';}).join('')+'</tbody></table></div>'+(D.L.length?'':'<p class="auVacio">Aún no hay reprogramaciones en el período. Se registran desde ahora cada vez que cambia una fecha comprometida.</p>')+'</section>';
+    D.L.slice().reverse().map(function(x){return '<tr><td>'+psmFh2(x.t)+'</td><td>'+(psmRow(x.rid)?psmAudRanBtn(psmRow(x.rid)):'<b>'+psmEsc(x.ran)+'</b>')+'</td><td>'+(x.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(x.cli)+'</td><td>'+psmEsc(x.comp)+'</td><td>'+psmEsc(x.con||'—')+'</td><td>'+psmEsc(x.sup||'—')+'</td><td>'+psmFd(x.fo)+'</td><td>'+psmFd(x.fn)+'</td><td class="'+(x.dias>0?'late':'')+'">'+(x.dias>0?'+':'')+x.dias+'</td><td>'+psmEsc(x.cat)+'</td><td>'+psmEsc(x.mot)+'</td><td>'+psmEsc(x.u)+'</td><td>'+(x.src==='excel'?'Planilla':'App')+'</td></tr>';}).join('')+'</tbody></table></div>'+(D.L.length?'':'<p class="auVacio">Aún no hay reprogramaciones en el período. Se registran desde ahora cada vez que cambia una fecha comprometida.</p>')+'</section>';
   el.innerHTML=h;
   psmAudChart('auRepC1',{type:'bar',data:{labels:D.porMes.map(function(x){return psmMesTxtC(x.m);}),datasets:[{label:'% reprogramaciones',data:D.porMes.map(function(x){return x.p;}),backgroundColor:D.porMes.map(function(x){return x.p==null?PSM_AC.gr:x.p<=lim?PSM_AC.g:x.p<=lim*1.5?PSM_AC.y:PSM_AC.r;}),borderRadius:4,maxBarThickness:46}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(t){var x=D.porMes[t.dataIndex];return ' '+psmPctTxt(x.p)+' · '+x.n+' de '+x.s+' solicitudes';}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v+'%';}}},x:{grid:{display:false}}}},plugins:[psmLineMeta(lim,'Meta '+lim+'%')]});
@@ -25395,7 +25443,7 @@ function psmAudPla(el){var D=psmPlaDatos(),lim=psmCfgN('audLimPlan',20);
     psmTile('Anticipación promedio',D.L.length?String(Math.round(D.L.reduce(function(s,z){return s+z.d;},0)/D.L.length*10)/10).replace('.',',')+' d':'—','días corridos')+psmTile('Sin datos',D.sinD.length,'falta fecha de solicitud o inicio',D.sinD.length?'med':'')+psmTile('Límite de alerta',psmPctTxt(lim),psmAudEd()?'<a href="#" onclick="psmCfgPedir(\'audLimPlan\',\'Límite de % no planificadas\');return false">cambiar</a>':'configurado')+'</div>'+
     '<div class="auRow"><section class="auC"><h4>Cumplimiento mensual</h4><div class="auCv"><canvas id="auPlaC1"></canvas></div></section><section class="auC"><h4>Tendencia de anticipación promedio (días)</h4><div class="auCv"><canvas id="auPlaC2"></canvas></div></section></div>'+
     '<section class="auC"><h4>Registro por solicitud</h4><p class="auN">La fecha de solicitud se toma de “Datos de auditoría” o, si no está, de la fecha de recepción. Completa las que faltan en la pestaña Datos de auditoría.</p><div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th>RAN</th><th>Área</th><th>Cliente</th><th>Fecha de solicitud</th><th>Origen</th><th>Inicio planificado</th><th>Anticipación</th><th>Clasificación</th></tr></thead><tbody>'+
-    D.L.sort(function(a,b){return a.fs<b.fs?1:-1;}).map(function(z){return '<tr><td><b>'+psmEsc(z.r.ran)+'</b></td><td>'+(z.r.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(psmCliG(z.r.cli)||z.r.cli||'')+'</td><td>'+psmFd(z.fs)+'</td><td>'+z.src+'</td><td>'+psmFd(z.fi)+'</td><td>'+z.d+' d</td><td><span class="auTag '+(z.np?'bad':'ok')+'">'+(z.np?'No planificada':'Planificada')+'</span></td></tr>';}).join('')+'</tbody></table></div></section>';
+    D.L.sort(function(a,b){return a.fs<b.fs?1:-1;}).map(function(z){return '<tr><td>'+psmAudRanBtn(z.r)+'</td><td>'+(z.r.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(psmCliG(z.r.cli)||z.r.cli||'')+'</td><td>'+psmFd(z.fs)+'</td><td>'+z.src+'</td><td>'+psmFd(z.fi)+'</td><td>'+z.d+' d</td><td><span class="auTag '+(z.np?'bad':'ok')+'">'+(z.np?'No planificada':'Planificada')+'</span></td></tr>';}).join('')+'</tbody></table></div></section>';
   el.innerHTML=h;
   psmAudChart('auPlaC1',{type:'bar',data:{labels:D.porMes.map(function(x){return psmMesTxtC(x.m);}),datasets:[{label:'Planificadas',data:D.porMes.map(function(x){return x.t-x.n;}),backgroundColor:PSM_AC.g,borderRadius:3,stack:'s'},{label:'No planificadas',data:D.porMes.map(function(x){return x.n;}),backgroundColor:PSM_AC.r,borderRadius:3,stack:'s'}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{footer:function(it){var x=D.porMes[it[0].dataIndex];return '% no planificadas: '+psmPctTxt(x.p);}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,ticks:{precision:0}}}}});
@@ -25421,7 +25469,7 @@ function psmAvDatos(){var hoy=psmToday(),meses=psmAudRango();var R=PSM.rows.filt
   var LP=L.filter(function(x){return x.p!=null;}),tot=0;LP.forEach(function(x){tot+=x.hh;});var cur=pts.map(function(d){var p=0,q=0;LP.forEach(function(x){var c=C[x.r.id];p+=(c.plan(d)||0)*x.hh;q+=(c.real(d)||0)*x.hh;});return {d:d,p:tot?p/tot:null,q:tot&&d<=hoy?q/tot:null};});
   var pg=null,qg=null;if(tot){var a=0,b=0;LP.forEach(function(x){a+=x.p*x.hh;b+=x.q*x.hh;});pg=Math.round(a/tot);qg=Math.round(b/tot);}
   return {L:L,LP:LP,cur:cur,pg:pg,qg:qg,dg:pg==null?null:qg-pg};}
-function psmAvSnap(){try{if(!psmAudEd()&&!(psmCanEdit&&psmCanEdit('reporte')))return;var H=psmAudHist(),hoy=psmToday();if(H.av[hoy])return;var s=PSM_AF;var bk=JSON.stringify(s);PSM_AF={tab:'res',d:'',h:'',cli:'',comp:'',con:'',a:'',sup:''};var D=psmAvDatos();PSM_AF=JSON.parse(bk);
+function psmAvSnap(){try{if(!psmAudEd()&&!(psmCanEdit&&psmCanEdit('reporte')))return;var H=psmAudHist(true),hoy=psmToday();if(H.av[hoy])return;var s=PSM_AF;var bk=JSON.stringify(s);PSM_AF={tab:'res',d:'',h:'',cli:'',comp:'',con:'',a:'',sup:''};var D=psmAvDatos();PSM_AF=JSON.parse(bk);
   H.av[hoy]={p:D.pg,q:D.qg,d:D.dg,n:D.L.length,u:psmUser(),t:new Date().toISOString()};
   var w=psmIsoSem(hoy);if(!H.avr[w]){H.avr[w]={};D.L.forEach(function(x){H.avr[w][x.r.ran]=[x.p,x.q];});}
   var ks=Object.keys(H.av).sort();if(ks.length>400)ks.slice(0,ks.length-400).forEach(function(k){delete H.av[k];});PSM_ULT_ACCION=Date.now();psmSave(true);}catch(e){}}
@@ -25433,7 +25481,7 @@ function psmAudAv(el){var D=psmAvDatos(),H=psmAudHist(),hk=Object.keys(H.av).sor
     psmTile('RAN en rojo',nB,'desviación menor a −15 pp',nB?'bad':'ok')+psmTile('RAN en amarillo',nM,'entre −5 y −15 pp',nM?'med':'ok')+psmTile('Última foto del avance',hk.length?psmFd(hk[hk.length-1]):'—','se guarda sola cada día')+'</div>'+
     '<div class="auRow"><section class="auC"><h4>Curva S · planificado vs real (semanal)</h4><div class="auCv tall"><canvas id="auAvC1"></canvas></div></section><section class="auC"><h4>Historial de desviación global (fotos diarias)</h4><div class="auCv tall"><canvas id="auAvC2"></canvas></div></section></div>'+
     '<section class="auC"><h4>Avance por RAN</h4><div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th></th><th>RAN</th><th>Área</th><th>Cliente</th><th>Horas plan</th><th>Planificado</th><th>Real</th><th>Desviación</th><th>Última actualización</th><th>Observaciones / evidencia</th><th></th></tr></thead><tbody>'+
-    D.L.sort(function(a,b){return (a.d==null?99:a.d)-(b.d==null?99:b.d);}).map(function(x){var s=psmAvSem(x.d);return '<tr><td><i class="auDot '+s+'"></i></td><td><b>'+psmEsc(x.r.ran)+'</b></td><td>'+(x.r.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(psmCliG(x.r.cli)||x.r.cli||'')+'</td><td>'+psmFh(x.hh)+'</td><td>'+psmPctTxt(x.p)+'</td><td>'+x.q+'%</td><td class="'+(s==='bad'?'late':'')+'">'+(x.d==null?'sin plan':(x.d>0?'+':'')+x.d+' pp')+'</td><td>'+(x.ult?psmFh2(x.ult):'—')+'</td><td>'+(x.obs.length?x.obs.length+' obs.'+(x.obs.some(function(o){return o.foto;})?' · 📷':''):'—')+'</td><td class="auKeep">'+(psmAudEd()||psmCanEdit('reporte')?'<button class="psmBtn ghost sm" onclick="psmAvObsForm(\''+x.r.id+'\')">＋ Observación</button>':'')+(x.obs.length?'<button class="psmBtn ghost sm" onclick="psmAvObsVer(\''+x.r.id+'\')">Ver</button>':'')+'</td></tr>';}).join('')+'</tbody></table></div></section>'+
+    D.L.sort(function(a,b){return (a.d==null?99:a.d)-(b.d==null?99:b.d);}).map(function(x){var s=psmAvSem(x.d);return '<tr><td><i class="auDot '+s+'"></i></td><td>'+psmAudRanBtn(x.r)+'</td><td>'+(x.r.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(psmCliG(x.r.cli)||x.r.cli||'')+'</td><td>'+psmFh(x.hh)+'</td><td>'+psmPctTxt(x.p)+'</td><td>'+x.q+'%</td><td class="'+(s==='bad'?'late':'')+'">'+(x.d==null?'sin plan':(x.d>0?'+':'')+x.d+' pp')+'</td><td>'+(x.ult?psmFh2(x.ult):'—')+'</td><td>'+(x.obs.length?x.obs.length+' obs.'+(x.obs.some(function(o){return o.foto;})?' · 📷':''):'—')+'</td><td class="auKeep">'+(psmAudEd()||psmCanEdit('reporte')?'<button class="psmBtn ghost sm" onclick="psmAvObsForm(\''+x.r.id+'\')">＋ Observación</button>':'')+(x.obs.length?'<button class="psmBtn ghost sm" onclick="psmAvObsVer(\''+x.r.id+'\')">Ver</button>':'')+'</td></tr>';}).join('')+'</tbody></table></div></section>'+
     '<section class="auC"><h4>Reporte histórico de desviaciones por semana</h4>'+psmAvHistTabla(H)+'</section>';
   el.innerHTML=h;
   psmAudChart('auAvC1',{type:'line',data:{labels:D.cur.map(function(x){return psmFd(x.d).slice(0,5);}),datasets:[{label:'Planificado',data:D.cur.map(function(x){return x.p==null?null:Math.round(x.p*10)/10;}),borderColor:PSM_AC.gr,borderDash:[6,4],pointRadius:0,tension:.3},{label:'Real',data:D.cur.map(function(x){return x.q==null?null:Math.round(x.q*10)/10;}),borderColor:PSM_AC.b,backgroundColor:'rgba(42,120,214,.08)',fill:true,pointRadius:2,tension:.3}]},
@@ -25475,12 +25523,12 @@ function psmAudEv(el){var L=psmEvDatos(),late=L.filter(function(x){return x.late
     '<div class="auRow"><section class="auC"><h4>Historial por componente</h4><div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th>Componente</th><th>RAN</th><th>Actividades terminadas</th><th>A tiempo</th><th>Atrasadas hoy</th></tr></thead><tbody>'+Object.keys(comp).sort().map(function(c){var x=comp[c];return '<tr><td><b>'+psmEsc(c)+'</b></td><td>'+Object.keys(x.n).length+'</td><td>'+x.f+'</td><td>'+psmPctTxt(psmPct(x.ok,x.f))+'</td><td class="'+(x.late?'late':'')+'">'+x.late+'</td></tr>';}).join('')+'</tbody></table></div></section>'+
     '<section class="auC"><h4>Alertas por atraso</h4>'+(late.length?'<ul class="auAlL">'+late.sort(function(a,b){return b.desv-a.desv;}).slice(0,12).map(function(x){return '<li><b>RAN '+psmEsc(x.r.ran)+'</b> · '+psmEsc(x.p)+' · plan '+psmFd(x.pf)+' · <span class="late">'+x.desv+' d háb. de atraso</span></li>';}).join('')+'</ul>':'<p class="auVacio">Sin evaluaciones atrasadas.</p>')+'</section></div>'+
     '<section class="auC"><h4>Trazabilidad de cada evaluación</h4><div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th>RAN</th><th>Componente</th><th>Actividad</th><th>Inicio plan</th><th>Término plan</th><th>Inicio real</th><th>Término real</th><th>Responsable</th><th>Estado</th><th>Desviación</th><th>Observaciones</th><th>Evidencia</th></tr></thead><tbody>'+
-    L.map(function(x){return '<tr class="'+(x.late?'auLate':'')+'"><td><b>'+psmEsc(x.r.ran)+'</b></td><td>'+psmEsc(psmTComp(x.r))+'</td><td>'+psmEsc(x.p)+'</td><td>'+(x.ps?psmFd(x.ps):'<span class="auTag med">sin plan</span>')+'</td><td>'+(x.pf?psmFd(x.pf):'—')+'</td><td>'+(x.rs?psmFd(x.rs):'—')+'</td><td>'+(x.rf?psmFd(x.rf):'—')+'</td><td>'+psmEsc(x.resp||'—')+'</td><td><span class="auTag '+(x.est==='Finalizado'?'ok':x.late?'bad':x.est==='En proceso'?'cur':'')+'">'+x.est+' '+x.pct+'%</span></td><td class="'+(x.desv>0?'late':'')+'">'+(x.desv==null?'—':(x.desv>0?'+':'')+x.desv+' d')+'</td><td>'+psmEsc(x.obs||'—')+'</td><td>'+[x.k==='me'&&x.ev?x.ev+' END':'',x.fotos?'📷 '+x.fotos:'',x.k==='re'&&x.r.infApr?'Informe aprobado':''].filter(Boolean).join(' · ')+'</td></tr>';}).join('')+'</tbody></table></div></section>';
+    L.map(function(x){return '<tr class="'+(x.late?'auLate':'')+'"><td>'+psmAudRanBtn(x.r)+'</td><td>'+psmEsc(psmTComp(x.r))+'</td><td>'+psmEsc(x.p)+'</td><td>'+(x.ps?psmFd(x.ps):'<span class="auTag med">sin plan</span>')+'</td><td>'+(x.pf?psmFd(x.pf):'—')+'</td><td>'+(x.rs?psmFd(x.rs):'—')+'</td><td>'+(x.rf?psmFd(x.rf):'—')+'</td><td>'+psmEsc(x.resp||'—')+'</td><td><span class="auTag '+(x.est==='Finalizado'?'ok':x.late?'bad':x.est==='En proceso'?'cur':'')+'">'+x.est+' '+x.pct+'%</span></td><td class="'+(x.desv>0?'late':'')+'">'+(x.desv==null?'—':(x.desv>0?'+':'')+x.desv+' d')+'</td><td>'+psmEsc(x.obs||'—')+'</td><td>'+[x.k==='me'&&x.ev?x.ev+' END':'',x.fotos?'📷 '+x.fotos:'',x.k==='re'&&x.r.infApr?'Informe aprobado':''].filter(Boolean).join(' · ')+'</td></tr>';}).join('')+'</tbody></table></div></section>';
   el.innerHTML=h;}
 function psmAudEvX(){var L=psmEvDatos();psmAudXlsx('Evaluaciones vinculadas al cronograma',[{n:'Trazabilidad',rows:[['RAN','Cliente','Componente','Actividad','Inicio plan','Término plan','Inicio real','Término real','Responsable','Estado','% Avance','Desviación (d hábiles)','Atrasada','Sin plan','Observaciones','Resultados END','Fotos']].concat(L.map(function(x){return [x.r.ran,psmCliG(x.r.cli)||x.r.cli,psmTComp(x.r),x.p,x.ps,x.pf,x.rs,x.rf,x.resp,x.est,x.pct,x.desv,x.late?'Sí':'No',x.sinPlan?'Sí':'No',x.obs,x.ev,x.fotos];}))}]);}
 
 // ════════ 5) CAPACIDAD ════════
-function psmCapDatos(){var hoy=psmToday(),per=psmRoster().filter(function(p){return p.on!==false&&p.cp!==false;});
+function psmCapDatos(){var hoy=psmToday(),per=(Array.isArray(PSM.personal)?PSM.personal:[]).filter(function(p){return p.on!==false&&p.cp!==false;});
   var lun=psmDate(hoy);lun.setDate(lun.getDate()-((lun.getDay()+6)%7));var W=[];for(var i=-8;i<8;i++){var s=new Date(lun);s.setDate(s.getDate()+7*i);var e=new Date(s);e.setDate(e.getDate()+6);W.push({s:psmIso(s),e:psmIso(e),disp:0,comp:0,util:0,fut:i>=0,act:i===0});}
   W.forEach(function(w){for(var d=psmDate(w.s);psmIso(d)<=w.e;d.setDate(d.getDate()+1)){var iso=psmIso(d);per.forEach(function(p){w.disp+=psmHorasDia(p.t==='B'?'B':'A',iso);});}});
   // utilizadas: horas reales (o tempario) de actividades finalizadas en la semana
@@ -25493,7 +25541,7 @@ function psmCapDatos(){var hoy=psmToday(),per=psmRoster().filter(function(p){ret
   var futDisp=W.filter(function(w){return w.fut;}).reduce(function(s,w){return s+w.disp;},0)/8;
   var M={};W.forEach(function(w){var m=psmMesDe(w.s);M[m]=M[m]||{m:m,disp:0,comp:0,util:0};M[m].disp+=w.disp;M[m].comp+=w.comp;M[m].util+=w.util;});
   return {W:W,back:back,per:per.length,sem:futDisp?back/futDisp:null,M:Object.keys(M).sort().map(function(k){return M[k];})};}
-function psmCapSnap(){try{if(!psmAudEd())return;var H=psmAudHist(),w=psmIsoSem(psmToday());if(H.cap[w])return;var D=psmCapDatos(),a=D.W.filter(function(x){return x.act;})[0];H.cap[w]={disp:Math.round(a.disp),comp:Math.round(a.comp),back:Math.round(D.back),per:D.per,u:psmUser(),t:new Date().toISOString()};
+function psmCapSnap(){try{if(!psmAudEd())return;var H=psmAudHist(true),w=psmIsoSem(psmToday());if(H.cap[w])return;var D=psmCapDatos(),a=D.W.filter(function(x){return x.act;})[0];H.cap[w]={disp:Math.round(a.disp),comp:Math.round(a.comp),back:Math.round(D.back),per:D.per,u:psmUser(),t:new Date().toISOString()};
   var p=D.W[7];if(p){var wp=psmIsoSem(p.s);if(H.cap[wp])H.cap[wp].util=Math.round(p.util);}PSM_ULT_ACCION=Date.now();psmSave(true);}catch(e){}}
 function psmAudCap(el){var D=psmCapDatos(),H=psmAudHist(),lim=psmCfgN('audLimCap',100);var a=D.W.filter(function(x){return x.act;})[0];var car=psmPct(a.comp,a.disp),pas=D.W.filter(function(w){return !w.fut;}),ud=pas.reduce(function(s,w){return s+w.disp;},0),uu=pas.reduce(function(s,w){return s+w.util;},0);
   var sob=D.W.filter(function(w){return w.fut&&w.disp&&w.comp/w.disp*100>lim;});
@@ -25544,7 +25592,7 @@ function psmKpiMes(m,tipo){var R=PSM.rows.filter(function(r){return (!tipo||psmT
   o._n={term:term.length,ing:ing.length};return o;}
 function psmKpiMeta(k,tipo){var C=psmCalCfgA(),m=C.metas[tipo||'*'],d=C.metas['*'];if(m&&m[k]!=null&&m[k]!=='')return +m[k];if(d&&d[k]!=null&&d[k]!=='')return +d[k];return PSM_KPI.filter(function(x){return x.k===k;})[0].meta;}
 var PSM_CQ={tipo:''};
-function psmKpiSnap(){try{if(!psmAudEd())return;var H=psmAudHist(),hoy=psmToday().slice(0,7),ch=false;var meses=psmMesesRango((function(){var y=+hoy.slice(0,4),m=+hoy.slice(5,7)-12;if(m<1){m+=12;y--;}return y+'-'+('0'+m).slice(-2);})(),hoy).slice(0,-1);
+function psmKpiSnap(){try{if(!psmAudEd())return;var H=psmAudHist(true),hoy=psmToday().slice(0,7),ch=false;var meses=psmMesesRango((function(){var y=+hoy.slice(0,4),m=+hoy.slice(5,7)-12;if(m<1){m+=12;y--;}return y+'-'+('0'+m).slice(-2);})(),hoy).slice(0,-1);
   var bk=JSON.stringify(PSM_AF);PSM_AF={tab:'res',d:'',h:'',cli:'',comp:'',con:'',a:'',sup:''};
   meses.forEach(function(m){if(H.kpi[m])return;var o={'*':psmKpiMes(m,'')};psmTComps().forEach(function(t){o[t]=psmKpiMes(m,t);});o._t=new Date().toISOString();o._u=psmUser();o._metas=JSON.parse(JSON.stringify(psmCalCfgA().metas));H.kpi[m]=o;ch=true;});
   PSM_AF=JSON.parse(bk);if(ch){PSM_ULT_ACCION=Date.now();psmSave(true);}}catch(e){}}
@@ -25562,13 +25610,13 @@ function psmAudCal(el){var tipo=PSM_CQ.tipo,hoy=psmToday().slice(0,7),meses=psmA
   el.innerHTML=h;}
 function psmCalDatosFalt(meses,tipo){var sinR=0,sinI=0,tot=0;PSM.rows.forEach(function(r){if(tipo&&psmTComp(r)!==tipo)return;var x=psmFinFecha(r);if(!x.f||meses.indexOf(psmMesDe(x.f))<0)return;tot++;if(x.src==='comp')sinR++;if(r.a==='en'&&!psmIni(r))sinI++;});
   if(!sinR&&!sinI)return '';return '<div class="auAl" style="background:#fffbeb;border-color:#f3dc9b;color:#7a5200">ℹ️ Calidad de los datos: de '+tot+' RAN terminadas en el período, '+sinR+' no tienen fecha de término real y '+sinI+' ensambles no tienen fecha de inicio. Esos casos no entran en cumplimiento de fechas, tiempo de reparación ni desviación (por eso pueden aparecer “—”). Complétalas en <a href="#" onclick="PSM_AD.solo=\'term\';setView(\'auddat\');return false">Datos de auditoría → terminadas sin fecha real</a>.</div>';}
-function psmKpiMetaSet(k){var t=PSM_CQ.tipo||'*',K=PSM_KPI.filter(function(x){return x.k===k;})[0];var v=prompt('Meta de "'+K.n+'" para '+(t==='*'?'todos los componentes':t)+' ('+(K.dir==='min'?'mínimo':'máximo')+'):',psmKpiMeta(k,PSM_CQ.tipo));if(v===null)return;v=parseFloat(String(v).replace(',','.'));if(isNaN(v))return;var C=psmCalCfgA();C.metas[t]=C.metas[t]||{};var old=C.metas[t][k];C.metas[t][k]=v;C.hist=(C.hist||[]).concat([{t:new Date().toISOString(),u:psmUser(),c:'Meta '+K.n+' ('+(t==='*'?'todos':t)+'): '+(old==null?K.meta:old)+' → '+v}]);PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
-function psmKpiResp(k){var C=psmCalCfgA(),K=PSM_KPI.filter(function(x){return x.k===k;})[0];var v=prompt('Responsable de "'+K.n+'":',C.resp[k]||'');if(v===null)return;C.resp[k]=v.trim();C.hist=(C.hist||[]).concat([{t:new Date().toISOString(),u:psmUser(),c:'Responsable '+K.n+': '+v.trim()}]);PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
+function psmKpiMetaSet(k){var t=PSM_CQ.tipo||'*',K=PSM_KPI.filter(function(x){return x.k===k;})[0];var v=prompt('Meta de "'+K.n+'" para '+(t==='*'?'todos los componentes':t)+' ('+(K.dir==='min'?'mínimo':'máximo')+'):',psmKpiMeta(k,PSM_CQ.tipo));if(v===null)return;v=parseFloat(String(v).replace(',','.'));if(isNaN(v))return;var C=psmCalCfgA(true);C.metas[t]=C.metas[t]||{};var old=C.metas[t][k];C.metas[t][k]=v;C.hist=(C.hist||[]).concat([{t:new Date().toISOString(),u:psmUser(),c:'Meta '+K.n+' ('+(t==='*'?'todos':t)+'): '+(old==null?K.meta:old)+' → '+v}]);PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
+function psmKpiResp(k){var C=psmCalCfgA(true),K=PSM_KPI.filter(function(x){return x.k===k;})[0];var v=prompt('Responsable de "'+K.n+'":',C.resp[k]||'');if(v===null)return;C.resp[k]=v.trim();C.hist=(C.hist||[]).concat([{t:new Date().toISOString(),u:psmUser(),c:'Responsable '+K.n+': '+v.trim()}]);PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
 function psmKpiEvid(k){var C=psmCalCfgA(),K=PSM_KPI.filter(function(x){return x.k===k;})[0],L=C.evid[k]||[],ed=psmAudEd();var m=document.createElement('div');m.id='psmModal';m.className='psmModal';m.onclick=psmClose;
   m.innerHTML='<div class="psmMBox narrow" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">Evidencia · '+psmEsc(K.n)+'</div><div class="psmMCli">Documento, acta, informe o enlace que respalda el resultado del mes.</div></div><button class="psmMX" onclick="psmClose()">✕</button></div>'+
     '<div class="auObsL">'+(L.length?L.slice().reverse().map(function(e){return '<div class="auObs"><b>'+psmMesTxtC(e.mes)+(e.tipo?' · '+psmEsc(e.tipo):'')+' · '+psmEsc(e.u)+' · '+psmFh2(e.t)+'</b><p>'+psmEsc(e.txt)+(e.link?' · <a href="'+psmEsc(e.link)+'" target="_blank" rel="noopener">abrir</a>':'')+'</p></div>';}).join(''):'<p class="auVacio">Sin evidencia registrada.</p>')+'</div>'+
     (ed?'<div class="msForm"><label>Mes<input type="month" id="evM" value="'+psmToday().slice(0,7)+'"/></label><label class="w2">Componente<select id="evT"><option value="">Todos</option>'+psmTComps().map(function(t){return '<option'+(PSM_CQ.tipo===t?' selected':'')+'>'+t+'</option>';}).join('')+'</select></label><label class="w3">Descripción<input id="evX" placeholder="Ej: Acta de revisión mensual de calidad N° 12"/></label><label class="w3">Enlace (SharePoint, Drive, etc.)<input id="evL" placeholder="https://…"/></label></div><div class="psmMFoot"><span style="flex:1"></span><button class="psmBtn" onclick="psmKpiEvidAdd(\''+k+'\')">Agregar evidencia</button></div>':'')+'</div>';document.body.appendChild(m);}
-function psmKpiEvidAdd(k){var x=document.getElementById('evX').value.trim(),l=document.getElementById('evL').value.trim();if(!x){psmToast('Escribe la descripción','#d03b3b');return;}var C=psmCalCfgA();C.evid[k]=(C.evid[k]||[]).concat([{mes:document.getElementById('evM').value,tipo:document.getElementById('evT').value,txt:x,link:/^https?:\/\//.test(l)?l:'',u:psmUser(),t:new Date().toISOString()}]);PSM_ULT_ACCION=Date.now();psmSave();psmClose();psmKpiEvid(k);}
+function psmKpiEvidAdd(k){var x=document.getElementById('evX').value.trim(),l=document.getElementById('evL').value.trim();if(!x){psmToast('Escribe la descripción','#d03b3b');return;}var C=psmCalCfgA(true);C.evid[k]=(C.evid[k]||[]).concat([{mes:document.getElementById('evM').value,tipo:document.getElementById('evT').value,txt:x,link:/^https?:\/\//.test(l)?l:'',u:psmUser(),t:new Date().toISOString()}]);PSM_ULT_ACCION=Date.now();psmSave();psmClose();psmKpiEvid(k);}
 function psmNS(r){var m=String(r.mod||'').match(/\bN[°º]?\s*S\.?\s*[:#]?\s*([A-Z0-9][A-Z0-9\-\/\.]{3,})/i);return m?m[1].toUpperCase():'';}
 function psmReingSug(){var by={},out=[];PSM.rows.forEach(function(r){var n=psmNS(r);if(n)(by[n]=by[n]||[]).push(r);});Object.keys(by).forEach(function(n){var L=by[n];if(L.length<2)return;L.sort(function(a,b){return (psmFSol(a)||psmIni(a)||'')<(psmFSol(b)||psmIni(b)||'')?-1:1;});for(var i=1;i<L.length;i++)out.push([n,L[i-1],L[i]]);});
   if(!out.length)return '<p class="auVacio">No se detectaron series repetidas.</p>';return '<div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th>N° de serie</th><th>RAN anterior</th><th>RAN nueva</th><th>Estado</th><th></th></tr></thead><tbody>'+out.map(function(x){var r=x[2],mk=r.reing&&String(r.reing.orig)===String(x[1].ran);return '<tr><td>'+psmEsc(x[0])+'</td><td>'+psmEsc(x[1].ran)+'</td><td>'+psmEsc(r.ran)+'</td><td>'+(mk?'<span class="auTag bad">Reingreso por falla</span>':r.reing?'Marcada contra '+psmEsc(r.reing.orig):'Sin revisar')+'</td><td class="auKeep">'+(psmAudEd()&&!mk?'<button class="psmBtn ghost sm" onclick="psmReingMarcar(\''+r.id+'\',\''+psmEsc(x[1].ran)+'\')">Marcar reingreso</button>':'')+'</td></tr>';}).join('')+'</tbody></table></div>';}
@@ -25586,7 +25634,7 @@ function psmAudDat(el){var ed=psmAudEd(),q=psmNorm(PSM_AD.q);var L=PSM.rows.filt
     '<div class="auF"><label>Buscar<input value="'+psmEsc(PSM_AD.q)+'" placeholder="RAN, cliente, modelo" oninput="PSM_AD.q=this.value;clearTimeout(window._adQ);window._adQ=setTimeout(function(){psmAudShow();var i=document.querySelector(\'#psmAudView .auF input\');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}},300)"/></label><label>Mostrar<select onchange="PSM_AD.solo=this.value;psmAudShow()"><option value="">RAN en curso</option><option value="falta"'+(PSM_AD.solo==='falta'?' selected':'')+'>Solo con datos faltantes</option><option value="todas"'+(PSM_AD.solo==='todas'?' selected':'')+'>Todas (incluye terminadas)</option><option value="term"'+(PSM_AD.solo==='term'?' selected':'')+'>Terminadas sin fecha real de término</option></select></label></div>'+
     dl('adCon',psmContrato)+dl('adSup',psmSupRAN)+'<datalist id="adTc">'+psmTComps().map(function(t){return '<option value="'+t+'">';}).join('')+'</datalist>'+
     '<section class="auC"><div class="auTW"><table class="psmTbl mini auTb auEd"><thead><tr><th>RAN</th><th>Área</th><th>Cliente · modelo</th><th>Fecha de solicitud</th><th>Inicio planificado</th><th>Contrato</th><th>Supervisor</th><th>Tipo de componente</th><th>Inicio real</th><th>Término real</th><th>Reingreso de RAN</th></tr></thead><tbody>'+
-    L.map(function(r){return '<tr><td><b>'+psmEsc(r.ran)+'</b></td><td>'+(r.a==='en'?'Ens.':'Des.')+'</td><td class="cm">'+psmEsc((psmCliG(r.cli)||r.cli||'')+' · '+(r.mod||''))+'</td><td>'+inp(r,'fsol',r.fsol||'','date')+(r.fsol?'':(r.rec?'<small>recepción '+psmFd(r.rec)+'</small>':'<small class="late">falta</small>'))+'</td><td>'+inp(r,'fiPlan',r.fiPlan||'','date')+(r.fiPlan?'':'<small>'+(psmFIniPlan(r)?'del plan '+psmFd(psmFIniPlan(r)):'sin plan')+'</small>')+'</td><td>'+inp(r,'contrato',r.contrato,'','adCon')+'</td><td>'+inp(r,'sup',r.sup||'','','adSup')+(r.sup?'':'<small>'+psmEsc(psmSupRAN(r)||'')+'</small>')+'</td><td>'+inp(r,'tcomp',r.tcomp||'','','adTc')+(r.tcomp?'':'<small>'+psmTComp(r)+'</small>')+'</td><td>'+(r.a==='en'?inp(r,'ini',r.ini||'','date'):inp(r,'ff_sd',r.ff_sd||'','date'))+'</td><td>'+inp(r,r.a==='en'?'freal':'ent',psmReal(r),'date')+(psmReal(r)?'':(psmFinal(r)?'<small class="late">falta</small>':''))+'</td><td>'+(r.reing?'<span class="auTag bad">de '+psmEsc(r.reing.orig)+'</span>':'')+(ed?'<button class="psmBtn ghost sm" onclick="psmReingPedir(\''+r.id+'\')">'+(r.reing?'Cambiar':'Marcar')+'</button>':'')+'</td></tr>';}).join('')+'</tbody></table></div></section>';
+    L.map(function(r){return '<tr><td>'+psmAudRanBtn(r)+'</td><td>'+(r.a==='en'?'Ens.':'Des.')+'</td><td class="cm">'+psmEsc((psmCliG(r.cli)||r.cli||'')+' · '+(r.mod||''))+'</td><td>'+inp(r,'fsol',r.fsol||'','date')+(r.fsol?'':(r.rec?'<small>recepción '+psmFd(r.rec)+'</small>':'<small class="late">falta</small>'))+'</td><td>'+inp(r,'fiPlan',r.fiPlan||'','date')+(r.fiPlan?'':'<small>'+(psmFIniPlan(r)?'del plan '+psmFd(psmFIniPlan(r)):'sin plan')+'</small>')+'</td><td>'+inp(r,'contrato',r.contrato,'','adCon')+'</td><td>'+inp(r,'sup',r.sup||'','','adSup')+(r.sup?'':'<small>'+psmEsc(psmSupRAN(r)||'')+'</small>')+'</td><td>'+inp(r,'tcomp',r.tcomp||'','','adTc')+(r.tcomp?'':'<small>'+psmTComp(r)+'</small>')+'</td><td>'+(r.a==='en'?inp(r,'ini',r.ini||'','date'):inp(r,'ff_sd',r.ff_sd||'','date'))+'</td><td>'+inp(r,r.a==='en'?'freal':'ent',psmReal(r),'date')+(psmReal(r)?'':(psmFinal(r)?'<small class="late">falta</small>':''))+'</td><td>'+(r.reing?'<span class="auTag bad">de '+psmEsc(r.reing.orig)+'</span>':'')+(ed?'<button class="psmBtn ghost sm" onclick="psmReingPedir(\''+r.id+'\')">'+(r.reing?'Cambiar':'Marcar')+'</button>':'')+'</td></tr>';}).join('')+'</tbody></table></div></section>';
   el.innerHTML=h;}
 var PSM_AD_N={ini:'Fecha de inicio',ff_sd:'Fecha de inicio',freal:'Término real',ent:'Entrega real',fsol:'Fecha de solicitud',fiPlan:'Inicio planificado',contrato:'Contrato',sup:'Supervisor',tcomp:'Tipo de componente'};
 function psmAudSetCampo(id,f,v){var r=psmRow(id);if(!r||!psmAudEd())return;v=String(v||'').trim();var old=r[f]||'';if(old===v)return;if(f==='ini'||f==='ff_sd'||f==='ent')psmSet(r,f,v);else if(v)r[f]=v;else delete r[f];psmLogRan(r,'Auditoría · '+PSM_AD_N[f]+': '+(old||'—')+' → '+(v||'—'));PSM_ULT_ACCION=Date.now();psmSave();}
@@ -25594,7 +25642,8 @@ function psmReingPedir(id){var r=psmRow(id);if(!r)return;var o=prompt('RAN '+r.r
 function psmAudDatX(){psmAudXlsx('Datos de auditoria',[{n:'RAN',rows:[['RAN','Área','Cliente','Modelo','Fecha de solicitud','Origen','Inicio planificado','Contrato','Supervisor','Tipo de componente','Reingreso de','Motivo reingreso']].concat(PSM.rows.map(function(r){return [r.ran,r.a,r.cli,r.mod,psmFSol(r),psmFSolSrc(r),psmFIniPlan(r),r.contrato||'',psmSupRAN(r),psmTComp(r),r.reing?r.reing.orig:'',r.reing?r.reing.mot:''];}))}]);}
 
 // ════════ PANEL DE CUMPLIMIENTO (resumen) ════════
-function psmAudResumen(){var bk=JSON.stringify(PSM_AF),hoy=psmToday().slice(0,7);PSM_AF.d=hoy;PSM_AF.h=hoy;var o={};
+function psmAudResumen(){return psmAudMemo('res',psmAudResumen0);}
+function psmAudResumen0(){var bk=JSON.stringify(PSM_AF),hoy=psmToday().slice(0,7);PSM_AF.d=hoy;PSM_AF.h=hoy;var o={};
   try{var R=psmRepDatos();o.rep=R.pct;o.repN=R.L.length;var P=psmPlaDatos();o.pla=P.pct;o.plaSin=P.sinD.length;PSM_AF=JSON.parse(bk);var bk2=JSON.stringify(PSM_AF);PSM_AF={tab:'res',d:'',h:'',cli:'',comp:'',con:'',a:'',sup:''};var A=psmAvDatos();o.av=A.dg;var E=psmEvDatos();o.ev=E.filter(function(x){return x.late;}).length;o.evSp=E.filter(function(x){return x.sinPlan&&x.est!=='Finalizado';}).length;PSM_AF=JSON.parse(bk2);
     var C=psmCapDatos(),a=C.W.filter(function(w){return w.act;})[0];o.cap=psmPct(a.comp,a.disp);o.capSob=C.W.filter(function(w){return w.fut&&w.disp&&w.comp/w.disp*100>psmCfgN('audLimCap',100);}).length;
     var K=psmKpiMes(hoy,''),fuera=PSM_KPI.filter(function(k){return psmSem(K[k.k],psmKpiMeta(k.k,''),k.dir)==='bad';}).length;o.icc=K.icc;o.kpiBad=fuera;}catch(e){}finally{PSM_AF=JSON.parse(bk);}return o;}
@@ -25636,19 +25685,231 @@ PSM_AUD_V.forEach(function(v){PSM_OWN[v[0]]=['psmAuditView',function(el){PSM_AUD
   var bc=psmCanView;psmCanView=function(v){if(/^aud/.test(v))return bc('plansman')||bc('ejecutivo')||bc('calidad');return bc.apply(this,arguments);};
   var bv=psmVerStd;psmVerStd=function(){return bv().filter(function(v){return !/^aud/.test(v);});};
 })();
-// Inicio: cumplimiento de auditoría
-(function(){var bh=psmRenderHome;psmRenderHome=function(el){bh.apply(this,arguments);try{if(!psmCanView('aud'))return;el=el||document.getElementById('psmHomeView');if(el.querySelector('.auHome'))return;var T=psmAudTiles(psmAudResumen());
-  var h='<section class="auHome"><div class="auHomeH"><b>🛡️ Cumplimiento de auditoría</b><button onclick="setView(\'aud\')">Ver panel completo →</button></div><div class="auHomeG">'+T.map(function(t){return '<button class="'+t[4]+'" onclick="setView(\''+t[5]+'\')"><i>'+t[0]+'</i><span>'+t[1]+'</span><strong>'+t[2]+'</strong><small>'+t[3]+'</small></button>';}).join('')+'</div></section>';
-  var hoy=el.querySelector('.hmHoy');if(hoy)hoy.insertAdjacentHTML('afterend',h);else{var k=el.querySelector('.hmKs');if(k)k.insertAdjacentHTML('beforebegin',h);}}catch(e){}};})();
+// Inicio: cumplimiento de auditoría (se calcula después de dibujar, para no demorar la entrada)
+function psmAudHomeHTML(T){return '<div class="auHomeH"><b>🛡️ Cumplimiento de auditoría</b><button onclick="setView(\'aud\')">Ver panel completo →</button></div><div class="auHomeG">'+(T?T.map(function(t){return '<button class="'+t[4]+'" onclick="setView(\''+t[5]+'\')"><i>'+t[0]+'</i><span>'+t[1]+'</span><strong>'+t[2]+'</strong><small>'+t[3]+'</small></button>';}).join(''):'<p class="auVacio">Calculando…</p>')+'</div>';}
+function psmAudQuieto(){return performance.now()>12000&&Date.now()-PSM_ULT_ACCION>10000;}
+(function(){var bh=psmRenderHome;psmRenderHome=function(el){bh.apply(this,arguments);var n=0;var go=function(){if(!psmAudQuieto()&&n++<60){setTimeout(go,2000);return;}try{var hv=document.getElementById('psmHomeView');if(!hv||hv.classList.contains('hidden')||hv.querySelector('.auHome')||!psmCanView('aud'))return;
+  var h='<section class="auHome">'+psmAudHomeHTML(psmAudTiles(psmAudResumen()))+'</section>';
+  var hoy=hv.querySelector('.hmHoy');if(hoy)hoy.insertAdjacentHTML('afterend',h);else{var k=hv.querySelector('.hmKs');if(k)k.insertAdjacentHTML('beforebegin',h);}}catch(e){}};setTimeout(go,1200);};})();
 // Revisión y alertas: alertas de auditoría
-(function(){var ba=psmAlertas;psmAlertas=function(){var Z=ba.apply(this,arguments);try{var hoy=psmToday().slice(0,7),bk=JSON.stringify(PSM_AF);PSM_AF.d=hoy;PSM_AF.h=hoy;PSM_AF.cli=PSM_AF.comp=PSM_AF.con=PSM_AF.a=PSM_AF.sup='';
-  var P=psmPlaDatos(),lp=psmCfgN('audLimPlan',20);PSM_AF={tab:'res',d:'',h:'',cli:'',comp:'',con:'',a:'',sup:''};var E=psmEvDatos(),C=psmCapDatos(),lc=psmCfgN('audLimCap',100);PSM_AF=JSON.parse(bk);
+(function(){var ba=psmAlertas;psmAlertas=function(){var Z=ba.apply(this,arguments);try{var lp=psmCfgN('audLimPlan',20),lc=psmCfgN('audLimCap',100);var X=psmAudMemo('al',function(){var hoy=psmToday().slice(0,7),bk=JSON.stringify(PSM_AF);try{PSM_AF.d=hoy;PSM_AF.h=hoy;PSM_AF.cli=PSM_AF.comp=PSM_AF.con=PSM_AF.a=PSM_AF.sup='';
+  var P=psmPlaDatos();PSM_AF={tab:'res',d:'',h:'',cli:'',comp:'',con:'',a:'',sup:''};var E=psmEvDatos(),C=psmCapDatos();}finally{PSM_AF=JSON.parse(bk);}return {P:P,E:E,C:C};});var P=X.P,E=X.E,C=X.C;
   Z.A.push({k:'audpla',niv:'amarillo',t:'Solicitudes no planificadas sobre el límite',desc:'Más del '+lp+'% de las solicitudes del mes con 1 día o menos de anticipación',l:P.pct!=null&&P.pct>lp?P.L.filter(function(z){return z.np;}).map(function(z){return [z.r,'Solicitud '+psmFd(z.fs)+' · inicio '+psmFd(z.fi)+' · '+z.d+' d'];}):[]});
   Z.A.push({k:'audev',niv:'rojo',t:'Evaluaciones atrasadas respecto al Gantt',desc:'Actividad de evaluación con su fecha planificada vencida',l:E.filter(function(x){return x.late;}).map(function(x){return [x.r,x.p+' · plan '+psmFd(x.pf)+' · '+x.desv+' d háb.'];})});
   Z.A.push({k:'audcap',niv:'amarillo',t:'Sobrecarga de capacidad',desc:'Semanas próximas con horas comprometidas sobre el '+lc+'% de las disponibles',l:[]});
   var sob=C.W.filter(function(w){return w.fut&&w.disp&&w.comp/w.disp*100>lc;});if(sob.length){var any=PSM.rows.filter(function(r){return !psmFinal(r);}).slice(0,1);Z.A[Z.A.length-1].l=sob.map(function(w){return [any[0]||{id:'',ran:'—'},'Semana '+psmFd(w.s)+': '+Math.round(w.comp)+' h comprometidas de '+Math.round(w.disp)+' h ('+Math.round(w.comp/w.disp*100)+'%)'];});}
   Z.A.forEach(function(a){if(a.ack===undefined)a.ack=[];});
 }catch(e){}return Z;};})();
+
+// ══════════════════════════════════════════════════════════════
+// v39: RESPONSABLE QA/QC POR RAN
+//  · campo permanente r.qa (obligatorio al crear o editar) con historial r.qaH
+//  · se ve junto a la RAN en todas las vistas, fichas, TV y PDF
+//  · filtro QA/QC global (barra superior) + búsqueda por nombre
+//  · columna "QA/QC Responsable" en todos los Excel que tengan columna RAN
+//  · vista "Responsables QA/QC" con reporte, asignación masiva, historial y exportes
+// ══════════════════════════════════════════════════════════════
+PSM_AREA_KEY.qaList='plansman';
+var PSM_QA_COL=['#2a78d6','#1baf7a','#eb6834','#8b5cf6','#d97706','#e34948','#0d9488','#db2777','#4f46e5','#65a30d'];
+function psmQAList(w){if(Array.isArray(PSM.qaList))return PSM.qaList;if(w){PSM.qaList=[];return PSM.qaList;}return [];}
+function psmQANorm(s){return String(s||'').trim().replace(/\s+/g,' ');}
+function psmQA(r){return r&&r.qa?String(r.qa):'';}
+function psmQAInfo(n){n=psmQANorm(n);if(!n)return null;var L=psmQAList(),k=psmNorm(n);for(var i=0;i<L.length;i++)if(psmNorm(L[i].n)===k)return L[i];
+  var h=0;for(var j=0;j<n.length;j++)h=(h*31+n.charCodeAt(j))>>>0;return {n:n,c:PSM_QA_COL[h%PSM_QA_COL.length],on:true,_tmp:1};}
+function psmQAIni(n){var p=psmQANorm(n).split(' ').filter(Boolean);return ((p[0]||'?')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+function psmQAPuede(){try{return psmIsAdmin()||psmCanEdit('plansman');}catch(e){return false;}}
+function psmQAAdd(n){n=psmQANorm(n);if(!n)return null;var i=psmQAInfo(n);if(!i._tmp)return i;var L=psmQAList(true);var used={};L.forEach(function(x){used[x.c]=1;});var c=PSM_QA_COL.filter(function(x){return !used[x];})[0]||PSM_QA_COL[L.length%PSM_QA_COL.length];
+  var o={n:n,c:c,on:true,u:psmUser(),t:new Date().toISOString()};L.push(o);return o;}
+function psmQAChip(r,cls){var n=psmQA(r);var on=psmQAPuede()?' onclick="event.stopPropagation();psmQAAsignar(\''+r.id+'\')"':'';
+  if(!n)return '<span class="qaC no'+(psmFinal(r)?' fin':'')+' '+(cls||'')+'" data-qrid="'+r.id+'" title="Esta RAN no tiene responsable QA/QC'+(on?' · clic para asignar':'')+'"'+on+'>⚠ Sin QA/QC</span>';
+  var i=psmQAInfo(n);return '<span class="qaC '+(cls||'')+'" data-qrid="'+r.id+'" style="--q:'+i.c+'" title="QA/QC Responsable: '+psmEsc(n)+(on?' · clic para cambiar':'')+'"'+on+'><i>'+psmEsc(psmQAIni(n))+'</i>'+psmEsc(n)+'</span>';}
+
+// ── asignar / cambiar (una o varias RAN) ──
+function psmQASet(r,n,mot){n=psmQANorm(n);var old=psmQA(r);if(old===n)return false;if(n){psmQAAdd(n);r.qa=n;}else delete r.qa;
+  r.qaH=(r.qaH||[]).concat([{o:old,n:n,u:psmUser(),t:new Date().toISOString(),m:mot||''}]);
+  try{psmLogRan(r,'QA/QC Responsable: '+(old||'—')+' → '+(n||'—'));}catch(e){}return true;}
+function psmQAAsignar(ids){if(!psmQAPuede()){psmToast('Solo quien edita la Planificación puede asignar QA/QC','#d03b3b');return;}
+  ids=[].concat(ids).filter(Boolean);var R=ids.map(psmRow).filter(Boolean);if(!R.length)return;
+  var cur=R.length===1?psmQA(R[0]):'';var L=psmQAList().filter(function(x){return x.on!==false;});
+  var m=document.createElement('div');m.id='psmQAModal';m.className='psmModal';m.style.zIndex=12000;m.onclick=function(){m.remove();};
+  m.innerHTML='<div class="psmMBox narrow" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">Responsable QA/QC · '+(R.length===1?'RAN '+psmEsc(R[0].ran):R.length+' RAN')+'</div><div class="psmMCli">Queda guardado en la RAN y se ve en todas las vistas, la TV y los reportes.</div></div><button class="psmMX" onclick="this.closest(\'.psmModal\').remove()">✕</button></div>'+
+    '<div class="qaPick">'+(L.length?L.map(function(x){return '<button class="'+(psmNorm(x.n)===psmNorm(cur)?'on':'')+'" style="--q:'+x.c+'" data-n="'+psmEsc(x.n)+'"><i>'+psmEsc(psmQAIni(x.n))+'</i>'+psmEsc(x.n)+'</button>';}).join(''):'<p class="auVacio">Todavía no hay responsables QA/QC en la lista. Escribe el nombre abajo.</p>')+'</div>'+
+    '<div class="msForm"><label class="w3">Otro nombre (se agrega a la lista)<input id="qaNew" placeholder="Nombre y apellido"/></label></div>'+
+    '<div class="psmMFoot">'+(cur?'<button class="psmBtn ghost" id="qaQuitar">Quitar</button>':'')+'<span style="flex:1"></span><button class="psmBtn ghost" onclick="this.closest(\'.psmModal\').remove()">Cancelar</button><button class="psmBtn" id="qaOk">Guardar</button></div></div>';
+  document.body.appendChild(m);
+  var sel=cur;m.querySelectorAll('.qaPick button').forEach(function(b){b.onclick=function(){sel=b.dataset.n;m.querySelectorAll('.qaPick button').forEach(function(x){x.classList.toggle('on',x===b);});document.getElementById('qaNew').value='';};
+    b.ondblclick=function(){sel=b.dataset.n;fin();};});
+  var fin=function(quitar){var nv=psmQANorm(document.getElementById('qaNew').value)||sel;if(quitar){if(!confirm('¿Quitar el responsable QA/QC? La RAN quedará marcada “Sin QA/QC”.'))return;nv='';}
+    else if(!nv){psmToast('Elige o escribe un responsable QA/QC','#d03b3b');return;}
+    var n=0;R.forEach(function(r){if(psmQASet(r,nv))n++;});m.remove();PSM_ULT_ACCION=Date.now();psmSave();psmQARefrescar();psmToast(n?(nv?'QA/QC '+nv+' asignado a '+n+' RAN':'QA/QC quitado'):'Sin cambios','#16a34a');};
+  document.getElementById('qaOk').onclick=function(){fin();};var q=document.getElementById('qaQuitar');if(q)q.onclick=function(){fin(true);};
+  document.getElementById('qaNew').onkeydown=function(e){if(e.key==='Enter')fin();};}
+function psmQARefrescar(){try{var md=document.getElementById('psmModal');var rid=md&&md.dataset.qaRid;if(md&&rid&&md.querySelector('.qaFicha')){var x=md.querySelector('.qaFicha .qaC');var r=psmRow(rid);if(x&&r)x.outerHTML=psmQAChip(r,'big');}}catch(e){}
+  try{if(currentView==='plansman')psmRender();else if(typeof psmRefrescar==='function')psmRefrescar();}catch(e){}try{psmQADecorar(document.body,true);}catch(e){}}
+
+// ── ficha: bloque QA/QC visible arriba ──
+(function(){var bo=psmOpen;psmOpen=function(id){var res=bo.apply(this,arguments);try{var m=document.getElementById('psmModal'),r=psmRow(id);if(m&&r){m.dataset.qaRid=id;var hd=m.querySelector('.psmMHead');if(hd&&!m.querySelector('.qaFicha')){
+  var H=(r.qaH||[]).slice(-3).reverse();
+  hd.insertAdjacentHTML('afterend','<div class="qaFicha"><span class="l">🛡️ QA/QC Responsable</span>'+psmQAChip(r,'big')+(psmQAPuede()?'<button class="psmBtn ghost sm" onclick="psmQAAsignar(\''+r.id+'\')">'+(psmQA(r)?'Cambiar':'Asignar')+'</button>':'')+
+    (H.length?'<small>'+H.map(function(h){return psmFd(h.t.slice(0,10))+' '+psmEsc(h.u)+': '+psmEsc(h.o||'—')+' → '+psmEsc(h.n||'—');}).join(' · ')+'</small>':'')+'</div>');}}}catch(e){}return res;};})();
+
+// ── formulario: campo obligatorio ──
+(function(){var bf=psmForm;psmForm=function(id,area){var res=bf.apply(this,arguments);try{var box=document.getElementById('psmFrm');if(box&&!document.getElementById('psmQAIn')){var r=id?psmRow(id):null,fs=box.querySelector('fieldset');
+  var L=psmQAList().filter(function(x){return x.on!==false;});
+  var h='<label class="qaReq">QA/QC Responsable *<input id="psmQAIn" list="psmQADl" required value="'+psmEsc(r?psmQA(r):'')+'" placeholder="Elige o escribe el nombre"/><datalist id="psmQADl">'+L.map(function(x){return '<option value="'+psmEsc(x.n)+'">';}).join('')+'</datalist></label>';
+  if(fs)fs.insertAdjacentHTML('beforeend',h);}}catch(e){}return res;};})();
+(function(){var bs=psmFormSave;psmFormSave=function(id,area){var inp=document.getElementById('psmQAIn');var v=inp?psmQANorm(inp.value):'';
+  if(inp&&!v){inp.classList.add('qaErr');inp.focus();psmToast('Falta el responsable QA/QC: es obligatorio para guardar la RAN','#d03b3b');return;}
+  var ids={};PSM.rows.forEach(function(r){ids[r.id]=1;});var res=bs.apply(this,arguments);
+  try{if(inp){var r=id?psmRow(id):PSM.rows.filter(function(x){return !ids[x.id];})[0];if(r&&psmQASet(r,v)){PSM_ULT_ACCION=Date.now();psmSave();if(document.getElementById('psmModal'))psmOpen(r.id);}}}catch(e){}return res;};})();
+
+// ── decorador: el responsable aparece al lado de cada RAN, en cualquier vista ──
+var PSM_QA_DEC=0;
+function psmQADecorar(root,forzar){if(!PSM||!PSM.rows)return;root=root||document.body;
+  if(forzar)root.querySelectorAll('[data-qa-dec]').forEach(function(e){e.removeAttribute('data-qa-dec');});
+  if(forzar)root.querySelectorAll('.qaC.qaAuto').forEach(function(e){e.remove();});
+  var els=root.querySelectorAll('[onclick*="psmOpen(\'"]:not([data-qa-dec]),[onclick*="psmIrReporte(\'"]:not([data-qa-dec]),[onclick*="PSM_G.q=\'"]:not([data-qa-dec])');
+  els.forEach(function(el){el.setAttribute('data-qa-dec','1');if(el.closest('.qaNo,#psmQAModal,.psmMFoot,.psmMHead,.qaFicha,.ntPanel,.rpCard,.pmCard'))return;
+    var oc=(el.getAttribute('onclick')||'').trim(),m=oc.match(/^(?:event\.stopPropagation\(\);\s*)?(?:psmClose\(\);\s*)?(?:psmOpen|psmIrReporte)\('([^']+)'/),r=null;
+    if(m)r=psmRow(m[1]);else{var g=oc.match(/^PSM_G\.q='([^']+)'/);if(g){var c0=PSM.rows.filter(function(x){return String(x.ran)===g[1];});r=c0.filter(function(x){return !psmFinal(x);})[0]||c0[0];}}
+    if(!r)return;if(/^(?:event\.stopPropagation\(\);\s*)?(?:psmIrReporte|psmOpen)\('[^']+',/.test(oc)||el.classList.contains('psmPc'))return;
+    
+    var ch=document.createElement('span');ch.innerHTML=psmQAChip(r,'qaAuto');ch=ch.firstChild;
+    if(el.classList.contains('stR')){var sm=el.querySelector('.stM');if(sm&&!sm.querySelector('.qaC')){sm.insertBefore(ch,sm.firstChild);}return;}
+    var td=el.closest('td.psmRanC');if(td){var c=td.parentNode.querySelector('td.psmCli');if(c){if(!c.querySelector('.qaC'))c.appendChild(ch);return;}}
+    var tag=el.tagName,txt=(el.textContent||'').trim();
+    if(tag==='BUTTON'&&/reporte|gantt|ficha|abrir|ver\b/i.test(txt)&&txt.indexOf(String(r.ran))<0){var an=el.parentElement;for(var up=0;an&&up<6;up++,an=an.parentElement){if(an.querySelector('.qaC'))return;
+        var hd=[].slice.call(an.querySelectorAll('b,strong,span,div,h3,h4')).filter(function(x){var t=(x.textContent||'').trim().replace(/^RAN\s*/i,'');return t===String(r.ran)&&!x.querySelector('b,strong,span,div');})[0];if(hd){hd.after(ch);return;}}return;}
+    if(tag==='BUTTON'||tag==='A'||tag==='B'||tag==='SPAN'||tag==='STRONG'){var nx=el.nextElementSibling;if(nx&&nx.classList.contains('qaC'))return;el.after(ch);return;}
+    if(el.querySelector('.qaC'))return;
+    var hold=[].slice.call(el.querySelectorAll('b,strong,span,div,td,button')).filter(function(x){var t=(x.textContent||'').trim().replace(/^RAN\s*/i,'');return t===String(r.ran)&&!x.querySelector('b,strong,span,div');})[0];
+    if(hold){hold.after(ch);return;}
+    if(tag==='TR'){var t2=el.querySelector('td');if(t2)t2.appendChild(ch);return;}
+    el.appendChild(ch);});}
+(function(){var pend=false;var run=function(){pend=false;try{psmQADecorar(document.body);}catch(e){}};
+  var mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var m=ms[i];for(var j=0;j<m.addedNodes.length;j++){var n=m.addedNodes[j];
+      if(n.nodeType===1&&n.id==='psmPrintFrame'){try{psmQAPrint(n);}catch(e){}}}}
+    if(!pend){pend=true;requestAnimationFrame(run);}});
+  var go=function(){mo.observe(document.body,{childList:true,subtree:true});};if(document.body)go();else document.addEventListener('DOMContentLoaded',go);})();
+// tarjetas del Reporte diario y del Mapa de planta
+(function(){var bC=psmRepCard;psmRepCard=function(r,ed){var h=bC.apply(this,arguments);try{var t0='<b>RAN '+psmEsc(r.ran)+'</b>',k=h.indexOf(t0);if(k>=0)h=h.slice(0,k+t0.length)+psmQAChip(r)+h.slice(k+t0.length);}catch(e){}return h;};})();
+(function(){var bp=pmCard;pmCard=function(r){var h=bp.apply(this,arguments);try{var n=psmQA(r),i=psmQAInfo(n);h=h.replace('<div class="pmCc">','<div class="pmQa'+(n?'':' no')+'" style="--q:'+(i?i.c:'#e34948')+'" title="QA/QC Responsable: '+psmEsc(n||'sin asignar')+'">'+(n?'<i>'+psmEsc(psmQAIni(n))+'</i>'+psmEsc(n):'⚠ Sin QA/QC')+'</div><div class="pmCc">');}catch(e){}return h;};})();
+// PDF (iframe de impresión): agrega "QA/QC: nombre" junto a cada encabezado "RAN xxxx · ENSAMBLE/DESARME"
+function psmQAPrint(fr){var d=fr.contentDocument;if(!d||!d.body)return;var done=0;
+  [].forEach.call(d.querySelectorAll('b'),function(b){var mm=(b.textContent||'').trim().match(/^RAN\s+(\S+)$/);if(!mm)return;var tg=b.nextElementSibling;if(!tg||!tg.classList.contains('tag'))return;
+    if(tg.nextElementSibling&&tg.nextElementSibling.className==='qaP')return;var a=/DESARME/i.test(tg.textContent)?'de':'en';
+    var r=PSM.rows.filter(function(x){return String(x.ran)===mm[1]&&x.a===a;})[0];if(!r)return;var n=psmQA(r),i=psmQAInfo(n);
+    var s=d.createElement('span');s.className='qaP';s.style.cssText='font-size:9px;font-weight:800;border-radius:3px;padding:1px 6px;background:'+(n?i.c:'#e34948')+';color:#fff;white-space:nowrap';s.textContent=n?'QA/QC: '+n:'SIN QA/QC';tg.after(s);done++;});
+  // tablas de los PDF del módulo de auditoría ya vienen con el nombre
+  return done;}
+
+// ── filtro QA/QC global ──
+var PSM_QF='';try{PSM_QF=sessionStorage.getItem('psm_qf')||'';}catch(e){}
+function psmQAPasa(r){if(!PSM_QF)return true;if(PSM_QF==='__sin')return !psmQA(r);return psmNorm(psmQA(r))===psmNorm(PSM_QF);}
+function psmQAFiltroSet(v){PSM_QF=v||'';try{sessionStorage.setItem('psm_qf',PSM_QF);}catch(e){}psmQABarra();try{var tv=document.getElementById('psmTvView');if(tv)tv.dataset.sig='';}catch(e){}
+  try{if(currentView==='plansman')psmRender();else if(PSM_OWN[currentView])psmShowOwn(currentView);else if(typeof renderCurrent==='function')renderCurrent();}catch(e){}}
+function psmQABarra(){var tb=document.querySelector('#psmTopbar .tbR');if(!tb||!PSM)return;var b=document.getElementById('qaTopF');
+  if(!b){b=document.createElement('div');b.id='qaTopF';b.className='qaTopF';tb.insertBefore(b,tb.firstChild);}
+  var L=psmQAList(),sin=PSM.rows.filter(function(r){return !psmFinal(r)&&!psmQA(r);}).length;
+  var h='<label title="Muestra solo las RAN de este responsable QA/QC en Planificación, Reporte diario, Gantt, Vista operacional y TV"><span>🛡️ QA/QC</span><select onchange="psmQAFiltroSet(this.value)"><option value="">Todos</option>'+L.map(function(x){return '<option'+(psmNorm(x.n)===psmNorm(PSM_QF)?' selected':'')+'>'+psmEsc(x.n)+'</option>';}).join('')+'<option value="__sin"'+(PSM_QF==='__sin'?' selected':'')+'>Sin QA/QC ('+sin+' activas)</option></select></label>'+(PSM_QF?'<button title="Quitar filtro" onclick="psmQAFiltroSet(\'\')">✕</button>':'');
+  if(b.innerHTML!==h)b.innerHTML=h;b.classList.toggle('on',!!PSM_QF);
+  if(PSM_QF){var i=PSM_QF==='__sin'?{c:'#e34948'}:psmQAInfo(PSM_QF);b.style.setProperty('--q',i?i.c:'#2a78d6');}}
+setInterval(function(){try{psmQABarra();}catch(e){}},2000);
+// búsqueda: el nombre del QA/QC también se encuentra
+function psmQAqMatch(r,q){q=String(q||'').trim().toLowerCase();return !!q&&psmQA(r).toLowerCase().indexOf(q)>=0;}
+(function(){var bf=psmFiltered;psmFiltered=function(a,ig){var q=PSM_F.q,res;
+  if(q&&q.trim()){PSM_F.q='';try{var all=bf.apply(this,arguments);}finally{PSM_F.q=q;}var base=bf.apply(this,arguments),ids={};base.forEach(function(r){ids[r.id]=1;});res=all.filter(function(r){return ids[r.id]||psmQAqMatch(r,q);});}
+  else res=bf.apply(this,arguments);return res.filter(psmQAPasa);};})();
+(function(){var bf=psmFiltrosHTML;psmFiltrosHTML=function(){var h=bf.apply(this,arguments);return h.replace('placeholder="🔍 RAN, modelo, mecánico…"','placeholder="🔍 RAN, modelo, mecánico, QA/QC…"');};})();
+(function(){var br=psmRepActivas;psmRepActivas=function(tab){var q=PSM_R.q,res;if(q&&q.trim()){PSM_R.q='';try{var all=br.apply(this,arguments);}finally{PSM_R.q=q;}var base=br.apply(this,arguments),ids={};base.forEach(function(r){ids[r.id]=1;});res=all.filter(function(r){return ids[r.id]||psmQAqMatch(r,q);});}else res=br.apply(this,arguments);return res.filter(psmQAPasa);};})();
+// Gantt y Vista operacional: dibujan solo las RAN del filtro (sin tocar los datos guardados)
+function psmQAEnvolver(fn){return function(){if(!PSM_QF&&!(fn===PSM_QA_GV&&PSM_G.q&&psmQAQBusca(PSM_G.q)))return fn.apply(this,arguments);var full=PSM.rows,q=null;
+  var sub=full.filter(psmQAPasa);if(fn===PSM_QA_GV&&PSM_G.q&&psmQAQBusca(PSM_G.q)){q=PSM_G.q;sub=sub.filter(function(r){return psmQAqMatch(r,q);});PSM_G.q='';}
+  PSM.rows=sub;try{return fn.apply(this,arguments);}finally{PSM.rows=full;if(q!==null){PSM_G.q=q;var i=document.querySelector('#psmGanttView .psmQ');if(i&&!i.value)i.value=q;}}};}
+function psmQAQBusca(q){q=String(q||'').trim().toLowerCase();if(q.length<3)return false;return psmQAList().some(function(x){return x.n.toLowerCase().indexOf(q)>=0;});}
+var PSM_QA_GV=psmRenderGanttV;psmRenderGanttV=psmQAEnvolver(PSM_QA_GV);PSM_OWN.gantt[1]=psmRenderGanttV;
+var PSM_QA_OP=psmRenderOper;psmRenderOper=psmQAEnvolver(PSM_QA_OP);
+// TV: cada tarjeta lleva el responsable QA/QC; el filtro también aplica
+(function(){var bd=psmTvDatos;psmTvDatos=function(){var D=bd.apply(this,arguments);try{['en','de','inf','cs'].forEach(function(p){D[p]=(D[p]||[]).filter(function(x){var r=psmRow(x.id);if(r)x.qa=psmQA(r);return !r||psmQAPasa(r);});});
+  if(PSM_QF){D.infAtr=D.inf.filter(function(x){return psmTvLate(x,'inf');}).length;D.atr=['de','inf','cs','en'].reduce(function(s,p){return s+D[p].filter(function(x){return x.col==='rojo';}).length;},0);}D.qaF=PSM_QF;D.qaL=JSON.stringify(psmQAList());}catch(e){}return D;};})();
+function psmTvQA(x){var n=x.qa||'';if(!n)return '<div class="c6"><span class="tvQa no">⚠ SIN QA/QC</span></div>';var i=psmQAInfo(n);return '<div class="c6"><span class="tvQa" style="--q:'+i.c+'"><i>'+psmEsc(psmQAIni(n))+'</i><em>QA/QC</em>'+psmEsc(n)+'</span></div>';}
+['psmTvCard','psmTvCardInf','psmTvCardCs'].forEach(function(nm){var bc=window[nm];window[nm]=function(x){var h=bc.apply(this,arguments);try{var k=h.indexOf('<div class="c2">');if(k>=0){var e=h.indexOf('</div>',k);if(e>=0)return h.slice(0,e+6)+psmTvQA(x)+h.slice(e+6);}}catch(err){}return h;};});
+(function(){var bt=psmRenderTV;psmRenderTV=function(el){var res=bt.apply(this,arguments);try{el=el||document.getElementById('psmTvView');var hd=el&&el.querySelector('.tv2Pie');if(hd&&!hd.querySelector('.tvQaLeg')){
+  var usados={};PSM.rows.forEach(function(r){if(!psmFinal(r)&&psmQA(r))usados[psmQA(r)]=1;});var L=Object.keys(usados).sort();
+  var h='<div class="tvQaLeg"><span>QA/QC</span>'+(PSM_QF?'<b class="f">Filtro: '+psmEsc(PSM_QF==='__sin'?'Sin QA/QC':PSM_QF)+'</b>':'')+L.map(function(n){var i=psmQAInfo(n);return '<b style="--q:'+i.c+'"><i>'+psmEsc(psmQAIni(n))+'</i>'+psmEsc(n)+'</b>';}).join('')+'</div>';
+  var em=hd.querySelector('em');if(em)em.insertAdjacentHTML('beforebegin',h);else hd.insertAdjacentHTML('beforeend',h);}}catch(e){}return res;};})();
+
+// ── Excel: toda hoja que tenga columna "RAN" lleva "QA/QC Responsable" al lado ──
+function psmQAHoja(X,ws,nombre){try{if(!ws||!ws['!ref'])return;var U=X.utils,R=U.decode_range(ws['!ref']),hr=-1,hc=-1;
+  for(var r=R.s.r;r<=Math.min(R.s.r+8,R.e.r);r++){for(var c=R.s.c;c<=R.e.c;c++){var ce=ws[U.encode_cell({r:r,c:c})],v=String(ce&&ce.v!=null?ce.v:'').trim();if(/QA\/QC/i.test(v))return;if(hr<0&&/^(n[°º.]?\s*)?ran$/i.test(v)){hr=r;hc=c;}}if(hr>=0)break;}
+  if(hr<0)return;var rans={};PSM.rows.forEach(function(x){rans[String(x.ran)]=1;});var hit=0,tot=0;for(var rr=hr+1;rr<=R.e.r;rr++){var cv=ws[U.encode_cell({r:rr,c:hc})];if(cv&&cv.v!=null&&cv.v!==''){tot++;if(rans[String(cv.v).trim()])hit++;}}
+  if(!hit||hit<tot*0.5)return;var ac=-1;for(var c2=R.s.c;c2<=R.e.c;c2++){var hv=String((ws[U.encode_cell({r:hr,c:c2})]||{}).v||'').trim();if(/^(á|a)rea$/i.test(hv))ac=c2;}
+  var hint=/desarme/i.test(nombre||'')?'de':/ensamble/i.test(nombre||'')?'en':'';
+  var val=function(ranv,av){var a=hint;if(av!=null){var s=String(av).toLowerCase();if(/^des|^de$/.test(s))a='de';else if(/^ens|^en$/.test(s))a='en';}
+    var L=PSM.rows.filter(function(x){return String(x.ran)===String(ranv).trim()&&(!a||x.a===a);});if(!L.length)return '';var ns={};L.forEach(function(x){ns[psmQA(x)||'Sin asignar']=1;});return Object.keys(ns).join(' / ');};
+  for(var r2=R.s.r;r2<=R.e.r;r2++){var rv=ws[U.encode_cell({r:r2,c:hc})],av=ac>=0?ws[U.encode_cell({r:r2,c:ac})]:null;var avv=av?av.v:null;
+    for(var c3=R.e.c;c3>hc;c3--){var a1=U.encode_cell({r:r2,c:c3}),a2=U.encode_cell({r:r2,c:c3+1});if(ws[a1]){ws[a2]=ws[a1];delete ws[a1];}else delete ws[a2];}
+    var tgt=U.encode_cell({r:r2,c:hc+1});delete ws[tgt];
+    if(r2===hr)ws[tgt]={t:'s',v:'QA/QC Responsable'};else if(r2>hr&&rv&&rv.v!==''&&rv.v!=null){var q=val(rv.v,avv);if(q)ws[tgt]={t:'s',v:q};}}
+  R.e.c++;ws['!ref']=U.encode_range(R);
+  if(ws['!cols']){var cw=ws['!cols'].slice();while(cw.length<hc+1)cw.push({wch:10});cw.splice(hc+1,0,{wch:22});ws['!cols']=cw;}
+  if(ws['!autofilter']&&ws['!autofilter'].ref){var F=U.decode_range(ws['!autofilter'].ref);if(F.s.c>hc){F.s.c++;F.e.c++;}else if(F.e.c>=hc)F.e.c++;ws['!autofilter'].ref=U.encode_range(F);}
+  if(ws['!merges'])ws['!merges'].forEach(function(mg){if(mg.s.c>hc){mg.s.c++;mg.e.c++;}else if(mg.e.c>hc)mg.e.c++;});
+  if(ws['!freeze']&&ws['!freeze'].xSplit>hc)ws['!freeze'].xSplit++;if(ws['!views'])ws['!views'].forEach(function(v){if(v.xSplit>hc)v.xSplit++;});}catch(e){}}
+(function(){var bx=window.psmXLSX;window.psmXLSX=function(){return bx.apply(this,arguments).then(function(X){try{if(X&&X.utils&&!X.utils._qa){var ba=X.utils.book_append_sheet;X.utils.book_append_sheet=function(wb,ws,nm){psmQAHoja(X,ws,nm);return ba.apply(this,arguments);};X.utils._qa=1;}}catch(e){}return X;});};})();
+
+// ── alertas e inicio ──
+(function(){var ba=psmAlertas;psmAlertas=function(){var Z=ba.apply(this,arguments);try{var L=PSM.rows.filter(function(r){return !psmFinal(r)&&!psmQA(r);});
+  Z.A.push({k:'qa',niv:'amarillo',t:'RAN sin responsable QA/QC',desc:'Toda RAN debe tener un responsable QA/QC asignado',l:L.map(function(r){return [r,(r.a==='en'?'Ensamble':'Desarme')+' · '+(psmCliG(r.cli)||r.cli||'')+' · sin QA/QC'];}),ack:[]});}catch(e){}return Z;};})();
+(function(){var bh=psmRenderHome;psmRenderHome=function(el){bh.apply(this,arguments);try{el=el||document.getElementById('psmHomeView');var hoy=el.querySelector('.hmHoy');if(hoy&&!hoy.querySelector('.qaHm')){var n=PSM.rows.filter(function(r){return !psmFinal(r)&&!psmQA(r);}).length;
+  hoy.insertAdjacentHTML('beforeend','<button class="qaHm '+(n?'amarillo':'ok')+'" onclick="psmQAFiltroSet(\'\');PSM_QAV.qa=\'__sin\';setView(\'audqa\')"><i>🛡️</i><strong>'+n+'</strong><span>RAN sin QA/QC</span></button>');}}catch(e){}};})();
+
+// ── vista "Responsables QA/QC" (reporte por responsable) ──
+var PSM_QAV={qa:'',a:'',est:'act',cli:'',q:'',sel:{}};
+function psmQAVRows(){var q=psmNorm(PSM_QAV.q||''),meses=PSM_QAV.est==='fin'?psmAudRango():null;
+  return PSM.rows.filter(function(r){if(PSM_QAV.a&&r.a!==PSM_QAV.a)return false;if(PSM_QAV.cli&&(psmCliG(r.cli)||r.cli)!==PSM_QAV.cli)return false;
+    if(PSM_QAV.qa==='__sin'){if(psmQA(r))return false;}else if(PSM_QAV.qa&&psmNorm(psmQA(r))!==psmNorm(PSM_QAV.qa))return false;
+    var f=psmFinal(r);if(PSM_QAV.est==='act'&&f)return false;if(PSM_QAV.est==='fin'){if(!f)return false;var ff=psmFinFecha(r).f;if(!ff||meses.indexOf(ff.slice(0,7))<0)return false;}
+    if(q&&psmNorm(r.ran+' '+(r.cli||'')+' '+(r.mod||'')+' '+(r.mec||'')+' '+psmQA(r)).indexOf(q)<0)return false;return true;})
+    .sort(function(a,b){var x=psmQA(a)||'~',y=psmQA(b)||'~';if(x!==y)return x<y?-1:1;return (psmEntrega(a)||'9')<(psmEntrega(b)||'9')?-1:1;});}
+function psmAudQA(el){var ed=psmQAPuede(),L=psmQAVRows(),Q=psmQAList(),act=PSM.rows.filter(function(r){return !psmFinal(r);}),sinA=act.filter(function(r){return !psmQA(r);});
+  var por={};act.forEach(function(r){var n=psmQA(r)||'__sin';por[n]=por[n]||{n:0,late:0,en:0,de:0};por[n].n++;por[n][r.a]++;try{if(psmSemaforo(r).col==='rojo')por[n].late++;}catch(e){}});
+  var clis={};PSM.rows.forEach(function(r){var c=psmCliG(r.cli)||r.cli;if(c)clis[c]=1;});
+  var sel=function(k,lbl,opts){return '<label>'+lbl+'<select onchange="PSM_QAV.'+k+'=this.value;PSM_QAV.sel={};psmAudShow()">'+opts.map(function(o){return '<option value="'+psmEsc(o[0])+'"'+(PSM_QAV[k]===o[0]?' selected':'')+'>'+psmEsc(o[1])+'</option>';}).join('')+'</select></label>';};
+  var nSel=Object.keys(PSM_QAV.sel).filter(function(k){return PSM_QAV.sel[k];}).length;
+  var h='<div class="auHead"><div><h2>🛡️ Responsables QA/QC</h2><p>Cada RAN tiene un responsable de Control de Calidad que la acompaña en todas sus etapas. Aquí se asigna, se filtra y se reporta por responsable. Los cambios quedan en el historial de cada RAN.</p></div>'+psmAudBtns('Responsables QA-QC','psmAudQAX()')+'</div>'+
+    (sinA.length?'<div class="auAl">⚠ '+sinA.length+' RAN activas no tienen responsable QA/QC. '+(ed?'<a href="#" onclick="PSM_QAV.qa=\'__sin\';PSM_QAV.est=\'act\';psmAudShow();return false">Ver y asignar</a>':'')+'</div>':'')+
+    '<div class="qaCards">'+Q.map(function(x){var p=por[x.n]||{n:0,late:0,en:0,de:0};return '<button class="qaCard'+(psmNorm(PSM_QAV.qa)===psmNorm(x.n)?' on':'')+(x.on===false?' off':'')+'" style="--q:'+x.c+'" onclick="PSM_QAV.qa=PSM_QAV.qa===this.dataset.n?\'\':this.dataset.n;PSM_QAV.sel={};psmAudShow()" data-n="'+psmEsc(x.n)+'"><i>'+psmEsc(psmQAIni(x.n))+'</i><b>'+psmEsc(x.n)+'</b><strong>'+p.n+'</strong><small>activas · '+p.en+' ens. · '+p.de+' des.'+(p.late?' · <span class="late">'+p.late+' atrasadas</span>':'')+'</small></button>';}).join('')+
+      '<button class="qaCard sin'+(PSM_QAV.qa==='__sin'?' on':'')+'" onclick="PSM_QAV.qa=PSM_QAV.qa===\'__sin\'?\'\':\'__sin\';PSM_QAV.sel={};psmAudShow()"><i>⚠</i><b>Sin QA/QC</b><strong>'+sinA.length+'</strong><small>RAN activas sin asignar</small></button></div>'+
+    '<div class="auF">'+sel('qa','Responsable QA/QC',[['','Todos']].concat(Q.map(function(x){return [x.n,x.n];}),[['__sin','Sin QA/QC']]))+sel('est','RAN',[['act','Activas'],['fin','Terminadas en el período'],['todas','Todas']])+sel('a','Área',[['','Todas'],['en','Ensamble'],['de','Desarme']])+sel('cli','Cliente',[['','Todos']].concat(Object.keys(clis).sort().map(function(c){return [c,c];})))+
+      (PSM_QAV.est==='fin'?psmAudFiltros(false).replace('<div class="auF">','').replace(/<\/div>$/,''):'')+
+      '<label>Buscar<input value="'+psmEsc(PSM_QAV.q)+'" placeholder="RAN, cliente, mecánico" oninput="PSM_QAV.q=this.value;clearTimeout(window._qaQ);window._qaQ=setTimeout(function(){psmAudShow();var i=document.querySelector(\'#psmAudView .auF input\');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}},300)"/></label></div>'+
+    (ed?'<div class="qaBulk"><label class="psmChk"><input type="checkbox" onchange="psmQAVSelTodo(this.checked)"'+(nSel&&nSel===L.length?' checked':'')+'/> Seleccionar todas ('+L.length+')</label><button class="psmBtn sm" '+(nSel?'':'disabled')+' onclick="psmQAAsignar(Object.keys(PSM_QAV.sel).filter(function(k){return PSM_QAV.sel[k];}))">🛡️ Asignar QA/QC a '+nSel+' seleccionada(s)</button></div>':'')+
+    '<section class="auC"><h4>'+L.length+' RAN'+(PSM_QAV.qa?' · '+psmEsc(PSM_QAV.qa==='__sin'?'sin QA/QC':PSM_QAV.qa):'')+'</h4><div class="auTW"><table class="psmTbl mini auTb qaNo"><thead><tr>'+(ed?'<th></th>':'')+'<th>QA/QC Responsable</th><th>RAN</th><th>Área</th><th>Cliente · modelo</th><th>Estado</th><th>Proceso actual</th><th>Avance</th><th>Responsable de ejecución</th><th>Compromiso</th><th>Semáforo</th><th>Asignado</th></tr></thead><tbody>'+
+    L.map(function(r){var S={col:'gris'};try{S=psmSemaforo(r);}catch(e){}var last=(r.qaH||[]).slice(-1)[0];return '<tr>'+(ed?'<td><input type="checkbox"'+(PSM_QAV.sel[r.id]?' checked':'')+' onchange="PSM_QAV.sel[\''+r.id+'\']=this.checked;psmAudShow()"/></td>':'')+'<td>'+psmQAChip(r)+'</td><td><button class="auRanB" onclick="psmOpen(\''+r.id+'\')" data-qa-dec="1">'+psmEsc(r.ran)+'</button></td><td>'+(r.a==='en'?'Ensamble':'Desarme')+'</td><td class="cm">'+psmEsc((psmCliG(r.cli)||r.cli||'')+' · '+(r.mod||''))+'</td><td>'+psmEsc(psmEstado(r))+'</td><td>'+psmEsc(psmProcActualTxt(r))+'</td><td>'+psmAv(r)+'%</td><td>'+psmEsc(psmSplitNames(r.mec).join(', ')||'—')+'</td><td>'+(psmEntrega(r)?psmFd(psmEntrega(r)):'—')+'</td><td><i class="auDot '+(S.col==='rojo'?'bad':S.col==='amarillo'?'med':S.col==='verde'?'ok':'')+'"></i></td><td>'+(last?psmFd(last.t.slice(0,10))+' · '+psmEsc(last.u):'—')+'</td></tr>';}).join('')+'</tbody></table></div>'+(L.length?'':'<p class="auVacio">No hay RAN con este filtro.</p>')+'</section>'+
+    '<div class="auRow"><section class="auC"><h4>Lista de responsables QA/QC</h4>'+(Q.length?'<table class="psmTbl mini auTb qaNo"><thead><tr><th>Color</th><th>Nombre</th><th>RAN activas</th><th>Estado</th>'+(ed?'<th></th>':'')+'</tr></thead><tbody>'+Q.map(function(x,i){var p=por[x.n]||{n:0};return '<tr><td>'+(ed?'<input type="color" value="'+x.c+'" onchange="psmQAColor('+i+',this.value)"/>':'<i class="qaSw" style="background:'+x.c+'"></i>')+'</td><td><b>'+psmEsc(x.n)+'</b></td><td>'+p.n+'</td><td>'+(x.on===false?'Inactivo':'Activo')+'</td>'+(ed?'<td><button class="psmBtn ghost sm" onclick="psmQAOnOff('+i+')">'+(x.on===false?'Activar':'Desactivar')+'</button><button class="psmBtn ghost sm" onclick="psmQARenombrar('+i+')">Renombrar</button></td>':'')+'</tr>';}).join('')+'</tbody></table>':'<p class="auVacio">Aún no hay responsables. Agrégalos aquí o al asignar una RAN.</p>')+
+      (ed?'<div class="qaAdd"><input id="qaAddN" placeholder="Nombre del responsable QA/QC" onkeydown="if(event.key===\'Enter\')psmQANuevo()"/><button class="psmBtn sm" onclick="psmQANuevo()">＋ Agregar</button></div>':'')+'</section>'+
+    '<section class="auC"><h4>Historial de asignaciones QA/QC</h4>'+psmQAHistTabla(40)+'</section></div>';
+  el.innerHTML=h;}
+function psmQAHist(){var o=[];PSM.rows.forEach(function(r){(r.qaH||[]).forEach(function(x){o.push({r:r,x:x});});});return o.sort(function(a,b){return a.x.t<b.x.t?1:-1;});}
+function psmQAHistTabla(n){var H=psmQAHist().slice(0,n);if(!H.length)return '<p class="auVacio">Todavía no hay asignaciones registradas.</p>';
+  return '<div class="auTW"><table class="psmTbl mini auTb"><thead><tr><th>Fecha</th><th>RAN</th><th>Anterior</th><th>Nuevo</th><th>Usuario</th></tr></thead><tbody>'+H.map(function(z){return '<tr><td>'+psmFh2(z.x.t)+'</td><td><button class="auRanB" onclick="psmOpen(\''+z.r.id+'\')" data-qa-dec="1">'+psmEsc(z.r.ran)+'</button></td><td>'+psmEsc(z.x.o||'—')+'</td><td><b>'+psmEsc(z.x.n||'—')+'</b></td><td>'+psmEsc(z.x.u)+'</td></tr>';}).join('')+'</tbody></table></div>';}
+function psmQAVSelTodo(v){PSM_QAV.sel={};if(v)psmQAVRows().forEach(function(r){PSM_QAV.sel[r.id]=true;});psmAudShow();}
+function psmQANuevo(){var i=document.getElementById('qaAddN');var n=psmQANorm(i&&i.value);if(!n)return;var ex=!psmQAInfo(n)._tmp;psmQAAdd(n);if(!ex){psmQAListLog('Agregado '+n);}PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();psmToast(ex?n+' ya estaba en la lista':n+' agregado','#16a34a');}
+function psmQAListLog(t){try{PSM.config=PSM.config||{};PSM.config.hist=(PSM.config.hist||[]).concat([{t:new Date().toISOString(),u:psmUser(),c:'Lista QA/QC: '+t}]);}catch(e){}}
+function psmQAColor(i,c){var x=psmQAList()[i];if(!x)return;x.c=c;PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
+function psmQAOnOff(i){var x=psmQAList()[i];if(!x)return;x.on=x.on===false;psmQAListLog((x.on?'Activado ':'Desactivado ')+x.n);PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
+function psmQARenombrar(i){var x=psmQAList()[i];if(!x)return;var n=psmQANorm(prompt('Nuevo nombre para '+x.n+' (se cambia en todas sus RAN):',x.n));if(!n||n===x.n)return;var old=x.n,k=0;
+  PSM.rows.forEach(function(r){if(psmNorm(psmQA(r))===psmNorm(old)){psmQASet(r,n,'Renombrado');k++;}});x.n=n;psmQAList().forEach(function(y,j){if(j!==i&&psmNorm(y.n)===psmNorm(n))y.on=false;});psmQAListLog('Renombrado '+old+' → '+n+' ('+k+' RAN)');PSM_ULT_ACCION=Date.now();psmSave();psmAudShow();}
+function psmAudQAX(){var L=psmQAVRows();psmAudXlsx('Responsables QA-QC'+(PSM_QAV.qa?' '+(PSM_QAV.qa==='__sin'?'sin asignar':PSM_QAV.qa):''),[
+  {n:'RAN por QA-QC',rows:[['QA/QC Responsable','RAN','Área','Cliente','Modelo','Estado','Proceso actual','% Avance','Responsable de ejecución','Compromiso','Semáforo','Terminada','Asignado el','Asignado por']].concat(L.map(function(r){var S={col:''};try{S=psmSemaforo(r);}catch(e){}var last=(r.qaH||[]).slice(-1)[0];return [psmQA(r)||'Sin asignar',r.ran,r.a==='en'?'Ensamble':'Desarme',psmCliG(r.cli)||r.cli||'',r.mod||'',psmEstado(r),psmProcActualTxt(r),psmAv(r),psmSplitNames(r.mec).join(', '),psmEntrega(r)||'',S.col,psmFinal(r)?'Sí':'No',last?last.t:'',last?last.u:''];}))},
+  {n:'Resumen por QA-QC',rows:[['QA/QC Responsable','RAN activas','Ensamble','Desarme','Atrasadas']].concat((function(){var o={};PSM.rows.forEach(function(r){if(psmFinal(r))return;var n=psmQA(r)||'Sin asignar';o[n]=o[n]||[0,0,0,0];o[n][0]++;o[n][r.a==='en'?1:2]++;try{if(psmSemaforo(r).col==='rojo')o[n][3]++;}catch(e){}});return Object.keys(o).sort().map(function(k){return [k].concat(o[k]);});})())},
+  {n:'Historial QA-QC',rows:[['Fecha','RAN','Área','Anterior','Nuevo','Usuario']].concat(psmQAHist().map(function(z){return [z.x.t,z.r.ran,z.r.a==='en'?'Ensamble':'Desarme',z.x.o||'',z.x.n||'',z.x.u];}))}]);}
+PSM_AUD_V.push(['audqa','🛡️','Responsables QA/QC',psmAudQA]);
+PSM_OWN.audqa=['psmAuditView',function(el){PSM_AUD_CUR='audqa';el.innerHTML='';var box=document.createElement('div');box.className='auWrap';box.id='psmAudView';el.appendChild(box);psmAudQA(box);}];
+PSM_VIEW_TITLES.audqa='Responsables QA/QC';PSM_VIEWS.push(['audqa','Responsables QA/QC']);
+// los RAN de las tablas de auditoría abren la ficha (y muestran su QA/QC)
+function psmAudRanBtn(r){return '<button class="auRanB" onclick="psmOpen(\''+r.id+'\')">'+psmEsc(r.ran)+'</button>';}
 
 </script>
 </body>
