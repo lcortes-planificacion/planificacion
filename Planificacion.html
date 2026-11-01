@@ -3290,7 +3290,7 @@ html body #loginScreen{background:radial-gradient(1200px 600px at 85% -10%,rgba(
         <div><h1>Planificación <span>SMAN</span></h1><p>Control de producción</p></div></div>
       <div class="lgChips"><span>Operaciones</span></div>
       <ul class="lgFeat"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h6M7 17h9"/></svg></i><div><b>Planificación y Gantt</b><small>Ensamble, desarme y evaluación con fecha estimada</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="M9 12l2 2 4-4"/></svg></i><div><b>Reporte diario</b><small>Avance por actividad, turno y responsables</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></i><div><b>Panel de TV</b><small>Desarme, informe, costeo y ensamble en vivo</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></i><div><b>Machine Shop</b><small>Solicitudes, avisos y control de plazos</small></div></li></ul>
-      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v45</span></div>
+      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v47</span></div>
     </div>
     <div class="lBox" id="lBox">
       <h2>Bienvenido</h2>
@@ -25121,7 +25121,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='45 · caché v45';var PSM_BOV_PASS='';
+var PSM_APP_VER='47 · caché v47';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -26121,6 +26121,83 @@ body #psmSide #navV2 .nv2NoPerm,body.sbOn #psmSide #navV2 .nv2.nv2NoPerm,body.sb
 .tuX tfoot td.weF{background:#eef2f7;color:#c2410c}
 .tuX td.tuSum .tuE{display:inline;margin-left:2px;font-size:9px;line-height:1;color:#c2410c;font-weight:800}
 
+/* v46 */
+.drM{z-index:9500}
+.drBox{width:min(1100px,96vw);max-height:90vh;display:flex;flex-direction:column}
+.drBody{padding:12px 18px;overflow:auto;flex:1}
+.drExp{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#1e3a5f;line-height:1.45}
+.drExp>b{display:block;font-size:12px;letter-spacing:.3px;text-transform:uppercase;color:#1d4ed8;margin-bottom:4px}
+.drExp p{margin:0 0 4px}.drExp .drPrev{color:#64748b;font-size:12px}
+.drTb td{white-space:normal}
+b.late,.late{color:#c81e1e}b.okc{color:#15803d}
+.mtK.mtKc{cursor:pointer;transition:box-shadow .15s,transform .15s}
+.mtK.mtKc:hover{box-shadow:0 6px 18px rgba(15,23,42,.12);transform:translateY(-1px)}
+.mtSrc{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:8px;padding-top:7px;border-top:1px dashed #e2e8f0;font-size:11px;color:#64748b;line-height:1.3}
+.mtSrc em{font-style:normal;font-weight:800;color:#1d4ed8;white-space:nowrap}
+.mtExp{margin:-2px 0 10px;font-size:12px;color:#475569;line-height:1.45;background:#f8fafc;border-left:3px solid #93c5fd;padding:6px 10px;border-radius:0 8px 8px 0}
+.mtExp u{text-decoration:none;font-weight:700;color:#1d4ed8}
+.mtN{border:0;background:#eff6ff;color:#1d4ed8;font-weight:800;border-radius:6px;padding:2px 10px;cursor:pointer;font-size:12.5px}
+.mtN:hover{background:#1d4ed8;color:#fff}
+.mt0{color:#94a3b8;padding:0 10px}
+.mtCnt td,.mtCnt th{white-space:normal}
+.mtFit{table-layout:fixed;width:100%}
+.mtFit th,.mtFit td{white-space:normal!important;word-break:normal}
+.mtFit th:first-child{width:42%}.mtFit th:last-child{width:84px}
+.mtDs{display:block;font-size:10.5px;color:#64748b;font-weight:400;margin-top:2px;line-height:1.35}
+#psmMetBox .auTW.mtNo{overflow-x:visible}
+.tmC.clk,.hmC.clk{cursor:pointer}.tmC.clk:hover{filter:brightness(1.08);outline:2px solid #0f172a}.hmC.clk:hover{outline:2px solid #1d4ed8}
+.drFlash{animation:drF 1.6s}@keyframes drF{0%,60%{box-shadow:0 0 0 3px #3b82f6}100%{box-shadow:none}}
+/* gran tamaño */
+.gtBtn{margin-top:6px;border:1px dashed #94a3b8;background:#f8fafc;color:#334155;border-radius:999px;padding:3px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.gtBtn.on{background:#7c2d12;border:1px solid #7c2d12;color:#fff}
+.gtBtn:disabled{cursor:default}
+.gtSug{margin-left:8px;font-size:11px;color:#b45309;font-weight:700}
+.gtChip{display:inline-block;margin-left:4px;background:#7c2d12;color:#fff;border-radius:999px;padding:1px 7px;font-size:10px;font-weight:800;white-space:nowrap}
+.gtChip.s{padding:0 4px}
+.gtNota{margin:6px 0 0;font-size:12px;color:#7c2d12;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:5px 10px}
+.gtNota .lnk{border:0;background:none;color:#1d4ed8;font-weight:800;cursor:pointer;text-decoration:underline}
+/* dotación */
+.peHoy{display:block;font-size:10.5px;color:#475569;margin-top:1px}
+.peHoy em,.cgTu em{font-style:normal;display:inline-block;min-width:16px;text-align:center;border-radius:4px;background:var(--c);color:var(--t);font-weight:800;padding:0 3px}
+.peTH{display:block;font-size:10.5px;color:#64748b;font-weight:400;margin-top:3px}
+.cgTu{font-size:10px;font-weight:800;color:#1e3a8a;background:#e0e7ff;border-radius:4px;padding:0 4px;white-space:nowrap}
+.tuX tbody tr.tuHide{display:none}
+.tuX tbody tr.tuIna td{opacity:.55}
+.tuInaB{font-style:normal;font-size:9.5px;background:#fee2e2;color:#991b1b;border-radius:4px;padding:0 4px;font-weight:800}
+.tuInaT{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:#334155;margin-right:6px;cursor:pointer}
+.mtSrc{flex-direction:column;align-items:stretch}
+.mtSrc em{align-self:flex-end}
+.mtCnt td:first-child{white-space:nowrap}
+@media (min-width:1100px){#psmMetBox .mtKs{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+.peHoy{display:block;font-size:10px;color:#64748b;margin-top:2px;white-space:nowrap;text-transform:none;letter-spacing:0;background:none;font-weight:600}
+.tuX .tuBase{display:none!important}
+
+/* v47 fotos */
+.psmFoto{position:relative}
+.fqSt{position:absolute;left:6px;right:6px;bottom:30px;background:rgba(15,23,42,.82);color:#fff;font-size:11px;font-weight:800;border-radius:7px;padding:4px 8px;overflow:hidden;z-index:2;text-align:center}
+.fqSt:empty{display:none}
+.fqSt i{position:absolute;left:0;bottom:0;height:3px;background:#22c55e;transition:width .2s}
+.fqSt.ok{background:#15803d}.fqSt.error{background:#b91c1c}.fqSt.cola{background:#b45309}
+.evWrap{margin-top:10px;border:1px solid #e2e8f0;border-radius:12px;padding:10px;background:#fbfdff}
+.evH{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-bottom:8px}.evH span{color:#64748b;font-size:11.5px}
+.evG{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.evF{position:relative;border-radius:9px;overflow:hidden;background:#f1f5f9;aspect-ratio:1/1}
+.evF img{width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block}
+.evF small{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;font-size:9.5px;padding:10px 5px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evF .fqSt{bottom:auto;top:5px;font-size:9.5px;padding:2px 5px}
+.evDel{position:absolute;top:4px;right:4px;border:0;background:rgba(255,255,255,.9);border-radius:6px;font-size:12px;cursor:pointer;padding:1px 4px;z-index:3}
+.evAdd{border:1.5px dashed #94a3b8;border-radius:9px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;aspect-ratio:1/1;padding:4px}
+.evAdd b{font-size:22px}.evAdd small{font-size:9.5px;color:#64748b;font-weight:500}
+.evAdd:hover{border-color:#1d4ed8;color:#1d4ed8}
+#fqBar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:10400;border:0;border-radius:999px;background:#1e3a8a;color:#fff;font-weight:800;font-size:13px;padding:10px 18px;box-shadow:0 8px 24px rgba(15,23,42,.3);cursor:pointer;overflow:hidden;max-width:calc(100vw - 32px)}
+#fqBar small{font-weight:600;opacity:.8}
+#fqBar i{position:absolute;left:0;bottom:0;height:4px;background:#4ade80;transition:width .2s}
+#fqBar.err{background:#b45309}#fqBar.ok{background:#15803d}
+@media (max-width:600px){.evG{grid-template-columns:repeat(3,1fr)}#fqBar{bottom:72px;font-size:12px}}
+@media (max-width:600px){#psmModal .psmMHead{flex-wrap:wrap;gap:8px}#psmModal .psmMHead>div:first-child{flex:1 1 100%;min-width:0}}
+.drBody .auTW{overflow-x:auto}
+.evF .fqSt{right:30px}
+
 </style>
 <script>
 // ══════════════════════════════════════════════════════════════
@@ -26703,14 +26780,14 @@ function psmMtExtra(el){var g=el.querySelector('.mtGrid');if(!g||g.querySelector
   // treemap: horas pendientes del tempario por cliente (RAN en curso)
   var cl={};PSM.rows.forEach(function(r){if(psmFinal(r)||!psmMtPasa(r,true))return;var h=0;try{var x=psmHH(r);h=Math.max(0,x.plan-x.done);}catch(e){}if(!h)return;var c=psmCliG(r.cli)||r.cli||'Sin cliente';cl[c]=cl[c]||{n:c,h:0,r:0};cl[c].h+=h;cl[c].r++;});var TL=Object.keys(cl).map(function(k){return cl[k];}).sort(function(a,b){return b.h-a.h;});var tot=TL.reduce(function(s,x){return s+x.h;},0);
   var pal=['#2a78d6','#1baf7a','#eb6834','#8b5cf6','#eda100','#0d9488','#e34948','#4f46e5','#65a30d','#db2777'];
-  var tm=function(L,x,y,w,h,v){if(!L.length)return '';if(L.length===1)return '<div class="tmC" style="left:'+x+'%;top:'+y+'%;width:'+w+'%;height:'+h+'%;--c:'+L[0].c+'" data-tip="'+psmEsc(L[0].n+': '+psmFh(Math.round(L[0].h))+' h pendientes en '+L[0].r+' RAN ('+Math.round(L[0].h/tot*100)+'%)')+'"><b>'+psmEsc(L[0].n)+'</b><span>'+Math.round(L[0].h)+' h</span></div>';
+  var tm=function(L,x,y,w,h,v){if(!L.length)return '';if(L.length===1)return '<div class="tmC" data-cli="'+psmEsc(L[0].n)+'" style="left:'+x+'%;top:'+y+'%;width:'+w+'%;height:'+h+'%;--c:'+L[0].c+'" data-tip="'+psmEsc(L[0].n+': '+psmFh(Math.round(L[0].h))+' h pendientes en '+L[0].r+' RAN ('+Math.round(L[0].h/tot*100)+'%)')+'"><b>'+psmEsc(L[0].n)+'</b><span>'+Math.round(L[0].h)+' h</span></div>';
     var s=L.reduce(function(a,b){return a+b.h;},0),acc=0,k=0;while(k<L.length-1&&acc+L[k].h<s/2){acc+=L[k].h;k++;}if(k===0){acc=L[0].h;k=1;}var A=L.slice(0,k),B=L.slice(k),f=acc/s;
     return v?tm(A,x,y,w*f,h,!v)+tm(B,x+w*f,y,w*(1-f),h,!v):tm(A,x,y,w,h*f,!v)+tm(B,x,y+h*f,w,h*(1-f),!v);};
   TL.forEach(function(x,i){x.c=pal[i%pal.length];});var top=TL.slice(0,10);if(TL.length>10){var o={n:'Otros ('+(TL.length-10)+')',h:0,r:0,c:'#94a3b8'};TL.slice(10).forEach(function(x){o.h+=x.h;o.r+=x.r;});top.push(o);}
   // heatmap: actividades finalizadas en el Reporte diario por semana y día (últimas 10 semanas)
   var lun=psmDate(hoy);lun.setDate(lun.getDate()-((lun.getDay()+6)%7)-63);var H={},mx=0;PSM.rows.forEach(function(r){if(!psmMtPasa(r,true)||!r.act)return;Object.keys(r.act).forEach(function(u){var a=r.act[u];if(!a||a.e!=='Finalizado'||!a.f||a.auto)return;var d=psmDate(a.f);var w=Math.floor((d-lun)/864e5/7);if(w<0||w>9)return;var k=w+'|'+((d.getDay()+6)%7);H[k]=(H[k]||0)+1;if(H[k]>mx)mx=H[k];});});
   var DS=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],hm='<div class="hmT"><div></div>'+[0,1,2,3,4,5,6,7,8,9].map(function(w){var d=new Date(lun);d.setDate(d.getDate()+7*w);return '<div class="hmH">'+d.getDate()+'/'+(d.getMonth()+1)+'</div>';}).join('')+
-    DS.map(function(dn,di){return '<div class="hmD">'+dn+'</div>'+[0,1,2,3,4,5,6,7,8,9].map(function(w){var n=H[w+'|'+di]||0,d=new Date(lun);d.setDate(d.getDate()+7*w+di);return '<div class="hmC" style="--a:'+(mx?(n/mx):0)+'" data-tip="'+psmEsc(DS[di]+' '+psmFd(psmIso(d))+': '+n+' actividad(es) finalizada(s)')+'">'+(n||'')+'</div>';}).join('');}).join('')+'</div>';
+    DS.map(function(dn,di){return '<div class="hmD">'+dn+'</div>'+[0,1,2,3,4,5,6,7,8,9].map(function(w){var n=H[w+'|'+di]||0,d=new Date(lun);d.setDate(d.getDate()+7*w+di);return '<div class="hmC" data-d="'+psmIso(d)+'" style="--a:'+(mx?(n/mx):0)+'" data-tip="'+psmEsc(DS[di]+' '+psmFd(psmIso(d))+': '+n+' actividad(es) finalizada(s)')+'">'+(n||'')+'</div>';}).join('');}).join('')+'</div>';
   var pc=K.pct;
   var html='<section class="auC mtP" data-mtp="x1"><h4>RAN en curso por etapa</h4><div class="auCv"><canvas id="mtX1"></canvas><div class="mtDonutC"><b>'+nAct+'</b><span>RAN en curso</span></div></div></section>'+
     '<section class="auC mtP" data-mtp="x2"><h4>Cumplimiento de plazos del período</h4><div class="auCv"><canvas id="mtX2"></canvas><div class="mtGaugeC"><b>'+(pc==null?'—':psmPctTxt(pc))+'</b><span>'+K.D.ok.length+' de '+K.D.fin.length+' a tiempo · meta 90%</span></div></div></section>'+
@@ -26763,6 +26840,422 @@ function psmTuPintar(tb){var pinta=false,cambio=false;
   var up=function(){if(!pinta)return;pinta=false;document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);if(cambio){PSM_ULT_ACCION=Date.now();psmSave();psmRenderTurnos();}};
   tb.addEventListener('pointerdown',function(e){var td=e.target.closest('td.tc');if(!td)return;e.preventDefault();pinta=true;cambio=false;aplica(td);document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);});}
 (function(){var br=psmRenderTurnos;psmRenderTurnos=function(){var r=br.apply(this,arguments);var el=document.getElementById('psmTurnosView');if(el&&!el.classList.contains('hidden'))psmTuFinde(el);return r;};})();
+
+// ══════════════════════════════════════════════════════════════
+// v46: Métricas explicativas (de dónde sale cada dato + clic para ver las RAN)
+//      · gráficos con clic · estado especial "Gran tamaño" · Dotación enlazada
+//      al calendario · ocultar inactivos en Turnos · filtros independientes
+//      ensamble / desarme
+// ══════════════════════════════════════════════════════════════
+
+// ── 0) Ventana "Ver datos": lista de RAN que forman un número ──
+var PSM_DRILL_L=null;
+function psmDrillCli(r){return psmCliG(r.cli)||r.cli||'';}
+function psmDrill(tit,exp,L,cols){var old=document.getElementById('psmDrillM');if(old)old.remove();PSM_DRILL_L={t:tit,L:L,cols:cols||[]};
+  var m=document.createElement('div');m.id='psmDrillM';m.className='psmModal drM';m.onclick=function(){m.remove();};
+  var C=cols||[];
+  m.innerHTML='<div class="psmMBox drBox" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">'+psmEsc(tit)+'</div><div class="psmMCli">'+L.length+' RAN · haz clic en el N° para abrir la ficha completa</div></div><button class="psmMX" onclick="document.getElementById(\'psmDrillM\').remove()">✕</button></div>'+
+    '<div class="drBody">'+(exp?'<div class="drExp"><b>¿De dónde sale este dato?</b>'+exp+'</div>':'')+
+    (L.length?'<div class="auTW"><table class="psmTbl mini auTb drTb"><thead><tr><th>RAN</th><th>Área</th><th>Cliente</th><th>Modelo</th>'+C.map(function(c){return '<th>'+psmEsc(c)+'</th>';}).join('')+'<th>Encargado</th></tr></thead><tbody>'+
+      L.map(function(x){var r=x.r;return '<tr><td>'+psmAudRanBtn(r)+(r.gt?' <span class="gtChip s" title="Equipo de gran tamaño">🏗️</span>':'')+'</td><td>'+(r.a==='en'?'Ensamble':'Desarme')+'</td><td>'+psmEsc(psmDrillCli(r))+'</td><td>'+psmEsc(r.mod||'')+'</td>'+(x.c||[]).map(function(v){return '<td>'+(v==null||v===''?psmNDh():v)+'</td>';}).join('')+'<td>'+(psmEsc(psmSplitNames(r.mec).join(', '))||psmNDh())+'</td></tr>';}).join('')+'</tbody></table></div>':'<p class="auVacio">Sin información disponible: no hay RAN que cumplan esta condición.</p>')+
+    '</div><div class="psmMFoot"><button class="psmBtn ghost" onclick="psmDrillX()">⬇ Excel</button><span style="flex:1"></span><button class="psmBtn" onclick="document.getElementById(\'psmDrillM\').remove()">Cerrar</button></div></div>';
+  document.body.appendChild(m);}
+function psmDrillX(){var D=PSM_DRILL_L;if(!D)return;var tx=function(v){var d=document.createElement('div');d.innerHTML=v==null?'':String(v);return d.textContent;};
+  psmXLSX().then(function(X){var rows=[['RAN','Área','Cliente','Modelo'].concat(D.cols).concat(['Encargado'])];D.L.forEach(function(x){var r=x.r;rows.push([r.ran,r.a==='en'?'Ensamble':'Desarme',psmDrillCli(r),r.mod||''].concat((x.c||[]).map(tx)).concat([psmSplitNames(r.mec).join(', ')]));});
+    var wb=X.utils.book_new();X.utils.book_append_sheet(wb,X.utils.aoa_to_sheet(rows),'Datos');X.writeFile(wb,(D.t.replace(/[^\wáéíóúñÁÉÍÓÚÑ ]+/g,'').trim().replace(/\s+/g,'_')||'datos')+'.xlsx');});}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!document.getElementById('psmModal')){var m=document.getElementById('psmDrillM');if(m)m.remove();}});
+function psmPer(){return psmMesTxtC(PSM_MT.d)+(PSM_MT.h!==PSM_MT.d?' a '+psmMesTxtC(PSM_MT.h):'');}
+function psmFFtxt(src){return src==='real'?'fecha real de término':src==='proc'?'término del último proceso':src==='comp'?'fecha compromiso (sin fecha real)':'';}
+
+// ── 1) Estado especial "Gran tamaño" (Rotoplas y equipos similares) ──
+function psmEsGT(r){return !!(r&&r.gt);}
+(function(){var bp=psmMtPasa;psmMtPasa=function(r){if(psmEsGT(r))return false;return bp.apply(this,arguments);};})();
+(function(){var ba=psmAudPasa;psmAudPasa=function(r){if(psmEsGT(r))return false;return ba.apply(this,arguments);};})();
+function psmGTToggle(id){var r=psmRow(id);if(!r||!psmCanEdit('plansman'))return;var v=!r.gt;
+  if(v&&!confirm('¿Marcar la RAN '+r.ran+' como equipo de GRAN TAMAÑO?\n\nNo se contará en las métricas de tiempos de desarme, evaluación y ensamble, ni en auditoría. La RAN y sus datos no cambian.'))return;
+  psmSet(r,'gt',v?1:null);try{psmLogRan(r,v?'Marcada como equipo de gran tamaño (fuera de las métricas de tiempos)':'Se quitó la marca de equipo de gran tamaño');}catch(e){}
+  PSM_ULT_ACCION=Date.now();psmSave();psmOpen(id,true);psmToast(v?'RAN '+r.ran+' marcada como gran tamaño':'RAN '+r.ran+' vuelve a las métricas','#1d4ed8');try{if(currentView==='plansman')psmRender();}catch(e){}}
+(function(){var bo=psmOpen;psmOpen=function(id){var res=bo.apply(this,arguments);try{var r=psmRow(id),m=document.getElementById('psmModal');if(r&&m&&!m.querySelector('.gtBtn')){var hd=m.querySelector('.psmMHead > div');var ed=psmCanEdit('plansman');
+    var sug=!r.gt&&/rotopla/i.test((r.mod||'')+' '+(r.obs||''));
+    if(hd&&(ed||r.gt))hd.insertAdjacentHTML('beforeend','<button class="gtBtn'+(r.gt?' on':'')+'"'+(ed?' onclick="psmGTToggle(\''+r.id+'\')"':' disabled')+' title="Equipos grandes (Rotoplas u otros de esas dimensiones): trabajo especial a largo plazo. No se cuentan en las métricas de tiempos.">🏗️ '+(r.gt?'Gran tamaño · fuera de métricas':'Marcar como gran tamaño')+'</button>'+(sug&&ed?'<span class="gtSug">Parece un equipo grande: ¿marcarlo?</span>':''));}}catch(e){}return res;};})();
+(function(){var bt=psmRenderTabla;psmRenderTabla=function(body,a){var res=bt.apply(this,arguments);try{(body||document).querySelectorAll('#psmTb tr[data-id]').forEach(function(tr){var r=psmRow(tr.dataset.id);if(!r||!r.gt||tr.querySelector('.gtChip'))return;var td=tr.children[3]||tr.children[1];if(td)td.insertAdjacentHTML('beforeend','<span class="gtChip" title="Equipo de gran tamaño: no se cuenta en las métricas de tiempos">🏗️ Gran tamaño</span>');});}catch(e){}return res;};})();
+function psmGTLista(){return PSM.rows.filter(function(r){return r.gt;});}
+
+
+// rapidez: Métricas calcula una sola vez por combinación de filtros (se recalcula al guardar)
+(function(){var bd=psmMtDatos;psmMtDatos=function(){var k='mtd|'+JSON.stringify(PSM_MT)+'|'+psmToday();return psmAudMemo(k,function(){return bd();});};
+  var bk=psmMtKpis;psmMtKpis=function(meses){var k='mtk|'+JSON.stringify(PSM_MT)+'|'+(meses?meses.join(','):'')+'|'+psmToday();return psmAudMemo(k,function(){return bk(meses);});};
+  var bf=psmMtFlujo;psmMtFlujo=function(meses){var k='mtf|'+JSON.stringify(PSM_MT)+'|'+(meses?meses.join(','):'');return psmAudMemo(k,function(){return bf(meses);});};})();
+
+// ── 2) Métricas: cada número explica de dónde sale y se puede abrir ──
+var PSM_MTK=null;
+function psmMtSrc(){var K=psmMtKpis(),hoy=psmToday(),D=K.D,F=K.F,act=PSM.rows.filter(function(r){return !psmFinal(r)&&psmMtPasa(r,true);});
+  var fin=function(r){var x=psmFinFecha(r);return [x.f?psmFd(x.f):'',psmFFtxt(x.src)];};
+  var per=psmPer();
+  return [
+   {s:'Desarmes con costeo enviado + ensambles terminados en '+per,t:'Terminadas en '+per,cols:['Terminó','Fecha usada'],
+    e:'Se cuentan las RAN que <b>terminaron dentro del período</b>: en desarme, cuando se envió el costeo; en ensamble, cuando se terminó el ensamble. La fecha es la <b>fecha real de término</b> de la ficha; si no está, el término del último proceso del Reporte diario.',
+    L:F.de_fin.concat(F.en_fin).concat(F.en_ent).map(function(r){return {r:r,c:fin(r)};})},
+   {s:'RAN abiertas hoy que ya tienen algún avance',t:'En proceso hoy',cols:['Proceso actual','Avance'],
+    e:'RAN <b>abiertas hoy</b> (no terminadas) que tienen <b>más de 0% de avance</b> registrado en el Reporte diario o en la Planificación. No depende del período elegido.',
+    L:act.filter(function(r){return psmAv(r)>0;}).map(function(r){return {r:r,c:[psmEsc(psmProcActualTxt(r)),psmAv(r)+'%']};})},
+   {s:'RAN abiertas hoy con 0% de avance',t:'Pendientes (sin avance)',cols:['Recepción','Compromiso'],
+    e:'RAN <b>abiertas hoy</b> que todavía tienen <b>0% de avance</b>: están recibidas pero no se ha registrado trabajo.',
+    L:act.filter(function(r){return !psmAv(r);}).map(function(r){return {r:r,c:[r.rec?psmFd(r.rec):'',psmEntrega(r)?psmFd(psmEntrega(r)):'']};})},
+   {s:'RAN abiertas con la fecha compromiso ya pasada',t:'Atrasadas hoy',cols:['Compromiso','Días hábiles de atraso','Avance'],
+    e:'RAN <b>abiertas hoy</b> cuya <b>fecha compromiso con el cliente</b> (o fecha de entrega programada) es <b>anterior a hoy</b>. Las RAN sin fecha compromiso no se pueden medir.',
+    L:act.filter(function(r){var c=psmEntrega(r);return c&&c<hoy;}).map(function(r){var c=psmEntrega(r);return {r:r,c:[psmFd(c),'<b class="late">'+psmHabEntre(c,hoy)+' d</b>',psmAv(r)+'%']};}).sort(function(a,b){return parseInt(b.c[1].replace(/\D/g,''))-parseInt(a.c[1].replace(/\D/g,''));})},
+   {s:'Terminadas a tiempo ÷ terminadas con fecha real y compromiso',t:'Cumplimiento de plazos · '+per,cols:['Compromiso','Fecha real','Resultado'],
+    e:'De las RAN que <b>terminaron en el período</b> y tienen <b>fecha compromiso</b> y <b>fecha real</b>, se cuenta cuántas terminaron <b>en o antes</b> del compromiso. % = a tiempo ÷ total. Las terminadas sin fecha real registrada no entran.',
+    L:D.fin.map(function(x){return {r:x.r,c:[psmFd(x.comp),psmFd(x.real),x.late?'<b class="late">'+x.dias+' d tarde</b>':'<b class="okc">a tiempo</b>']};})},
+   {s:'Días hábiles entre el compromiso y la fecha real (o hoy)',t:'RAN con atraso · '+per,cols:['Compromiso','Real / hoy','Días hábiles de atraso'],
+    e:'Para cada RAN atrasada se cuentan los <b>días hábiles</b> entre la fecha compromiso y la fecha real de término (si ya terminó) o <b>hoy</b> (si sigue abierta). Se promedian todas.',
+    L:D.late.map(function(x){return {r:x.r,c:[psmFd(x.comp),x.real?psmFd(x.real):'hoy (abierta)','<b class="late">'+x.dias+' d</b>']};}).sort(function(a,b){return parseInt(b.c[2].replace(/\D/g,''))-parseInt(a.c[2].replace(/\D/g,''));})},
+   {s:'Días hábiles desde la llegada del equipo hasta el envío del costeo',t:'Tiempo total de desarme · '+per,cols:['Llegada','Costeo enviado','Días hábiles'],
+    e:'Para cada RAN de desarme que <b>envió el costeo en el período</b>: días hábiles desde la <b>fecha de recepción</b> (ficha) hasta el <b>término de “Envío de costeo”</b> (Reporte diario o ficha). Se promedian todas. Sin fines de semana ni feriados.',
+    L:(D.et.tt?D.et.tt.L:[]).slice().sort(function(a,b){return b.d-a.d;}).map(function(z){return {r:z.r,c:[psmFd(z.ini),psmFd(z.fin),'<b>'+z.d+' d</b>']};})},
+   {s:'Ensambles terminados con despacho o factura en '+per,t:'Entregadas · '+per,cols:['Terminó','Despacho / factura'],
+    e:'Ensambles <b>terminados en el período</b> que además tienen registrado <b>despacho (shipping)</b> o <b>factura (invoice)</b> en la Planificación.',
+    L:F.en_ent.map(function(r){var iv=psmInv(r);return {r:r,c:[fin(r)[0],iv.inv?'Facturado':'Despachado']};})}];}
+function psmMtDrillK(i){var S=PSM_MTK||psmMtSrc(),x=S[i];if(!x)return;psmDrill(x.t,'<p>'+x.e+'</p>'+psmMtPrevTxt(),x.L,x.cols);}
+function psmMtPrevTxt(){try{var p=psmMtPrev();return '<p class="drPrev">La comparación “vs período anterior” usa el mismo número de meses justo antes: '+psmMesTxtC(p[0])+(p.length>1?' a '+psmMesTxtC(p[p.length-1]):'')+'.</p>';}catch(e){return '';}}
+function psmMtKExplicar(box){var S=psmMtSrc();PSM_MTK=S;box.querySelectorAll('.mtKs .mtK').forEach(function(k,i){if(!S[i]||k.dataset.drill)return;k.dataset.drill=1;k.classList.add('mtKc');k.setAttribute('role','button');k.title='Clic para ver las RAN de este número';
+    k.insertAdjacentHTML('beforeend','<div class="mtSrc"><span>📌 '+psmEsc(S[i].s)+'</span><em>Ver datos ›</em></div>');k.addEventListener('click',function(){psmMtDrillK(i);});k.addEventListener('keydown',function(e){if(e.key==='Enter')psmMtDrillK(i);});});}
+
+// detalle por mes y por cliente con números que se abren
+function psmMtListas(){var K=psmMtKpis(),D=K.D,F=K.F;var cli=function(r){return psmCliG(r.cli)||r.cli||'Sin cliente';};
+  var eva=D.eva.map(function(z){return {r:z.r,f:z.f};}),cos=F.de_fin.map(function(r){var x=psmFinFecha(r);return {r:r,f:x.f||'',src:x.src};}),ens=D.ens.map(function(z){return {r:z.r,f:z.f,src:z.src};});
+  return {D:D,eva:eva,cos:cos,ens:ens,cli:cli};}
+var PSM_MT_COLS={eva:['Informes de evaluación terminados','Proceso “'+(typeof psmEtNombre==='function'?psmEtNombre('de','re'):'Informe de evaluación')+'” terminado (Reporte diario o ficha)'],cos:['Costeos enviados','Desarme terminado: costeo enviado al cliente (fecha real de término de la ficha)'],ens:['Ensambles terminados','Ensamble terminado (fecha real de término de la ficha)']};
+function psmMtCell(tipo,mes,cl){var X=psmMtListas(),L=X[tipo].filter(function(z){return (!mes||z.f.slice(0,7)===mes)&&(!cl||X.cli(z.r)===cl);});
+  var t=PSM_MT_COLS[tipo][0]+(mes?' · '+psmMesTxtC(mes):' · '+psmPer())+(cl?' · '+cl:'');
+  psmDrill(t,'<p>'+PSM_MT_COLS[tipo][1]+'. Cada RAN se cuenta <b>en el mes de esa fecha</b>.'+(cl?' Solo cliente <b>'+psmEsc(cl)+'</b>.':'')+'</p>',L.map(function(z){return {r:z.r,c:[psmFd(z.f),z.src?psmFFtxt(z.src):'fecha de término del proceso']};}),['Fecha','Fecha usada']);}
+function psmMtTablas(box){var X=psmMtListas(),D=X.D;var b=function(n,tipo,mes,cl){return n?'<button class="mtN" onclick="psmMtCell(\''+tipo+'\','+(mes?'\''+mes+'\'':'\'\'')+','+(cl?'\''+psmEsc(cl).replace(/'/g,"\\'")+'\'':'\'\'')+')">'+n+'</button>':'<span class="mt0">0</span>';};
+  var cnt=function(L,mes,cl){return L.filter(function(z){return (!mes||z.f.slice(0,7)===mes)&&(!cl||X.cli(z.r)===cl);}).length;};
+  var exp='<p class="mtExp">Cada RAN se cuenta en el mes en que terminó: <b>Informe de evaluación</b> = término del proceso “Informe de evaluación”. <b>Costeo enviado</b> = término del desarme (costeo enviado). <b>Ensamble terminado</b> = fecha real de término del ensamble. <u>Haz clic en un número</u> para ver las RAN.</p>';
+  var th='<th>Informes de evaluación terminados</th><th>Costeos enviados</th><th>Ensambles terminados</th>';
+  var t1=box.querySelector('[data-mtp="t1"]');if(t1){var h='<h4>Detalle por mes</h4>'+exp+'<div class="auTW mtNo"><table class="psmTbl mini auTb mtCnt"><thead><tr><th>Mes</th>'+th+'</tr></thead><tbody>'+D.meses.map(function(m){return '<tr><td><b>'+psmMesTxtC(m)+'</b></td><td>'+b(cnt(X.eva,m),'eva',m)+'</td><td>'+b(cnt(X.cos,m),'cos',m)+'</td><td>'+b(cnt(X.ens,m),'ens',m)+'</td></tr>';}).join('')+
+      '<tr class="tot"><td>Total</td><td>'+b(X.eva.length,'eva')+'</td><td>'+b(X.cos.length,'cos')+'</td><td>'+b(X.ens.length,'ens')+'</td></tr></tbody></table></div>';t1.innerHTML=h;}
+  var t2=box.querySelector('[data-mtp="t2"]');if(t2){var C={};[['eva',X.eva],['cos',X.cos],['ens',X.ens]].forEach(function(p){p[1].forEach(function(z){var c=X.cli(z.r);C[c]=C[c]||{c:c,eva:0,cos:0,ens:0};C[c][p[0]]++;});});
+    var CL=Object.keys(C).map(function(k){return C[k];}).sort(function(a,b){return (b.eva+b.cos+b.ens)-(a.eva+a.cos+a.ens);});
+    t2.innerHTML='<h4>Detalle por cliente <small>('+psmPer()+')</small></h4>'+exp.replace('en el mes en que terminó','una vez por cada etapa terminada en el período')+'<div class="auTW mtNo"><table class="psmTbl mini auTb mtCnt"><thead><tr><th>Cliente</th>'+th+'</tr></thead><tbody>'+(CL.length?CL.map(function(x){return '<tr><td><b>'+psmEsc(x.c)+'</b></td><td>'+b(x.eva,'eva','',x.c)+'</td><td>'+b(x.cos,'cos','',x.c)+'</td><td>'+b(x.ens,'ens','',x.c)+'</td></tr>';}).join(''):'<tr><td colspan="4"><span class="nd">Sin información disponible</span></td></tr>')+'</tbody></table></div>';}}
+
+// tiempos por etapa: desde / hasta explicados, clic para ver las RAN
+var PSM_MT_DESC={ld:['Fecha de recepción del equipo (ficha)','Inicio real del desarme (Reporte diario) o fecha de inicio de la ficha'],
+  di:['Inicio del desarme','Término de “'+(typeof psmEtNombre==='function'?psmEtNombre('de','re'):'Informe de evaluación')+'”'],
+  ie:['Término del informe de evaluación','Término de “'+(typeof psmEtNombre==='function'?psmEtNombre('de','rs'):'Envío de informe')+'”'],
+  ec:['Envío del informe al cliente','Término de “'+(typeof psmEtNombre==='function'?psmEtNombre('de','cs'):'Envío de costeo')+'”'],
+  tt:['Fecha de recepción del equipo','Término de “Envío de costeo”'],
+  qa:['Término de “'+(typeof psmEtNombre==='function'?psmEtNombre('en','cc'):'Componentes liberados')+'”','Término de “'+(typeof psmEtNombre==='function'?psmEtNombre('en','qi'):'Inspección de calidad')+'” (QA/QC)']};
+function psmMtEtDrill(k,mes){var D=psmMtDatos(),x=D.et[k];if(!x)return;var L=x.L.filter(function(z){return !mes||z.fin.slice(0,7)===mes;}).slice().sort(function(a,b){return b.d-a.d;});var ds=PSM_MT_DESC[k]||['',''];
+  psmDrill(x.E.n+(mes?' · '+psmMesTxtC(mes):' · '+psmPer()),'<p><b>Desde:</b> '+psmEsc(ds[0])+'<br><b>Hasta:</b> '+psmEsc(ds[1])+'</p><p>Se cuentan los <b>días hábiles</b> entre las dos fechas (sin fines de semana ni feriados). Cada RAN entra en el mes en que <b>terminó</b> la etapa'+(mes?'':', dentro del período')+'. RAN sin alguna de las dos fechas no se pueden medir. Los equipos de gran tamaño no se cuentan.</p>',
+    L.map(function(z){return {r:z.r,c:[psmFd(z.ini),psmFd(z.fin),'<b>'+z.d+' d</b>']};}),['Desde','Hasta','Días hábiles']);}
+psmMtEtapaTabla=function(D,a){var L=PSM_MT_ETAPAS[a].map(function(E){return D.et[E.k];});
+  return '<p class="mtExp">Días hábiles que demora cada etapa (sin fines de semana ni feriados), con las fechas reales del Reporte diario o de la ficha. Cada RAN se cuenta en el mes en que <b>termina</b> la etapa. <u>Haz clic en “RAN medidas” o en “Ver RAN”</u> para ver el detalle de cada una.</p>'+
+   '<div class="auTW mtNo"><table class="psmTbl mini auTb mtTb mtFit"><thead><tr><th>Etapa · desde → hasta</th><th title="RAN con las dos fechas registradas">RAN medidas</th><th>Promedio</th><th>Mín.</th><th>Máx.</th><th title="Suma de días de todas las RAN medidas">Acum.</th><th></th></tr></thead><tbody>'+
+   L.map(function(x){var s=x.s,ds=PSM_MT_DESC[x.E.k]||['',''];return '<tr class="'+(x.E.tot?'tot':'')+'"><td><b>'+psmEsc(x.E.n)+'</b><small class="mtDs">Desde: '+psmEsc(ds[0])+'<br>Hasta: '+psmEsc(ds[1])+'</small></td><td>'+(s.n?'<button class="mtN" onclick="psmMtEtDrill(\''+x.E.k+'\')">'+s.n+'</button>':'<span class="mt0">0</span>')+'</td><td><b>'+psmMtNum(s.prom,' d')+'</b></td><td>'+psmMtNum(s.min,' d')+'</td><td>'+psmMtNum(s.max,' d')+'</td><td>'+(s.n?s.sum+' d':'—')+'</td><td>'+(s.n?'<button class="psmBtn ghost sm" onclick="psmMtEtDrill(\''+x.E.k+'\')">Ver RAN</button>':'')+'</td></tr>';}).join('')+'</tbody></table></div>';};
+
+// ── 3) Gráficos: valores visibles, explicación y clic para ver los datos ──
+var PSM_DRILL={};
+var PSM_VAL_IDS={mtC1:'',mtC2:'',mtC3:' d',mtC4:' d',mtC5:'%'};
+var psmValLbl={id:'psmValLbl',afterDatasetsDraw:function(ch){if(!ch.canvas||!(ch.canvas.id in PSM_VAL_IDS))return;var unit=PSM_VAL_IDS[ch.canvas.id];var ctx=ch.ctx;ctx.save();ctx.font='700 10.5px system-ui,Segoe UI,Arial';ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.textBaseline='bottom';
+  ch.data.datasets.forEach(function(ds,i){var meta=ch.getDatasetMeta(i);if(meta.hidden)return;meta.data.forEach(function(el,j){var v=ds.data[j];if(v==null||v===0)return;var t=(typeof v==='number'?String(Math.round(v*10)/10).replace('.',','):v)+unit;if(ch.options.indexAxis==='y'){ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(t,el.x+4,el.y);}else ctx.fillText(t,el.x,el.y-3);});});ctx.restore();}};
+function psmMtExp(box,id,txt){var s=box.querySelector('[data-mtp="'+id+'"]');if(!s||s.querySelector('.mtExp'))return;var h=s.querySelector('h4');if(h)h.insertAdjacentHTML('afterend','<p class="mtExp">'+txt+'</p>');}
+function psmMtGraficos(box){var D=psmMtDatos(),K=psmMtKpis(),F=K.F,lab=D.meses.map(psmMesTxtC),X=psmMtListas();
+  psmMtExp(box,'c1','Cuántas RAN terminaron cada etapa en cada mes (mismas fechas que “Detalle por mes”). <u>Clic en una barra</u> para ver las RAN.');
+  psmMtExp(box,'c2','Lo mismo, separado por cliente (los 10 con más RAN). <u>Clic en una barra</u> para ver las RAN.');
+  psmMtExp(box,'c3','Cada barra es el <b>promedio de días hábiles</b> de una etapa, para las RAN que la terminaron en ese mes. El número sobre la barra es el promedio. <u>Clic en una barra</u> para ver cada RAN con sus fechas.');
+  psmMtExp(box,'c4','Promedio de días hábiles entre el término de “Componentes liberados” y el término de la inspección de calidad (QA/QC), por mes. <u>Clic en la barra</u> para ver las RAN.');
+  psmMtExp(box,'c5','% de RAN que terminaron en o antes de su fecha compromiso, por mes. Solo cuenta las que tienen fecha real y compromiso. <u>Clic en una barra</u> para ver cuáles llegaron a tiempo y cuáles tarde.');
+  psmMtExp(box,'c6','Cada barra es una RAN terminada: días hábiles entre su compromiso y su fecha real. Rojo = tarde, verde = a tiempo o antes. <u>Clic en una barra</u> para abrir la ficha.');
+  psmMtExp(box,'x1','RAN abiertas hoy, según la etapa en que van (por su avance en el Reporte diario). <u>Clic en un color</u> para ver las RAN.');
+  psmMtExp(box,'x2','Terminadas a tiempo ÷ terminadas con fecha real y compromiso en el período. Meta 90%. <u>Clic</u> para ver el detalle.');
+  psmMtExp(box,'x3','Horas de tempario que les faltan a las RAN abiertas, sumadas por cliente. Más grande = más trabajo pendiente. <u>Clic en un cliente</u> para ver sus RAN.');
+  psmMtExp(box,'x4','Actividades marcadas como finalizadas en el Reporte diario, por día. Más oscuro = más actividades. <u>Clic en un día</u> para ver cuáles fueron.');
+  // c3: barras agrupadas (con un solo mes la línea no se veía)
+  var cs=['#eb6834','#2a78d6','#8b5cf6','#eda100','#0f2742'];
+  if(PSM_MT.a!=='en'&&document.getElementById('mtC3')){psmAudChart('mtC3',{type:'bar',data:{labels:lab,datasets:PSM_MT_ETAPAS.de.map(function(E,i){var x=D.et[E.k];return {label:E.n,data:x.pm,backgroundColor:cs[i],borderRadius:4,maxBarThickness:38};})},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:16}},psmUnit:' d',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10.5}}},tooltip:{callbacks:{label:function(t){var x=D.et[PSM_MT_ETAPAS.de[t.datasetIndex].k],n=x.L.filter(function(z){return z.fin.slice(0,7)===D.meses[t.dataIndex];}).length;return ' '+t.dataset.label+': '+(t.raw==null?PSM_ND:String(t.raw).replace('.',',')+' d promedio · '+n+' RAN');},footer:function(){return 'Clic para ver las RAN';}}}},scales:{y:{beginAtZero:true,title:{display:true,text:'días hábiles (promedio)'}},x:{grid:{display:false}}}}});
+    PSM_DRILL.mtC3=function(el){psmMtEtDrill(PSM_MT_ETAPAS.de[el.datasetIndex].k,D.meses[el.index]);};}
+  if(PSM_MT.a!=='de'&&document.getElementById('mtC4')){var q=D.et.qa;psmAudChart('mtC4',{type:'bar',data:{labels:lab,datasets:[{label:'Promedio componente liberado → QA/QC',data:q.pm,backgroundColor:'#1baf7a',borderRadius:4,maxBarThickness:60}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:16}},psmUnit:' d',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(t){var n=q.L.filter(function(z){return z.fin.slice(0,7)===D.meses[t.dataIndex];}).length;return ' '+(t.raw==null?PSM_ND:String(t.raw).replace('.',',')+' d promedio · '+n+' RAN');},footer:function(){return 'Clic para ver las RAN';}}}},scales:{y:{beginAtZero:true,title:{display:true,text:'días hábiles'}},x:{grid:{display:false}}}}});
+    PSM_DRILL.mtC4=function(el){psmMtEtDrill('qa',D.meses[el.index]);};}
+  ['mtC1','mtC2','mtC5'].forEach(function(id){var c=PSM_AUD_CH[id];if(!c)return;try{c.options.layout=c.options.layout||{};c.options.layout.padding={top:16,right:id==='mtC2'?26:4};c.update('none');}catch(e){}});
+  ['en','c4'].forEach(function(id){var x=box.querySelector('[data-mtp="'+id+'"]');if(x)x.classList.add('mtW');});
+  var hp=box.querySelector('.auHead p');if(hp&&!hp.dataset.v46){hp.dataset.v46=1;hp.innerHTML='Indicadores con los datos reales de la app (período '+psmPer()+'). <b>Haz clic en cualquier número, barra o color para ver las RAN que lo forman</b> y de dónde sale el dato. Usa “↕ Mover paneles” (arriba) para ordenar los paneles: queda guardado para tu usuario.';}
+  var tipos=['eva','cos','ens'];
+  PSM_DRILL.mtC1=function(el){psmMtCell(tipos[el.datasetIndex],D.meses[el.index]);};
+  PSM_DRILL.mtC2=function(el,ch){var c=PSM_AUD_CH.mtC2;var full=null;try{full=c.options.plugins.tooltip.callbacks.title([{dataIndex:el.index}]);}catch(e){}psmMtCell(tipos[el.datasetIndex],'',full||c.data.labels[el.index]);};
+  PSM_DRILL.mtC5=function(el){var m=D.meses[el.index];var L=D.fin.filter(function(x){return x.real.slice(0,7)===m;});psmDrill('Cumplimiento de plazos · '+psmMesTxtC(m),'<p>RAN que terminaron en '+psmMesTxtC(m)+' con fecha real y fecha compromiso. A tiempo = terminó en o antes del compromiso.</p>',L.map(function(x){return {r:x.r,c:[psmFd(x.comp),psmFd(x.real),x.late?'<b class="late">'+x.dias+' d tarde</b>':'<b class="okc">a tiempo</b>']};}),['Compromiso','Fecha real','Resultado']);};
+  PSM_DRILL.mtC6=function(el){var dd=D.C.filter(function(x){return x.fin;}).sort(function(a,b){return a.real<b.real?-1:1;});var x=dd[el.index];if(x)psmOpen(x.r.id);};
+  PSM_DRILL.mtX1=function(el){var act=PSM_ETAPAS.filter(function(e){return !e.fin&&(!PSM_MT.a||e.a===PSM_MT.a);}),e=act[el.index];if(!e)return;var L=F[e.k]||[];psmDrill((e.a==='de'?'Desarme · ':'Ensamble · ')+e.n,'<p>'+psmEsc(e.d)+' Se mide con el avance de cada proceso en el Reporte diario (hoy).</p>',L.map(function(r){return {r:r,c:[psmEsc(psmProcActualTxt(r)),psmAv(r)+'%',psmEntrega(r)?psmFd(psmEntrega(r)):'']};}),['Proceso actual','Avance','Compromiso']);};
+  PSM_DRILL.mtX2=function(){psmMtDrillK(4);};
+  box.querySelectorAll('.tmC[data-cli]').forEach(function(c){c.classList.add('clk');c.onclick=function(){var n=c.dataset.cli;var L=PSM.rows.filter(function(r){if(psmFinal(r)||!psmMtPasa(r,true))return false;return (psmCliG(r.cli)||r.cli||'Sin cliente')===n||/^Otros/.test(n);}).map(function(r){var x=psmHH(r);return {r:r,h:Math.max(0,x.plan-x.done),pl:x.plan};}).filter(function(z){return z.h>0;}).sort(function(a,b){return b.h-a.h;});
+    psmDrill('Horas pendientes · '+n,'<p>Horas del tempario que faltan: horas planificadas de la RAN según su tamaño, menos las horas de las actividades ya finalizadas.</p>',L.map(function(z){return {r:z.r,c:[psmFh(Math.round(z.pl))+' h',psmFh(Math.round(z.h))+' h',psmAv(z.r)+'%']};}),['Horas del tempario','Horas pendientes','Avance']);};});
+  box.querySelectorAll('.hmC[data-d]').forEach(function(c){if(!+c.textContent)return;c.classList.add('clk');c.onclick=function(){var d=c.dataset.d,L=[];PSM.rows.forEach(function(r){if(!psmMtPasa(r,true)||!r.act)return;Object.keys(r.act).forEach(function(u){var a=r.act[u];if(a&&a.e==='Finalizado'&&a.f===d&&!a.auto)L.push({r:r,c:[psmEsc(psmActNombre?psmActNombre(r,u):u),psmEsc(a.r||'')]});});});
+    psmDrill('Actividades finalizadas el '+psmFd(d),'<p>Actividades marcadas como <b>Finalizado</b> en el Reporte diario con fecha '+psmFd(d)+'.</p>',L,['Actividad','Responsable']);};});
+}
+(function(){var bm=psmRenderMet;psmRenderMet=function(el){bm.apply(this,arguments);try{var b=el.querySelector('#psmMetBox')||el;psmMtKExplicar(b);psmMtTablas(b);psmMtGraficos(b);psmMtGTNota(b);}catch(e){console.error(e);}};})();
+function psmMtGTNota(b){var n=psmGTLista().length;var hd=b.querySelector('.auHead p');if(!hd||!n||b.querySelector('.gtNota'))return;hd.insertAdjacentHTML('afterend','<p class="gtNota">🏗️ <b>'+n+' RAN de gran tamaño</b> no se cuentan en estas métricas (trabajo especial a largo plazo). <button class="lnk" onclick="psmDrill(\'Equipos de gran tamaño\',\'<p>RAN marcadas como gran tamaño en su ficha. No se cuentan en Métricas ni en Auditoría para no distorsionar los tiempos. Sus datos no cambian.</p>\',psmGTLista().map(function(r){return {r:r,c:[psmEsc(psmProcActualTxt(r)),psmAv(r)+\'%\']};}),[\'Proceso actual\',\'Avance\'])">Ver cuáles</button></p>');}
+function psmActNombre(r,u){try{var nm='';PSM_PROC[r.a].forEach(function(p){psmTItems(r.a,p.k).forEach(function(i){if(i.u===u)nm=i.n||i.d||i.t||u;});});return nm||u;}catch(e){return u;}}
+
+// clic en cualquier gráfico de la app
+function psmDrillGenerico(ch,el){try{var lab=String((ch.data.labels||[])[el.index]||'').trim(),dsl=(ch.data.datasets[el.datasetIndex]||{}).label||'';
+  var m=lab.match(/^(?:RAN\s*)?(\d{3,6})$/);if(m){var r=PSM.rows.filter(function(x){return String(x.ran)===m[1];})[0];if(r){psmOpen(r.id);return true;}}
+  var base=lab.replace(/…$/,'');if(base){var cl=PSM.rows.filter(function(r){var c=psmCliG(r.cli)||r.cli||'';return c===lab||(lab!==base&&c.indexOf(base)===0);});
+    if(cl.length){var act=cl.filter(function(r){return !psmFinal(r);});psmDrill('RAN abiertas · '+(psmCliG(cl[0].cli)||cl[0].cli),'<p>Gráfico: <b>'+psmEsc(dsl||lab)+'</b>. Se muestran las RAN abiertas hoy de este cliente.</p>',act.map(function(r){return {r:r,c:[psmEsc(psmProcActualTxt(r)),psmAv(r)+'%',psmEntrega(r)?psmFd(psmEntrega(r)):'']};}),['Proceso actual','Avance','Compromiso']);return true;}
+    var pe=PSM.rows.filter(function(r){return !psmFinal(r)&&psmSplitNames(r.mec).some(function(n){return psmNorm(n)===psmNorm(base)||psmNorm(n).indexOf(psmNorm(base))===0;});});
+    if(pe.length){psmDrill('RAN de '+lab,'<p>RAN abiertas donde <b>'+psmEsc(lab)+'</b> es encargado.</p>',pe.map(function(r){return {r:r,c:[psmEsc(psmProcActualTxt(r)),psmAv(r)+'%']};}),['Proceso actual','Avance']);return true;}
+    var pk=null;var aPref=(typeof currentView!=='undefined'&&currentView==='plansman'&&(PSM_F.sub==='en'||PSM_F.sub==='de'))?PSM_F.sub:'';['de','en'].forEach(function(a){PSM_PROC[a].forEach(function(p){if(psmNorm(p.es)===psmNorm(base)||psmNorm(p.c||'')===psmNorm(base)){if(!pk||a===aPref||(ch.canvas.id==='psmC2'&&a==='en'))pk={a:a,p:p};}});});
+    var es=PSM.rows.filter(function(r){try{return !psmFinal(r)&&psmEstado(r)===lab;}catch(e){return false;}});
+    if(es.length&&!pk){psmDrill('RAN en estado “'+lab+'”','<p>RAN abiertas cuyo estado en la Planificación es <b>'+psmEsc(lab)+'</b>.</p>',es.map(function(r){return {r:r,c:[psmEsc(psmProcActualTxt(r)),psmAv(r)+'%']};}),['Proceso actual','Avance']);return true;}
+    if(/^(En plazo|Fuera de plazo|Sin fecha)$/.test(lab)){var pl=PSM.rows.filter(function(r){try{return r.a==='de'&&psmInRange(psmMes(r))&&psmPlazo(r).t===lab;}catch(e){return false;}});psmDrill('Desarme · '+lab,'<p>Plazo de desarme: 10 días hábiles desde el inicio del desarme hasta el envío del costeo (o hasta hoy si sigue abierto).</p>',pl.map(function(r){var x=psmPlazo(r);return {r:r,c:[r.ff_sd?psmFd(r.ff_sd):'',x.d==null?'':x.d+' d']};}),['Inicio desarme','Días hábiles']);return true;}
+    if(pk){var L=PSM.rows.filter(function(r){if(r.a!==pk.a||psmFinal(r))return false;var pa=psmProcActual(r);return pa&&pa.p.k===pk.p.k;});psmDrill('RAN en “'+pk.p.es+'”','<p>RAN abiertas cuyo proceso actual es <b>'+psmEsc(pk.p.es)+'</b>.</p>',L.map(function(r){return {r:r,c:[(+r['p_'+pk.p.k]||0)+'%']};}),['Avance del proceso']);return true;}}
+  // si no se reconoce la etiqueta: ir a la tabla de detalle de la misma sección
+  var sec=ch.canvas.closest('section,.auC,.psmCard,div[class*="Card"]'),t=null,n=sec;while(n&&!t){var nx=n.nextElementSibling;while(nx&&!t){t=nx.matches&&nx.matches('table,.auTW')?nx:(nx.querySelector&&nx.querySelector('table'));nx=nx.nextElementSibling;}n=n.parentElement;if(n&&n.id&&/View$/.test(n.id))break;}
+  if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.add('drFlash');setTimeout(function(){t.classList.remove('drFlash');},1600);psmToast((dsl?dsl+' · ':'')+lab+': detalle en la tabla','#1d4ed8');return true;}}catch(e){}return false;}
+if(window.Chart){try{Chart.register(psmValLbl);}catch(e){}Chart.defaults.onClick=function(e,els,ch){if(!els||!els.length)return;var el=els[0],id=ch.canvas&&ch.canvas.id;if(id&&PSM_DRILL[id]){try{PSM_DRILL[id](el,ch);}catch(er){console.error(er);}return;}psmDrillGenerico(ch,el);};
+  Chart.defaults.onHover=function(e,els,ch){try{ch.canvas.style.cursor=els&&els.length?'pointer':'default';}catch(er){}};}
+
+// ── 4) Dotación enlazada: el calendario de Turnos A y B manda ──
+function psmCodHoy(nom,iso){try{var x=psmPersTurno(nom);if(!x)return '';return ((tuData().d[x.id]||{})[iso||psmToday()])||'';}catch(e){return '';}}
+function psmTurnoSemana(nom){try{var x=psmPersTurno(nom);if(!x)return '';var D=tuData().d[x.id]||{},l=tuLunes(psmToday()),c={D:0,N:0};for(var i=0;i<5;i++){var k=D[tuAdd(l,i)];if(k==='D'||k==='N')c[k]++;}return c.D||c.N?(c.N>c.D?'B':'A'):'';}catch(e){return '';}}
+// turno del día: primero el calendario; si no hay dato, el turno base de Personal
+(function(){var bt=psmTurnoDe;psmTurnoDe=function(nom){var b=bt.apply(this,arguments);if(b===null)return null;var k=psmCodHoy(nom);if(k==='D')return 'A';if(k==='N')return 'B';var s=psmTurnoSemana(nom);return s||b;};})();
+// horas disponibles: por persona y por día según el calendario (vacaciones, licencias, permisos y faltas restan)
+(function(){var bc=psmCapDatos;psmCapDatos=function(){var R=bc.apply(this,arguments);try{var T=tuData(),per=(Array.isArray(PSM.personal)?PSM.personal:[]).filter(function(p){return p.on!==false&&p.cp!==false&&p.t!=='S';});
+  R.W.forEach(function(w){var s=0;for(var d=psmDate(w.s);psmIso(d)<=w.e;d.setDate(d.getDate()+1)){var iso=psmIso(d);per.forEach(function(p){var x=psmPersTurno(p.n),k=x?((T.d[x.id]||{})[iso]||''):'';
+      if(k==='D'||k==='E')s+=psmHorasDia('A',iso);else if(k==='N')s+=psmHorasDia('B',iso);else if(k==='V'||k==='L'||k==='P'||k==='F'||k==='FE'){}else s+=psmHorasDia(p.t==='B'?'B':'A',iso);});}w.disp=s;});
+  var fut=R.W.filter(function(w){return w.fut;});var fd=fut.reduce(function(a,w){return a+w.disp;},0)/(fut.length||1);R.sem=fd?R.back/fd:null;R.per=per.length;}catch(e){}return R;};})();
+// el cambio de turno en Personal ya no cambia el calendario (el turno rota por semana); solo se limpian días futuros al pasar a Inactivo o Sin turno
+psmTurnoSync=function(p){try{if(!(p.on===false||p.t==='S'))return;var x=psmPersTurno(p.n);if(!x)return;var T=tuData(),D=T.d[x.id]||{},hoy=psmToday(),n=0;
+  Object.keys(D).forEach(function(d){if(d<hoy)return;if(D[d]==='D'||D[d]==='N'||D[d]==='E'){delete D[d];n++;}});T.d[x.id]=D;if(n){PSM_ULT_ACCION=Date.now();psmSave(true);psmToast('Turnos: '+n+' día(s) futuros de '+p.n+' quedaron libres ('+(p.on===false?'inactivo':'sin turno')+')','#1d4ed8');}}catch(e){}};
+(function(){var bf=psmPersForm;psmPersForm=function(i){var r=bf.apply(this,arguments);try{var s=document.getElementById('peT'),l=s&&s.closest('label');if(l&&l.firstChild&&l.firstChild.nodeType===3)l.firstChild.textContent='Turno base';if(l&&!l.querySelector('.peTH'))l.insertAdjacentHTML('beforeend','<small class="peTH">El turno de cada día se toma del calendario <b>Turnos A y B</b>. Este turno base se usa solo si el calendario no tiene ese día.</small>');}catch(e){}return r;};})();
+// Personal: turno de esta semana y de hoy (según calendario) y RAN asignadas
+(function(){var br=psmRenderPersonal;psmRenderPersonal=function(el){var r=br.apply(this,arguments);try{el=el||document.getElementById('psmPersonalView');var hoy=psmToday(),cA=0,cB=0,cS=0;
+  psmRoster().forEach(function(p){if(p.on===false)return;if(p.t==='S'){cS++;return;}var t=psmTurnoSemana(p.n)||(p.t==='B'?'B':'A');if(t==='B')cB++;else cA++;});
+  var ks=el.querySelectorAll('.peKs > div');ks.forEach(function(k){var s=k.querySelector('span'),b=k.querySelector('b');if(!s||!b)return;if(s.textContent==='Turno A'){b.textContent=cA;s.textContent='Turno A esta semana';}else if(s.textContent==='Turno B'){b.textContent=cB;s.textContent='Turno B esta semana';}});
+  var hs=[].slice.call((el.querySelector('.peRow.peTh')||{children:[]}).children),ti=-1;hs.forEach(function(h,i){if(/^turno$/i.test((h.textContent||'').trim()))ti=i;});
+  el.querySelectorAll('.peRow:not(.peTh)').forEach(function(row){var b=row.querySelector('.nm b');if(!b||row.querySelector('.peHoy'))return;var n=b.textContent,p=psmPersBuscar?psmPersBuscar(n):null;if(!p||p.on===false||p.t==='S')return;var k=psmCodHoy(n),t=psmTurnoSemana(n),c=TU_COD[k];var cell=ti>=0?row.children[ti]:null;if(!cell)return;
+    cell.insertAdjacentHTML('beforeend','<span class="peHoy" title="'+(t?'Turno de esta semana según el calendario Turnos A y B':'El calendario no tiene esta semana: se usa el turno base')+'">'+(t?'calendario':'base')+(k?' · hoy <em style="--c:'+c.c+';--t:'+c.t+'">'+k+'</em>':'')+'</span>');
+    if(t){var ch=[].slice.call(cell.querySelectorAll('*')).filter(function(x){return !x.children.length&&/^[AB]$/.test(x.textContent.trim());})[0];if(ch)ch.textContent=t;}});
+  var hd=el.querySelector('.peHead p');if(hd&&!hd.dataset.v46){hd.dataset.v46=1;hd.insertAdjacentHTML('beforeend',' <b>El turno de cada semana sale del calendario Turnos A y B.</b>');}}catch(e){}return r;};})();
+// Carga en planta: turno de hoy al lado de cada persona
+(function(){var bc=psmRenderCarga;psmRenderCarga=function(){var r=bc.apply(this,arguments);try{var el=document.getElementById('psmCargaView');if(!el)return r;var nms={};psmRoster().forEach(function(p){if(p.on!==false)nms[psmNorm(p.n)]=p;});
+  el.querySelectorAll('b,strong,.cgNm,.cgName').forEach(function(b){if(b.children.length||b.dataset.tu)return;var t=(b.textContent||'').trim();var p=nms[psmNorm(t)];if(!p)return;b.dataset.tu=1;var k=psmCodHoy(p.n),w=psmTurnoSemana(p.n)||(p.t==='S'?'':p.t==='B'?'B':'A'),c=TU_COD[k];
+    b.insertAdjacentHTML('afterend',' <span class="cgTu" title="Turno según el calendario Turnos A y B">'+(w?'T'+w:'S/T')+(k?' · <em style="--c:'+c.c+';--t:'+c.t+'">'+k+'</em>':'')+'</span>');});}catch(e){}return r;};})();
+PSM_OWN.carga[1]=psmRenderCarga;
+
+// ── 5) Turnos A y B: ocultar al personal inactivo ──
+var PSM_TU_INA=false;
+function psmTuInactivo(p){try{var P=psmPersBuscar?psmPersBuscar(tuNombre(p)):null;return !!(P&&P.on===false);}catch(e){return false;}}
+(function(){var br=psmRenderTurnos;psmRenderTurnos=function(){var r=br.apply(this,arguments);try{var el=document.getElementById('psmTurnosView');if(!el||el.classList.contains('hidden'))return r;
+  if(!el.querySelector(':scope > .grpTabs'))el.insertAdjacentHTML('afterbegin',psmGrupoTabs('turnos'));
+  var T=tuData(),ina={},nI=0;T.pers.forEach(function(p){if(psmTuInactivo(p)){ina[p.id]=1;nI++;}});
+  el.querySelectorAll('.tuX tbody tr').forEach(function(tr){var td=tr.querySelector('td.tc');if(td&&ina[td.dataset.p]){tr.classList.add('tuIna');if(!PSM_TU_INA)tr.classList.add('tuHide');var nm=tr.querySelector('.tuNm');if(nm&&!nm.querySelector('.tuInaB'))nm.insertAdjacentHTML('beforeend',' <em class="tuInaB">Inactivo</em>');}});
+  var tp=el.querySelector('.tuTotP');if(tp&&nI&&!PSM_TU_INA)tp.innerHTML=(T.pers.length-nI)+'<small>personas activas</small>';
+  var bar=el.querySelector('.tuActs');if(bar&&!bar.querySelector('.tuInaT'))bar.insertAdjacentHTML('afterbegin','<label class="tuInaT noCap" title="Personas marcadas como Inactivo en Dotación → Personal"><input type="checkbox"'+(PSM_TU_INA?' checked':'')+' onchange="PSM_TU_INA=this.checked;psmRenderTurnos()"> Mostrar inactivos'+(nI?' ('+nI+')':'')+'</label>');}catch(e){}return r;};})();
+// pestañas de Dotación siempre visibles aunque la vista se vuelva a dibujar
+(function(){['personal'].forEach(function(v){var o=PSM_OWN[v];if(!o)return;var f=o[1];o[1]=function(){var r=f.apply(this,arguments);try{var c=document.getElementById(o[0]);if(c&&!c.querySelector(':scope > .grpTabs'))c.insertAdjacentHTML('afterbegin',psmGrupoTabs(v));}catch(e){}return r;};});
+  var bc=psmRenderCarga;psmRenderCarga=function(){var r=bc.apply(this,arguments);try{var c=document.getElementById('psmCargaView');if(c&&!c.querySelector(':scope > .grpTabs'))c.insertAdjacentHTML('afterbegin',psmGrupoTabs('carga'));}catch(e){}return r;};PSM_OWN.carga[1]=psmRenderCarga;
+  var bp=psmRenderPersonal;psmRenderPersonal=function(){var r=bp.apply(this,arguments);try{var c=document.getElementById('psmPersonalView');if(c&&!c.classList.contains('hidden')&&!c.querySelector(':scope > .grpTabs'))c.insertAdjacentHTML('afterbegin',psmGrupoTabs('personal'));}catch(e){}return r;};})();
+
+// ── 6) Planificación: filtros independientes para Ensamble y Desarme ──
+var PSM_F_EN=null,PSM_F_DE=null,PSM_F_KEYS=['desde','hasta','cli','est','qa','q','sinFecha','fechas','deEst'];
+function psmFSub(s){return s==='en'?'PSM_F_EN':s==='de'?'PSM_F_DE':null;}
+function psmFGuardarSub(s){var n=psmFSub(s);if(!n)return;var o={};PSM_F_KEYS.forEach(function(k){if(k in PSM_F)o[k]=PSM_F[k];});window[n]=o;}
+(function(){var bs=psmSetF;psmSetF=function(k,v){if(k==='sub'&&v!==PSM_F.sub){var old=PSM_F.sub;psmFGuardarSub(old);var n=psmFSub(v),S=n&&window[n];
+    if(S){PSM_F.sub=v;Object.keys(S).forEach(function(x){PSM_F[x]=S[x];});try{sessionStorage.setItem('psm_f',JSON.stringify(PSM_F));}catch(e){}psmRender();return;}
+    var r=bs.apply(this,arguments);if(n)psmFGuardarSub(v);return r;}
+  var r2=bs.apply(this,arguments);if(k!=='sub')psmFGuardarSub(PSM_F.sub);return r2;};})();
+(function(){var br=psmRango;psmRango=function(){var r=br.apply(this,arguments);psmFGuardarSub(PSM_F.sub);return r;};})();
+// se guardan por usuario junto con los demás filtros
+try{if(PSM_FLT_OBJ.indexOf('PSM_F_EN')<0)PSM_FLT_OBJ.push('PSM_F_EN','PSM_F_DE');}catch(e){}
+(function(){var bl=psmFltRestaurar;psmFltRestaurar=function(){['PSM_F_EN','PSM_F_DE'].forEach(function(n){if(!window[n])window[n]={};});var r=bl.apply(this,arguments);['PSM_F_EN','PSM_F_DE'].forEach(function(n){if(window[n]&&!Object.keys(window[n]).length)window[n]=null;});return r;};})();
+(function(){var bl=psmFltLeer;psmFltLeer=function(){var o=bl.apply(this,arguments);['PSM_F_EN','PSM_F_DE'].forEach(function(n){if(window[n]&&!o[n]){var c={};Object.keys(window[n]).forEach(function(k){var v=window[n][k];if(v==null||typeof v!=='object')c[k]=v;});o[n]=c;}});return o;};})();
+
+// ══════════════════════════════════════════════════════════════
+// v47: fotos que no se pierden
+//  · la foto se guarda primero en el equipo (cola en IndexedDB) y después sube
+//  · barra de progreso, reintento automático, confirmación ✅ / ❌
+//  · compresión liviana para el teléfono (sin convertir el original a texto)
+//  · fotos de otro equipo ya no se pisan (se mezclan por espacio y fecha)
+//  · "Más fotos / evidencias": todas las que se necesiten, cada una por separado
+//  · registro de cargas: fecha, usuario, equipo, tamaño y error
+// ══════════════════════════════════════════════════════════════
+var PSM_FQ={prep:0,run:false,prog:{},est:{},tm:null,max:50*1024*1024,lado:1600,calidad:0.78};
+function psmFQdb(){if(PSM_FQ.db)return Promise.resolve(PSM_FQ.db);return new Promise(function(ok,ko){if(!window.indexedDB)return ko(new Error('sin IndexedDB'));var q=indexedDB.open('psm_fotos_q',1);
+  q.onupgradeneeded=function(){var d=q.result;if(!d.objectStoreNames.contains('q'))d.createObjectStore('q',{keyPath:'k'});if(!d.objectStoreNames.contains('log'))d.createObjectStore('log',{autoIncrement:true});};
+  q.onsuccess=function(){PSM_FQ.db=q.result;PSM_FQ.db.onclose=function(){PSM_FQ.db=null;};ok(PSM_FQ.db);};q.onerror=function(){ko(q.error);};});}
+function psmFQtx(st,modo,fn){return psmFQdb().then(function(db){return new Promise(function(ok,ko){var tx=db.transaction(st,modo),s=tx.objectStore(st),res;try{res=fn(s);}catch(e){ko(e);return;}tx.oncomplete=function(){ok(res&&res.result!==undefined?res.result:res);};tx.onerror=function(){ko(tx.error);};tx.onabort=function(){ko(tx.error||new Error('abortado'));};});});}
+function psmFQput(it){return psmFQtx('q','readwrite',function(s){return s.put(it);});}
+function psmFQdel(k){return psmFQtx('q','readwrite',function(s){return s.delete(k);});}
+function psmFQall(){return psmFQdb().then(function(db){return new Promise(function(ok){var o=[];try{var c=db.transaction('q').objectStore('q').openCursor();c.onsuccess=function(){var x=c.result;if(x){o.push(x.value);x.continue();}else ok(o);};c.onerror=function(){ok(o);};}catch(e){ok(o);}});}).catch(function(){return [];});}
+// ── equipo y registro ──
+function psmDisp(){var u=navigator.userAgent||'',so=/iPhone/.test(u)?'iPhone':/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1)?'iPad':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows':/Mac OS/.test(u)?'Mac':'Otro';
+  var br=/SamsungBrowser/.test(u)?'Samsung Internet':/EdgA|EdgiOS|Edg\//.test(u)?'Edge':/CriOS/.test(u)?'Chrome':/FxiOS|Firefox/.test(u)?'Firefox':/OPR|Opera/.test(u)?'Opera':/Chrome/.test(u)?'Chrome':/Safari/.test(u)?'Safari':'Navegador';
+  var m=(u.match(/Android [\d.]+; ([^;)]+)/)||[])[1];return so+(m&&!/^K$/.test(m)?' ('+m.trim()+')':'')+' · '+br;}
+function psmUsuarioF(){try{return psmUser()||(session&&session.nombre)||'';}catch(e){return '';}}
+function psmFLog(e){e=Object.assign({t:new Date().toISOString(),u:psmUsuarioF(),dev:psmDisp(),net:(navigator.connection&&navigator.connection.effectiveType)||(navigator.onLine?'en línea':'sin conexión')},e);
+  psmFQtx('log','readwrite',function(s){return s.add(e);}).then(function(){clearTimeout(PSM_FQ.lt);PSM_FQ.lt=setTimeout(psmFLogSubir,8000);}).catch(function(){});return e;}
+function psmFLogLocal(){return psmFQdb().then(function(db){return new Promise(function(ok){var o=[];try{var c=db.transaction('log').objectStore('log').openCursor();c.onsuccess=function(){var x=c.result;if(x){o.push(x.value);x.continue();}else ok(o);};c.onerror=function(){ok(o);};}catch(e){ok(o);}});}).catch(function(){return [];});}
+function psmFLogSubir(){var u=psmUsuarioF();if(!u)return;psmFLogLocal().then(function(L){if(!L.length)return;L=L.slice(-300);
+  fetch(PSM_SUPA_URL+'/rest/v1/pie_data',{method:'POST',headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:'meta_fotolog_'+u.replace(/[^\w.-]/g,'_')+'_'+psmDispId(),data:JSON.stringify(L),updated_at:new Date().toISOString()})}).catch(function(){});});}
+function psmDispId(){try{var k=localStorage.getItem('psm_dev_id');if(!k){k=Math.random().toString(36).slice(2,8);localStorage.setItem('psm_dev_id',k);}return k;}catch(e){return 'x';}}
+function psmMB(b){return b==null?'':(b/1048576).toFixed(b<1048576?2:1).replace('.',',')+' MB';}
+
+// ── 1) Elegir la foto: input dentro de la página, cámara o galería ──
+function psmFotoInput(opts,cb){var old=document.getElementById('psmFotoInp');if(old)old.remove();var inp=document.createElement('input');inp.type='file';inp.id='psmFotoInp';inp.accept='image/*';if(opts.cam)inp.setAttribute('capture','environment');if(opts.multi)inp.multiple=true;
+  inp.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0';document.body.appendChild(inp);PSM_FQ.inp=inp;
+  try{sessionStorage.setItem('psm_foto_pick',JSON.stringify({id:opts.id,i:opts.i,t:Date.now()}));}catch(e){}
+  inp.addEventListener('change',function(){try{sessionStorage.removeItem('psm_foto_pick');}catch(e){}var F=[].slice.call(inp.files||[]);setTimeout(function(){inp.remove();},1000);if(F.length)cb(F);});
+  inp.click();}
+// si el teléfono cerró la página mientras la cámara estaba abierta, se avisa (la foto no alcanzó a llegar)
+(function(){try{var p=JSON.parse(sessionStorage.getItem('psm_foto_pick')||'null');if(p&&Date.now()-p.t<15*60000){sessionStorage.removeItem('psm_foto_pick');setTimeout(function(){psmFLog({ok:false,tipo:'cámara',err:'La página se recargó mientras la cámara estaba abierta (el teléfono la cerró por falta de memoria). La foto no llegó a la app.'});psmToast('⚠ El teléfono recargó la app mientras usabas la cámara y la foto no alcanzó a llegar. Vuelve a tomarla (consejo: cierra otras apps).','#b45309');},6000);}}catch(e){}})();
+
+// ── 2) Reducir la foto sin agotar la memoria del teléfono ──
+function psmFotoProc(file){var t0=Date.now();return new Promise(function(ok,ko){
+  if(!file)return ko(new Error('No llegó ningún archivo'));
+  var nm=(file.name||'').toLowerCase(),heic=/\.(heic|heif)$/.test(nm)||/heic|heif/.test(file.type||'');
+  if(file.type&&!/^image\//.test(file.type)&&!heic)return ko(new Error('El archivo no es una imagen ('+(file.type||nm)+')'));
+  if(file.size>PSM_FQ.max)return ko(new Error('La foto pesa '+psmMB(file.size)+'. El máximo es '+psmMB(PSM_FQ.max)+'.'));
+  if(!file.size)return ko(new Error('El archivo está vacío (0 bytes)'));
+  var dibujar=function(src,w,h,cerrar){var s=Math.min(1,PSM_FQ.lado/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*s));c.height=Math.max(1,Math.round(h*s));var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,0,0,c.width,c.height);if(cerrar)cerrar();
+    var q=PSM_FQ.calidad,fin=function(b){if(!b)return ko(new Error('El navegador no pudo comprimir la foto'));if(b.size>900*1024&&q>0.5){q-=0.14;return c.toBlob(fin,'image/jpeg',q);}var fr=new FileReader();fr.onload=function(){c.width=c.height=1;ok({src:fr.result,w:Math.round(w*s),h:Math.round(h*s),orig:file.size,peso:b.size,ms:Date.now()-t0,tipo:file.type||nm});};fr.onerror=function(){ko(new Error('No se pudo leer la foto comprimida'));};fr.readAsDataURL(b);};
+    if(c.toBlob)c.toBlob(fin,'image/jpeg',q);else{var d=c.toDataURL('image/jpeg',q);ok({src:d,w:c.width,h:c.height,orig:file.size,peso:Math.round(d.length*.75),ms:Date.now()-t0,tipo:file.type||nm});}};
+  var porImg=function(){var url=URL.createObjectURL(file),im=new Image();im.onload=function(){try{dibujar(im,im.naturalWidth,im.naturalHeight,function(){URL.revokeObjectURL(url);});}catch(e){URL.revokeObjectURL(url);ko(e);}};
+    im.onerror=function(){URL.revokeObjectURL(url);ko(new Error(heic?'Este navegador no puede abrir fotos HEIC. En el iPhone: Ajustes → Cámara → Formatos → “Más compatible”, o usa Safari.':'El navegador no pudo abrir la imagen (formato no compatible o archivo dañado)'));};im.src=url;};
+  if(window.createImageBitmap){createImageBitmap(file,{imageOrientation:'from-image'}).then(function(bm){try{dibujar(bm,bm.width,bm.height,function(){bm.close&&bm.close();});}catch(e){porImg();}}).catch(porImg);}else porImg();});}
+
+// ── 3) Subir con progreso (XHR), tiempo máximo y token de seguridad ──
+function psmXhrPost(cuerpo,prog){return new Promise(function(ok){var x=new XMLHttpRequest();x.open('POST',PSM_SUPA_URL+'/rest/v1/pie_data');
+  x.setRequestHeader('apikey',PSM_SUPA_KEY);x.setRequestHeader('Authorization','Bearer '+PSM_SUPA_KEY);x.setRequestHeader('Content-Type','application/json');x.setRequestHeader('Prefer','resolution=merge-duplicates,return=minimal');
+  try{if(typeof PSM_TOKEN!=='undefined'&&PSM_TOKEN&&PSM_HDR_OK)x.setRequestHeader('x-sman-token',PSM_TOKEN);}catch(e){}
+  x.timeout=Math.max(45000,Math.round(cuerpo.length/8));
+  if(x.upload&&prog)x.upload.onprogress=function(e){if(e.lengthComputable)prog(Math.min(99,Math.round(e.loaded/e.total*100)));};
+  x.onload=function(){if(x.status>=200&&x.status<300)ok({ok:true,st:x.status});else ok({ok:false,st:x.status,msg:'error '+x.status+(x.responseText?' · '+String(x.responseText).slice(0,140):''),rls:psmEsRLS(x.status,x.responseText)});};
+  x.onerror=function(){ok({ok:false,msg:'sin conexión (la señal se cortó)',red:true});};x.ontimeout=function(){ok({ok:false,msg:'tiempo agotado: la señal está muy lenta',red:true});};x.onabort=function(){ok({ok:false,msg:'carga cancelada',red:true});};
+  x.send(cuerpo);});}
+function psmFetchT(url,ms){var c=window.AbortController?new AbortController():null,t=setTimeout(function(){if(c)c.abort();},ms||20000);return fetch(url,{headers:{apikey:PSM_SUPA_KEY,Authorization:'Bearer '+PSM_SUPA_KEY},cache:'no-store',signal:c?c.signal:undefined}).then(function(r){clearTimeout(t);if(!r.ok)throw new Error('error '+r.status);return r.json();},function(e){clearTimeout(t);throw new Error(e&&e.name==='AbortError'?'tiempo agotado':'sin conexión');});}
+
+// ── 4) Cola: primero queda guardada en el equipo, después sube ──
+// borrados hechos en este equipo (para no revivir una foto borrada al mezclar)
+function psmFDelGet(){try{return JSON.parse(localStorage.getItem('psm_foto_del')||'{}');}catch(e){return {};}}
+function psmFDelSet(id,i,ts){var d=psmFDelGet();d[id+'|'+i]=ts;try{localStorage.setItem('psm_foto_del',JSON.stringify(d));}catch(e){}}
+function psmFotoTumbas(a){var m=a&&a[2]&&a[2].del;return m&&typeof m==='object'?m:{};}
+function psmFotoMezclar(nube,loc,id){var o=[null,null],D={},L=psmFDelGet(),tn=psmFotoTumbas(nube),tl=psmFotoTumbas(loc);
+  for(var i=0;i<2;i++){var d=[tn[i]||'',tl[i]||'',L[id+'|'+i]||''].sort().pop();if(d)D[i]=d;var a=(nube||[])[i]||null,b=(loc||[])[i]||null;
+    var c=a&&b?((b.ts||'')>(a.ts||'')?b:a):(a||b);if(c&&d&&(c.ts||'')<=d)c=null;o[i]=c;}
+  if(Object.keys(D).length)o.push({del:D});return o;}
+// el contador de fotos mira solo los dos espacios de foto (el tercero guarda los borrados)
+psmFotoHay=function(arr){return (arr||[]).slice(0,2).filter(function(f){return f&&f.src;}).length;};
+function psmFotoEncolar(it){it.k=it.tipo+'|'+it.id+'|'+(it.tipo==='s'?it.i:it.eid);it.n=it.n||0;it.est='cola';it.cre=it.cre||new Date().toISOString();it.prox=0;
+  return psmFQput(it).then(function(){PSM_FQ.est[it.k]='cola';psmFQUI();setTimeout(psmFQrun,50);return true;},function(e){psmFLog({ok:false,tipo:'cola',ran:it.ran,err:'No se pudo guardar en el equipo: '+(e&&e.message||e)});psmToast('❌ El teléfono no dejó guardar la foto (memoria llena o navegación privada). '+(e&&e.message||''),'#d03b3b');return false;});}
+function psmFQrun(){if(PSM_FQ.run)return Promise.resolve();PSM_FQ.run=true;clearTimeout(PSM_FQ.tm);
+  return psmFQall().then(function(L){var now=Date.now();L=L.filter(function(x){return (x.prox||0)<=now;}).sort(function(a,b){return a.cre<b.cre?-1:1;});
+    return L.reduce(function(p,it){return p.then(function(){return psmFQuno(it);});},Promise.resolve());})
+   .catch(function(){}).then(function(){PSM_FQ.run=false;return psmFQall();}).then(function(L){psmFQUI(L);if(L.length){var m=Math.min.apply(null,L.map(function(x){return x.prox||0;}));PSM_FQ.tm=setTimeout(psmFQrun,Math.max(3000,m-Date.now()));}});}
+function psmFQuno(it){var t0=Date.now(),r=psmRow(it.id);PSM_FQ.est[it.k]='subiendo';PSM_FQ.prog[it.k]=0;psmFQUI();psmFQPintar(it);
+  var prog=function(p){PSM_FQ.prog[it.k]=p;psmFQPintar(it);psmFQUI();};
+  var subir=it.tipo==='e'?psmXhrPost(JSON.stringify({id:'psm_foto_'+it.id+'_e'+it.eid,data:JSON.stringify(it.del?{del:true,ts:it.ts,by:it.by}:{src:it.src,ts:it.ts,by:it.by,ran:it.ran,w:it.w,h:it.h,orig:it.orig,dev:it.dev}),updated_at:new Date().toISOString()}),prog)
+    :psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.psm_foto_'+encodeURIComponent(it.id)+'&select=data',20000).then(function(j){var nube=[];try{nube=j&&j[0]?JSON.parse(j[0].data||'[]'):[];}catch(e){nube=[];}
+        return psmIDBget(it.id).then(function(loc){var m=psmFotoMezclar(nube,loc,it.id);it._m=m;return psmXhrPost(JSON.stringify({id:'psm_foto_'+it.id,data:JSON.stringify(m),updated_at:new Date().toISOString()}),prog);});},function(e){return {ok:false,msg:e.message,red:true};});
+  return subir.then(function(x){
+    if(!x.ok)return x;
+    // comprobación: el registro existe en la nube
+    return psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.'+encodeURIComponent('psm_foto_'+it.id+(it.tipo==='e'?'_e'+it.eid:''))+'&select=id,updated_at',15000).then(function(j){return j&&j[0]?x:{ok:false,msg:'la nube respondió OK pero el registro no aparece'};},function(){return x;});
+  }).then(function(x){var ms=Date.now()-t0;
+    if(x.ok){return psmFQdel(it.k).then(function(){PSM_FQ.est[it.k]='ok';delete PSM_FQ.prog[it.k];
+        if(it.tipo==='s'&&it._m){PSM_FOTOS[it.id]=it._m;PSM_FOTO_EST[it.id]='nube';psmIDBset(it.id,it._m);if(r){var n=psmFotoHay(it._m);if((r.fotos||0)!==n){r.fotos=n;psmSave(true);}}try{var p=psmFotoPendGet();delete p[it.id];psmFotoPendSet(p);}catch(e){}setTimeout(function(){psmFotosRefrescar(it.id);},2600);}
+        if(it.tipo==='e'){var E=PSM_EV[it.id];if(E){E.forEach(function(f){if(f.eid===it.eid){f.est='nube';delete f.src_loc;}});if(it.del)PSM_EV[it.id]=E.filter(function(f){return f.eid!==it.eid;});if(r){var ne=PSM_EV[it.id].filter(function(f){return !f.del;}).length;if((r.fev||0)!==ne){r.fev=ne;psmSave(true);}}}}
+        psmFLog({ok:true,tipo:it.del?'borrar':it.tipo==='e'?'evidencia':'foto '+(it.i+1),ran:it.ran,size:it.orig,peso:it.peso,ms:ms,intentos:it.n+1});
+        if(!it.del)psmToast('✅ Imagen cargada correctamente · RAN '+(it.ran||''),'#16a34a');psmFQPintar(it);});}
+    it.n++;var esp=Math.min(300,10*Math.pow(2,Math.min(it.n-1,5)));it.prox=Date.now()+esp*1000;it.est='error';it.err=x.msg;PSM_FQ.est[it.k]='error';delete PSM_FQ.prog[it.k];
+    if(x.rls){try{PSM_RLS.foto=true;}catch(e){}it.err='la nube no tiene permiso para guardar fotos (revisar seguridad en Supabase)';}
+    psmFLog({ok:false,tipo:it.del?'borrar':it.tipo==='e'?'evidencia':'foto '+(it.i+1),ran:it.ran,size:it.orig,peso:it.peso,ms:ms,intentos:it.n,err:it.err});
+    if(it.n===1||it.n%5===0)psmToast('❌ Error de carga (RAN '+(it.ran||'')+'): '+it.err+'. La foto quedó guardada en este equipo y se reintenta sola en '+esp+' s.','#d03b3b');
+    return psmFQput(it).then(function(){psmFQPintar(it);});});}
+['online','focus'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(psmFQrun,1500);});});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')setTimeout(psmFQrun,1200);});
+setInterval(function(){psmFQall().then(function(L){if(L.length)psmFQrun();});},30000);
+(function(){var t=setInterval(function(){try{if(session&&document.getElementById('psmSide')){clearInterval(t);psmFQmigrar().then(function(){setTimeout(psmFQrun,2500);});}}catch(e){}},1500);})();
+// lo que quedó pendiente con el sistema anterior pasa a la cola nueva
+function psmFQmigrar(){var p={};try{p=psmFotoPendGet();}catch(e){}var ids=Object.keys(p);if(!ids.length)return Promise.resolve();
+  return ids.reduce(function(pr,id){return pr.then(function(){return psmIDBget(id).then(function(a){var r=psmRow(id);(a||[]).forEach(function(f,i){if(f&&f.src)psmFotoEncolar({tipo:'s',id:id,i:i,ts:f.ts,by:f.by,ran:r&&r.ran,src:'',orig:null,peso:Math.round((f.src.length||0)*.75)});});});});},Promise.resolve()).then(function(){try{psmFotoPendSet({});}catch(e){}});}
+
+// ── 5) Las dos fotos principales de la ficha ──
+psmFotoPick=function(id,i){psmFotoInput({id:id,i:i},function(F){psmFotoTomar(id,i,F[0]);});};
+function psmFotoTomar(id,i,file){var r=psmRow(id);if(!r)return;psmFotoSlotMsg(id,i,'⏳ Preparando foto…');PSM_FQ.prep++;psmFQUI();
+  return psmFotoProc(file).then(function(P){var f={src:P.src,ts:new Date().toISOString(),by:psmUsuarioF()};return psmFotoGuardarLocal(id,i,f).then(function(){return psmFotoEncolar({tipo:'s',id:id,i:i,ts:f.ts,by:f.by,ran:r.ran,orig:P.orig,peso:P.peso,w:P.w,h:P.h,dev:psmDisp()});});})
+   .catch(function(e){psmFLog({ok:false,tipo:'foto '+(i+1),ran:r.ran,size:file&&file.size,err:e.message||String(e)});psmToast('❌ Error de carga: '+(e.message||e),'#d03b3b');psmFotosRefrescar(id);}).then(function(){PSM_FQ.prep--;psmFQUI();});}
+function psmFotoGuardarLocal(id,i,f,delTs){var r=psmRow(id);return psmIDBget(id).then(function(a){var base=(a&&a.length?a:PSM_FOTOS[id])||[],meta=base[2]&&base[2].del?{del:Object.assign({},base[2].del)}:null,arr=base.slice(0,2);while(arr.length<2)arr.push(null);arr[i]=f;
+  if(delTs){meta=meta||{del:{}};meta.del[i]=delTs;}if(meta)arr.push(meta);PSM_FOTOS[id]=arr;PSM_FOTO_EST[id]='local';
+  return psmIDBset(id,arr).then(function(ok){if(!ok)throw new Error('No se pudo guardar en el teléfono (memoria llena o navegación privada)');if(r){r.fotos=psmFotoHay(arr);PSM_ULT_ACCION=Date.now();psmSave();}psmFotosRefrescar(id);return arr;});});}
+psmFotoPut=function(id,i,src){if(src)return psmFotoGuardarLocal(id,i,{src:src,ts:new Date().toISOString(),by:psmUsuarioF()}).then(function(){var r=psmRow(id);return psmFotoEncolar({tipo:'s',id:id,i:i,ts:new Date().toISOString(),ran:r&&r.ran});});
+  var ts=new Date().toISOString();psmFDelSet(id,i,ts);var r=psmRow(id);return psmFotoGuardarLocal(id,i,null,ts).then(function(){return psmFotoEncolar({tipo:'s',id:id,i:i,ts:ts,del:true,ran:r&&r.ran});});};
+psmFotoDel=function(id,i){if(confirm('¿Eliminar esta foto?'))psmFotoPut(id,i,null);};
+// "subir ahora" del sistema anterior: usa la cola (mezcla con la nube, no la pisa)
+psmFotoSubir=function(id,aviso){return psmIDBget(id).then(function(a){var r=psmRow(id),n=0;return Promise.all((a||[]).map(function(f,i){if(!f||!f.src)return null;n++;return psmFotoEncolar({tipo:'s',id:id,i:i,ts:f.ts,by:f.by,ran:r&&r.ran});})).then(function(){if(aviso&&n)psmToast('Subiendo '+n+' foto(s)…','#1d4ed8');return n>0;});});};
+function psmFotoSlotMsg(id,i,t){var b=document.getElementById('psmFotos');if(!b)return;var s=b.querySelectorAll('.psmFoto')[i];if(s&&!s.querySelector('.fqSt'))s.insertAdjacentHTML('beforeend','<span class="fqSt">'+t+'</span>');}
+function psmFotosRefrescar(id){var r=psmRow(id);if(!r)return;try{var m=document.getElementById('psmModal');if(m&&document.getElementById('psmFotos'))psmFotosRender(r);}catch(e){}try{if(typeof currentView!=='undefined'&&currentView==='reporte'&&document.getElementById('rpF_'+id))psmRepFotos(id);}catch(e){}}
+// estado de cada foto sobre la miniatura
+function psmFQPintar(it){try{var pr=PSM_FQ.prog[it.k],est=PSM_FQ.est[it.k];var txt=est==='subiendo'?'⬆ Subiendo '+(pr||0)+'%':est==='cola'?'⏳ En cola':est==='error'?'❌ Error · se reintenta sola':est==='ok'?'✅ En la nube':'';
+  if(it.tipo==='s'){[document.getElementById('psmFotos'),document.getElementById('rpF_'+it.id)].forEach(function(b){if(!b)return;var s=b.querySelectorAll('.psmFoto')[it.i];if(!s)return;var x=s.querySelector('.fqSt');if(!x){s.insertAdjacentHTML('beforeend','<span class="fqSt"></span>');x=s.querySelector('.fqSt');}x.className='fqSt '+(est||'');x.innerHTML=txt+(est==='subiendo'?'<i style="width:'+(pr||0)+'%"></i>':'');if(est==='ok')setTimeout(function(){if(x&&x.parentNode)x.remove();},2500);});}
+  else{var c=document.querySelector('.evF[data-eid="'+it.eid+'"] .fqSt');if(c){c.className='fqSt '+(est||'');c.innerHTML=txt+(est==='subiendo'?'<i style="width:'+(pr||0)+'%"></i>':'');}}}catch(e){}}
+(function(){var bf=psmFotosRender;psmFotosRender=function(r){var res=bf.apply(this,arguments);setTimeout(function(){psmFQall().then(function(L){L.forEach(function(it){if(it.id===r.id)psmFQPintar(it);});});psmEvRender(r);},250);return res;};})();
+(function(){var bf=psmRepFotos;psmRepFotos=function(id){var res=bf.apply(this,arguments);setTimeout(function(){psmFQall().then(function(L){L.forEach(function(it){if(it.id===id&&it.tipo==='s')psmFQPintar(it);});});},250);return res;};})();
+// la cola guarda solo la referencia: la foto en sí está en el equipo (psm_fotos)
+
+// ── 6) Más fotos / evidencias (todas las que se necesiten) ──
+var PSM_EV={};
+function psmEvGet(id,forzar){var loc=function(){return psmFQall().then(function(L){return L.filter(function(it){return it.tipo==='e'&&it.id===id&&!it.del;}).map(function(it){return {eid:it.eid,src:it.src,ts:it.ts,by:it.by,est:'local'};});});};
+  if(PSM_EV[id]&&!forzar)return Promise.resolve(PSM_EV[id]);
+  return psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=like.'+encodeURIComponent('psm_foto_'+id+'_e')+'*&select=id,data',30000).then(function(j){var o=[];(j||[]).forEach(function(x){try{var d=JSON.parse(x.data||'{}');var eid=String(x.id).split('_e').pop();if(d.del)return;o.push({eid:eid,src:d.src,ts:d.ts,by:d.by,est:'nube'});}catch(e){}});
+      return loc().then(function(l){var ids={};o.forEach(function(f){ids[f.eid]=1;});l.forEach(function(f){if(!ids[f.eid])o.push(f);});return psmFQall().then(function(Q){var del={};Q.forEach(function(it){if(it.tipo==='e'&&it.id===id&&it.del)del[it.eid]=1;});o=o.filter(function(f){return !del[f.eid];});o.sort(function(a,b){return a.ts<b.ts?-1:1;});PSM_EV[id]=o;PSM_EV_EST[id]='ok';return o;});});},
+    function(){PSM_EV_EST[id]='err';return loc().then(function(l){PSM_EV[id]=l;return l;});});}
+var PSM_EV_EST={};
+function psmEvRender(r){var box=document.getElementById('psmFotos');if(!box||!r)return;var wrap=document.getElementById('psmEv');if(!wrap){box.insertAdjacentHTML('afterend','<div class="evWrap" id="psmEv"><div class="evH"><b>📷 Más fotos / evidencias</b><span id="psmEvN"></span></div><div class="evG" id="psmEvG"><div class="psmFotoLoad">Cargando…</div></div></div>');wrap=document.getElementById('psmEv');}
+  var ed=psmCanEdit('plansman')||psmCanEdit('reporte');
+  psmEvGet(r.id).then(function(L){var g=document.getElementById('psmEvG');if(!g)return;var n=document.getElementById('psmEvN');if(n)n.textContent=L.length?L.length+' foto(s)':'';
+    g.innerHTML=L.map(function(f,i){return '<div class="evF" data-eid="'+f.eid+'"><img src="'+f.src+'" loading="lazy" onclick="psmEvFull(\''+r.id+'\','+i+')" alt="Evidencia '+(i+1)+'"><small>'+(f.ts?psmFd(psmIso(new Date(f.ts))):'')+(f.by?' · '+psmEsc(f.by):'')+'</small>'+(ed?'<button class="evDel" title="Eliminar" onclick="psmEvDel(\''+r.id+'\',\''+f.eid+'\')">🗑</button>':'')+'<span class="fqSt '+(f.est==='local'?'cola':'')+'">'+(f.est==='local'?'⏳ En cola':'')+'</span></div>';}).join('')+
+      (ed?'<button class="evAdd" onclick="psmEvPick(\''+r.id+'\',true)"><b>📸</b>Tomar foto</button><button class="evAdd" onclick="psmEvPick(\''+r.id+'\',false)"><b>🖼️</b>Galería<small>puedes elegir varias</small></button>':(L.length?'':'<p class="auVacio">Sin fotos adicionales.</p>'))+
+      (PSM_EV_EST[r.id]==='err'?'<div class="fotoAv err">No se pudo revisar la nube (sin conexión). Se muestran las fotos de este equipo. <button onclick="PSM_EV[\''+r.id+'\']=null;psmEvRender(psmRow(\''+r.id+'\'))">Reintentar</button></div>':'');
+    psmFQall().then(function(Q){Q.forEach(function(it){if(it.id===r.id&&it.tipo==='e')psmFQPintar(it);});});});}
+function psmEvFull(id,i){var f=(PSM_EV[id]||[])[i];if(!f)return;var d=document.createElement('div');d.id='psmFull';d.className='psmFull';d.onclick=function(){d.remove();};d.innerHTML='<img src="'+f.src+'"/>';document.body.appendChild(d);}
+function psmEvPick(id,cam){psmFotoInput({id:id,i:'e',cam:cam,multi:!cam},function(F){psmEvAgregar(id,F);});}
+function psmEvAgregar(id,F){var r=psmRow(id);if(!r)return Promise.resolve();var ok=0,mal=0;PSM_FQ.prep+=F.length;psmFQUI();if(F.length>1)psmToast('Preparando '+F.length+' fotos…','#1d4ed8');
+  return F.reduce(function(p,file,k){return p.then(function(){return psmFotoProc(file).then(function(P){var eid=Date.now().toString(36)+Math.random().toString(36).slice(2,6)+k,f={eid:eid,src:P.src,ts:new Date().toISOString(),by:psmUsuarioF(),est:'local'};
+      PSM_EV[id]=(PSM_EV[id]||[]).concat([f]);ok++;return psmFotoEncolar({tipo:'e',id:id,eid:eid,src:P.src,ts:f.ts,by:f.by,ran:r.ran,orig:P.orig,peso:P.peso,w:P.w,h:P.h,dev:psmDisp()});},
+      function(e){mal++;psmFLog({ok:false,tipo:'evidencia',ran:r.ran,size:file&&file.size,err:e.message||String(e)});psmToast('❌ Error de carga ('+(file&&file.name||'foto')+'): '+(e.message||e),'#d03b3b');}).then(function(){PSM_FQ.prep--;psmFQUI();});});},Promise.resolve())
+   .then(function(){r.fev=(PSM_EV[id]||[]).length;PSM_ULT_ACCION=Date.now();psmSave();psmEvRender(r);if(F.length>1)psmToast(ok+' foto(s) guardada(s) en el equipo y subiendo'+(mal?' · '+mal+' con error':''),mal?'#d97706':'#1d4ed8');});}
+function psmEvDel(id,eid){if(!confirm('¿Eliminar esta foto?'))return;var r=psmRow(id);var f=(PSM_EV[id]||[]).filter(function(x){return x.eid===eid;})[0];PSM_EV[id]=(PSM_EV[id]||[]).filter(function(x){return x.eid!==eid;});
+  psmFQdel('e|'+id+'|'+eid).catch(function(){}).then(function(){if(f&&f.est==='local'){psmEvRender(r);return;}psmFotoEncolar({tipo:'e',id:id,eid:eid,del:true,ts:new Date().toISOString(),by:psmUsuarioF(),ran:r&&r.ran});psmEvRender(r);});}
+
+// ── 7) Aviso flotante: fotos subiendo / pendientes ──
+function psmFQUI(L){var go=function(L){var n=L.length,el=document.getElementById('fqBar');if(!n&&PSM_FQ.prep>0){if(!el){el=document.createElement('button');el.id='fqBar';el.onclick=psmFQPanel;document.body.appendChild(el);}el.className='';el.innerHTML='⏳ Preparando '+PSM_FQ.prep+' foto(s)…';return;}if(!n){if(el){el.classList.add('ok');el.innerHTML='✅ Todas las fotos están en la nube';clearTimeout(PSM_FQ.ht);PSM_FQ.ht=setTimeout(function(){var e=document.getElementById('fqBar');if(e)e.remove();},3000);}return;}
+    if(!el){el=document.createElement('button');el.id='fqBar';el.onclick=psmFQPanel;document.body.appendChild(el);}el.classList.remove('ok');
+    var sub=L.filter(function(x){return PSM_FQ.est[x.k]==='subiendo';}),err=L.filter(function(x){return x.est==='error'&&PSM_FQ.est[x.k]!=='subiendo';});
+    var p=sub.length?Math.round(sub.reduce(function(s,x){return s+(PSM_FQ.prog[x.k]||0);},0)/sub.length):null;
+    el.className=err.length&&!sub.length?'err':'';el.innerHTML=(sub.length?'⬆ Subiendo foto · '+p+'%':err.length?'⚠ '+err.length+' foto(s) sin subir · se reintenta sola':'⏳ '+n+' foto(s) en cola')+(n>1?' <small>('+n+' en total)</small>':'')+(PSM_FQ.prep>0?' <small>· preparando '+PSM_FQ.prep+'</small>':'')+(p!=null?'<i style="width:'+p+'%"></i>':'');};
+  if(L)go(L);else psmFQall().then(go);}
+function psmFQPanel(){Promise.all([psmFQall(),psmFLogLocal()]).then(function(R){var Q=R[0],Lg=R[1].slice(-40).reverse();var old=document.getElementById('psmDrillM');if(old)old.remove();
+  var m=document.createElement('div');m.id='psmDrillM';m.className='psmModal drM';m.style.zIndex=10500;m.onclick=function(){m.remove();};
+  m.innerHTML='<div class="psmMBox drBox" onclick="event.stopPropagation()"><div class="psmMHead"><div><div class="psmMRan">📷 Carga de fotos</div><div class="psmMCli">Las fotos quedan guardadas en este equipo hasta que lleguen a la nube. No cierres sesión ni borres los datos del navegador mientras haya fotos en cola.</div></div><button class="psmMX" onclick="document.getElementById(\'psmDrillM\').remove()">✕</button></div><div class="drBody">'+
+    '<h4>En cola ('+Q.length+')</h4>'+(Q.length?'<div class="auTW"><table class="psmTbl mini auTb drTb"><thead><tr><th>RAN</th><th>Foto</th><th>Estado</th><th>Intentos</th><th>Último error</th><th>Próximo intento</th></tr></thead><tbody>'+Q.map(function(it){var e=PSM_FQ.est[it.k]||it.est;return '<tr><td>'+psmEsc(it.ran||'')+'</td><td>'+(it.del?'Borrar ':'')+(it.tipo==='e'?'Evidencia':'Foto '+(it.i+1))+'</td><td>'+(e==='subiendo'?'⬆ '+(PSM_FQ.prog[it.k]||0)+'%':e==='error'?'❌ Error':'⏳ En cola')+'</td><td>'+(it.n||0)+'</td><td>'+psmEsc(it.err||'')+'</td><td>'+(it.prox&&it.prox>Date.now()?'en '+Math.round((it.prox-Date.now())/1000)+' s':'ahora')+'</td></tr>';}).join('')+'</tbody></table></div>':'<p class="auVacio">✅ No hay fotos pendientes: todas están en la nube.</p>')+
+    '<h4 style="margin-top:14px">Registro de cargas de este equipo</h4><div class="auTW"><table class="psmTbl mini auTb drTb"><thead><tr><th>Fecha</th><th>Usuario</th><th>Equipo</th><th>RAN</th><th>Foto</th><th>Tamaño original</th><th>Resultado</th></tr></thead><tbody>'+(Lg.length?Lg.map(function(e){return '<tr><td>'+psmEsc(new Date(e.t).toLocaleString('es-CL'))+'</td><td>'+psmEsc(e.u||'')+'</td><td>'+psmEsc(e.dev||'')+'</td><td>'+psmEsc(e.ran||'')+'</td><td>'+psmEsc(e.tipo||'')+'</td><td>'+psmMB(e.size)+'</td><td>'+(e.ok?'✅ '+(e.ms?Math.round(e.ms/100)/10+' s':''):'❌ '+psmEsc(e.err||''))+'</td></tr>';}).join(''):'<tr><td colspan="7"><span class="nd">Sin registros</span></td></tr>')+'</tbody></table></div>'+
+    (psmIsAdmin()?'<p><button class="psmBtn ghost sm" onclick="psmFLogTodos()">Ver registro de todos los equipos</button></p>':'')+'</div><div class="psmMFoot"><button class="psmBtn" onclick="psmFQrun().then(psmFQPanel)">Reintentar ahora</button><span style="flex:1"></span><button class="psmBtn ghost" onclick="document.getElementById(\'psmDrillM\').remove()">Cerrar</button></div></div>';
+  document.body.appendChild(m);});}
+function psmFLogTodos(){psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=like.meta_fotolog_*&select=id,data',30000).then(function(j){var L=[];(j||[]).forEach(function(x){try{L=L.concat(JSON.parse(x.data||'[]'));}catch(e){}});L.sort(function(a,b){return a.t<b.t?1:-1;});L=L.slice(0,300);
+  var b=document.querySelector('#psmDrillM .drBody');if(!b)return;var ok=L.filter(function(e){return e.ok;}).length;b.innerHTML='<h4>Registro de cargas · todos los equipos ('+L.length+') · '+ok+' correctas · '+(L.length-ok)+' con error</h4><div class="auTW"><table class="psmTbl mini auTb drTb"><thead><tr><th>Fecha</th><th>Usuario</th><th>Equipo</th><th>Red</th><th>RAN</th><th>Foto</th><th>Tamaño</th><th>Resultado</th></tr></thead><tbody>'+L.map(function(e){return '<tr><td>'+psmEsc(new Date(e.t).toLocaleString('es-CL'))+'</td><td>'+psmEsc(e.u||'')+'</td><td>'+psmEsc(e.dev||'')+'</td><td>'+psmEsc(e.net||'')+'</td><td>'+psmEsc(e.ran||'')+'</td><td>'+psmEsc(e.tipo||'')+'</td><td>'+psmMB(e.size)+'</td><td>'+(e.ok?'✅':'❌ '+psmEsc(e.err||''))+'</td></tr>';}).join('')+'</tbody></table></div>';},function(e){psmToast('No se pudo leer el registro: '+e.message,'#d03b3b');});}
+// antes de cerrar sesión o la página: avisar si hay fotos sin subir
+window.addEventListener('beforeunload',function(e){if(PSM_FQ.prep>0||document.getElementById('fqBar')&&!document.getElementById('fqBar').classList.contains('ok')){e.preventDefault();e.returnValue='Hay fotos que todavía no suben a la nube.';return e.returnValue;}});
+(function(){if(typeof doLogout!=='function')return;var bl=doLogout;doLogout=function(){var a=arguments,t=this;return psmFQall().then(function(L){if(L.length&&!confirm('Hay '+L.length+' foto(s) que todavía no suben a la nube. Quedan guardadas en este equipo y subirán cuando vuelvas a entrar.\n\n¿Cerrar sesión igual?'))return;return bl.apply(t,a);});};})();
+
+// ── 8) Corrección: el rango de meses aceptaba como máximo 5 años ──
+psmMesesRango=function(d,h){var o=[],m=d;while(m&&m<=h&&o.length<240){o.push(m);var y=+m.slice(0,4),mm=+m.slice(5,7)+1;if(mm>12){mm=1;y++;}m=y+'-'+('0'+mm).slice(-2);}return o;};
+// quien muestra fotos recibe solo los dos espacios de foto (el tercero es interno: borrados)
+(function(){var bg=psmFotosGet;psmFotosGet=function(id){return bg.apply(this,arguments).then(function(a){return (a||[]).slice(0,2);});};})();
+// pedir al navegador que no borre los datos guardados de la app (fotos en cola) cuando falta espacio
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(function(p){if(!p)navigator.storage.persist();});}catch(e){}
 
 </script>
 </body>
