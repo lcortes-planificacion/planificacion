@@ -3290,7 +3290,7 @@ html body #loginScreen{background:radial-gradient(1200px 600px at 85% -10%,rgba(
         <div><h1>Planificación <span>SMAN</span></h1><p>Control de producción</p></div></div>
       <div class="lgChips"><span>Operaciones</span></div>
       <ul class="lgFeat"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h6M7 17h9"/></svg></i><div><b>Planificación y Gantt</b><small>Ensamble, desarme y evaluación con fecha estimada</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 2h3v15H5V6h3z"/><path d="M9 12l2 2 4-4"/></svg></i><div><b>Reporte diario</b><small>Avance por actividad, turno y responsables</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></i><div><b>Panel de TV</b><small>Desarme, informe, costeo y ensamble en vivo</small></div></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></i><div><b>Machine Shop</b><small>Solicitudes, avisos y control de plazos</small></div></li></ul>
-      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v48</span></div>
+      <div class="lgFoot"><span>Sucursal Antofagasta · Planificación y Control de Producción</span><span class="lgVer">v49</span></div>
     </div>
     <div class="lBox" id="lBox">
       <h2>Bienvenido</h2>
@@ -25121,7 +25121,7 @@ function psmInfEnviar(id){
 function psmSoloCarga(fn){return function(){var P=PSM.personal;if(!Array.isArray(P))return fn.apply(this,arguments);PSM.personal=P.filter(function(p){return p.cp!==false;});try{return fn.apply(this,arguments);}finally{PSM.personal=P;}};}
 psmCarga=psmSoloCarga(psmCarga);psmSaturacion=psmSoloCarga(psmSaturacion);
 // ── recuperar accesos a mano (botón en Seguridad) y otra vez después de cada carga de la nube ──
-var PSM_APP_VER='48 · caché v48';var PSM_BOV_PASS='';
+var PSM_APP_VER='49 · caché v49';var PSM_BOV_PASS='';
 (function(){var bs=psmBovSync;psmBovSync=async function(pass){PSM_BOV_PASS=pass;return bs.apply(this,arguments);};})();
 async function psmAccRecuperar(){
   if(!psmIsAdmin()){psmToast('Solo el administrador','#d03b3b');return;}
@@ -27171,9 +27171,17 @@ function psmFDelGet(){try{return JSON.parse(localStorage.getItem('psm_foto_del')
 function psmFDelSet(id,i,ts){var d=psmFDelGet();d[id+'|'+i]=ts;try{localStorage.setItem('psm_foto_del',JSON.stringify(d));}catch(e){}}
 function psmFotoTumbas(a){var m=a&&a[2]&&a[2].del;return m&&typeof m==='object'?m:{};}
 function psmFotoMezclar(nube,loc,id){var o=[null,null],D={},L=psmFDelGet(),tn=psmFotoTumbas(nube),tl=psmFotoTumbas(loc);
+  // respaldo: la última foto que salió de cada espacio queda guardada en el registro (la nube no acepta achicar el registro a menos de la mitad)
+  var B=Object.assign({},(loc&&loc[2]&&loc[2].bak)||{},(nube&&nube[2]&&nube[2].bak)||{});
   for(var i=0;i<2;i++){var d=[tn[i]||'',tl[i]||'',L[id+'|'+i]||''].sort().pop();if(d)D[i]=d;var a=(nube||[])[i]||null,b=(loc||[])[i]||null;
-    var c=a&&b?((b.ts||'')>(a.ts||'')?b:a):(a||b);if(c&&d&&(c.ts||'')<=d)c=null;o[i]=c;}
-  if(Object.keys(D).length)o.push({del:D});return o;}
+    var c=a&&b?((b.ts||'')>(a.ts||'')?b:a):(a||b);if(c&&d&&(c.ts||'')<=d)c=null;o[i]=c;
+    if(a&&a.src&&(!c||c.src!==a.src))B[i]={src:a.src,ts:a.ts,by:a.by,sale:new Date().toISOString()};}
+  if(Object.keys(D).length||Object.keys(B).length){var m={};if(Object.keys(D).length)m.del=D;if(Object.keys(B).length)m.bak=B;o.push(m);}return o;}
+// borrar una evidencia: se marca como borrada sin achicar el registro (queda la foto como respaldo)
+function psmEvBorrarNube(it,prog){var rid='psm_foto_'+it.id+'_e'+it.eid;return psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.'+encodeURIComponent(rid)+'&select=data',20000).then(function(j){
+    if(!j||!j[0])return {ok:true,nada:true};var d={};try{d=JSON.parse(j[0].data||'{}');}catch(e){d={};}if(d.del)return {ok:true,nada:true};
+    d.del=true;d.delTs=it.ts;d.delBy=it.by||psmUsuarioF();return psmXhrPost(JSON.stringify({id:rid,data:JSON.stringify(d),updated_at:new Date().toISOString()}),prog);},
+  function(e){return {ok:false,msg:e.message,red:true};});}
 // el contador de fotos mira solo los dos espacios de foto (el tercero guarda los borrados)
 psmFotoHay=function(arr){return (arr||[]).slice(0,2).filter(function(f){return f&&f.src;}).length;};
 function psmFotoEncolar(it){it.k=it.tipo+'|'+it.id+'|'+(it.tipo==='s'?it.i:it.eid);it.n=it.n||0;it.est='cola';it.cre=it.cre||new Date().toISOString();it.prox=0;
@@ -27184,11 +27192,11 @@ function psmFQrun(){if(PSM_FQ.run)return Promise.resolve();PSM_FQ.run=true;clear
    .catch(function(){}).then(function(){PSM_FQ.run=false;return psmFQall();}).then(function(L){psmFQUI(L);if(L.length){var m=Math.min.apply(null,L.map(function(x){return x.prox||0;}));PSM_FQ.tm=setTimeout(psmFQrun,Math.max(3000,m-Date.now()));}});}
 function psmFQuno(it){var t0=Date.now(),r=psmRow(it.id);PSM_FQ.est[it.k]='subiendo';PSM_FQ.prog[it.k]=0;psmFQUI();psmFQPintar(it);
   var prog=function(p){PSM_FQ.prog[it.k]=p;psmFQPintar(it);psmFQUI();};
-  var subir=it.tipo==='e'?psmXhrPost(JSON.stringify({id:'psm_foto_'+it.id+'_e'+it.eid,data:JSON.stringify(it.del?{del:true,ts:it.ts,by:it.by}:{src:it.src,ts:it.ts,by:it.by,ran:it.ran,w:it.w,h:it.h,orig:it.orig,dev:it.dev,nota:it.nota||undefined}),updated_at:new Date().toISOString()}),prog)
+  var subir=it.tipo==='e'?(it.del?psmEvBorrarNube(it,prog):psmXhrPost(JSON.stringify({id:'psm_foto_'+it.id+'_e'+it.eid,data:JSON.stringify(it.del?{del:true,ts:it.ts,by:it.by}:{src:it.src,ts:it.ts,by:it.by,ran:it.ran,w:it.w,h:it.h,orig:it.orig,dev:it.dev,nota:it.nota||undefined}),updated_at:new Date().toISOString()}),prog))
     :psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.psm_foto_'+encodeURIComponent(it.id)+'&select=data',20000).then(function(j){var nube=[];try{nube=j&&j[0]?JSON.parse(j[0].data||'[]'):[];}catch(e){nube=[];}
         return psmIDBget(it.id).then(function(loc){var m=psmFotoMezclar(nube,loc,it.id);it._m=m;return psmXhrPost(JSON.stringify({id:'psm_foto_'+it.id,data:JSON.stringify(m),updated_at:new Date().toISOString()}),prog);});},function(e){return {ok:false,msg:e.message,red:true};});
   return subir.then(function(x){
-    if(!x.ok)return x;
+    if(!x.ok||x.nada)return x;
     // comprobación: el registro existe en la nube
     return psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.'+encodeURIComponent('psm_foto_'+it.id+(it.tipo==='e'?'_e'+it.eid:''))+'&select=id,updated_at',15000).then(function(j){return j&&j[0]?x:{ok:false,msg:'la nube respondió OK pero el registro no aparece'};},function(){return x;});
   }).then(function(x){var ms=Date.now()-t0;
@@ -27316,13 +27324,16 @@ function psmFQorden(it){var t0=Date.now();PSM_FQ.est[it.k]='subiendo';psmFQUI();
   return psmXhrPost(JSON.stringify({id:'psm_foto_'+it.id+'_orden',data:JSON.stringify(it.orden||[]),updated_at:new Date().toISOString()})).then(function(x){
     if(x.ok)return psmFQdel(it.k).then(function(){PSM_FQ.est[it.k]='ok';});
     it.n=(it.n||0)+1;it.prox=Date.now()+Math.min(300,10*Math.pow(2,Math.min(it.n-1,5)))*1000;it.est='error';it.err=x.msg;PSM_FQ.est[it.k]='error';psmFLog({ok:false,tipo:'orden de fotos',ran:it.ran,err:x.msg,ms:Date.now()-t0});return psmFQput(it);});}
-function psmEvGuardarOrden(id){var r=psmRow(id);var it={tipo:'o',id:id,eid:'orden',orden:(PSM_EV[id]||[]).map(function(f){return f.eid;}),ts:new Date().toISOString(),ran:r&&r.ran};
+var PSM_EV_ORD={};
+function psmEvGuardarOrden(id){var r=psmRow(id);var cur=(PSM_EV[id]||[]).map(function(f){return f.eid;}),prev=PSM_EV_ORD[id]||(function(){try{return JSON.parse(localStorage.getItem('psm_ev_ord_'+id)||'[]');}catch(e){return [];}})();
+  // la lista solo crece (las borradas quedan al final): la nube no acepta achicar un registro a menos de la mitad
+  var ord=cur.concat((prev||[]).filter(function(e){return cur.indexOf(e)<0;}));PSM_EV_ORD[id]=ord;var it={tipo:'o',id:id,eid:'orden',orden:ord,ts:new Date().toISOString(),ran:r&&r.ran};
   psmFotoEncolar(it);try{localStorage.setItem('psm_ev_ord_'+id,JSON.stringify(it.orden));}catch(e){}}
 (function(){var eg=psmFotoEncolar;psmFotoEncolar=function(it){if(it.tipo==='o'){it.k='o|'+it.id+'|orden';it.n=0;it.est='cola';it.cre=new Date().toISOString();it.prox=0;return psmFQput(it).then(function(){setTimeout(psmFQrun,50);return true;});}return eg.apply(this,arguments);};})();
 // al leer las evidencias se respeta el orden guardado (nube o este equipo)
 (function(){var bg=psmEvGet;psmEvGet=function(id,forzar){var cache=PSM_EV[id]&&!forzar;return bg.apply(this,arguments).then(function(L){if(cache)return L;
   return psmFetchT(PSM_SUPA_URL+'/rest/v1/pie_data?id=eq.'+encodeURIComponent('psm_foto_'+id+'_orden')+'&select=data',15000).then(function(j){try{return j&&j[0]?JSON.parse(j[0].data||'[]'):null;}catch(e){return null;}},function(){return null;})
-   .then(function(o){if(!o){try{o=JSON.parse(localStorage.getItem('psm_ev_ord_'+id)||'null');}catch(e){}}
+   .then(function(o){if(!o){try{o=JSON.parse(localStorage.getItem('psm_ev_ord_'+id)||'null');}catch(e){}}if(o&&o.length)PSM_EV_ORD[id]=o;
      return o;})
    .then(function(o){if(o&&o.length){var P={};o.forEach(function(e,i){P[e]=i;});L.sort(function(a,b){var x=a.eid in P?P[a.eid]:1e6,y=b.eid in P?P[b.eid]:1e6;return x-y||(a.ts<b.ts?-1:1);});}PSM_EV[id]=L;return L;});});};})();
 // mover: evidencia ↔ evidencia (ordenar), evidencia ↔ foto principal (intercambiar), principal ↔ principal
