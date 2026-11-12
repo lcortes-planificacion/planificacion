@@ -3,4 +3,4 @@ App de planificación de ensamble, desarme, Machine Shop, reporte diario y turno
 
 Abrir: https://lcortes-planificacion.github.io/planificacion/Planificacion.html
 
-Versión 70 · 11-11-2026
+Versión 71 · 12-11-2026
